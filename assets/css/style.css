@@ -15,3 +15,8 @@ img {
 .hidden {
   display: none;
 }
+
+.flex-row {
+  display: flex;
+  justify-content: center;
+}

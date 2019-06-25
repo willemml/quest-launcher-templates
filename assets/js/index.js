@@ -13,7 +13,7 @@ var toolsArea = document.getElementById('tools')
 var activeButtonClass = 'btn btn-secondary active'
 var inactiveButtonClass = 'btn btn-secondary'
 var hiddenAppAreaClass = 'hidden'
-var visibleAppAreaClass = 'full-height text-center'
+var visibleAppAreaClass = 'full-height text-center flex-row row'
 var appOpenLinkStart = '<a href="autotoolscommand://openapp=:='
 
 vrPackages = [
