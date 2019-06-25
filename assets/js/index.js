@@ -67,16 +67,34 @@ function packageListsToHTML() {
     if (vrPackages[i + 1] == '') {
       vrPackages[i + 1] = 'notfound.png'
     }
+    if (vrPackages[i + 2] == '') {
+      var pNameSplit = vrPackages[i].split('.')
+      vrPackages[i + 2] = pNameSplit[pNameSplit.length - 1]
+    }
     vrPackagesHTML.push(appOpenLinkStart + vrPackages[i] + '"><img style="width:150px" src="assets/app-icons/vr/' + vrPackages[i + 1] + '" /><p>' + vrPackages[i + 2] + '</p></a>')
     i++
     i++
   }
   for (var i = 0; i < twoDPackages.length; i++) {
+    if (twoDPackages[i + 1] == '') {
+      twoDPackages[i + 1] = 'notfound.png'
+    }
+    if (twoDPackages[i + 2] == '') {
+      var pNameSplit = twoDPackages[i].split('.')
+      twoDPackages[i + 2] = pNameSplit[pNameSplit.length - 1]
+    }
     twoDPackagesHTML.push(appOpenLinkStart + twoDPackages[i] + '"><img style="width:150px" src="assets/app-icons/2d/' + twoDPackages[i + 1] + '" /><p>' + twoDPackages[i + 2] + '</p></a>')
     i++
     i++
   }
   for (var i = 0; i < tools.length; i++) {
+    if (tools[i + 1] == '') {
+      tools[i + 1] = 'notfound.png'
+    }
+    if (vrPackages[i + 2] == '') {
+      var pNameSplit = tools[i].split('.')
+      tools[i + 2] = pNameSplit[pNameSplit.length - 1]
+    }
     toolsHTML.push(appOpenLinkStart + tools[i] + '"><img style="width:150px" src="assets/app-icons/tools/' + tools[i + 1] + '" /><p>' + tools[i + 2] + '</p></a>')
     i++
     i++
