@@ -59,7 +59,7 @@ function showTools() {
   vrBtn.className = inactiveButtonClass
   toolsArea.className = visibleAppAreaClass
   twoDAppArea.className = hiddenAppAreaClass
-  vrArea.className = hiddenAppAreaClass
+  vrAppArea.className = hiddenAppAreaClass
 }
 
 function packageListsToHTML() {
