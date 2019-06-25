@@ -1,0 +1,17 @@
+body {
+  font-family: Arial;
+  color: white;
+  background-color: black;
+}
+
+h2 {
+  color: white;
+}
+
+img {
+  /*  border-radius: 50%; */
+}
+
+.hidden {
+  display: none;
+}
