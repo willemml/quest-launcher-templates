@@ -1,7 +1,9 @@
-var i
 var vrPackages = []
 var twoDPackages = []
 var tools = []
+var vrPackagesHTML = []
+var twoDPackagesHTML = []
+var toolsHTML = []
 var vrBtn = document.getElementById('vrbtn')
 var twoDBtn = document.getElementById('2dbtn')
 var toolsBtn = document.getElementById('toolsbtn')
@@ -12,22 +14,23 @@ var activeButtonClass = 'btn btn-secondary active'
 var inactiveButtonClass = 'btn btn-secondary'
 var hiddenAppAreaClass = 'hidden'
 var visibleAppAreaClass = 'full-height text-center'
+var appOpenLinkStart = '<a href="autotoolscommand://openapp=:='
 
 vrPackages = [
-  "com.beatgames.beatsaber", "beat-saber.png", "Beat Saber",
-  "com.polygraphene.alvr", "alvr.png", "ALVR",
-  "com.iillusions.spacepiratetrainerquest", "space-pirate-trainer.png", "Space Pirate Trainer"
+  'com.beatgames.beatsaber', 'beat-saber.png', 'Beat Saber',
+  'com.polygraphene.alvr', 'alvr.png', 'ALVR',
+  'com.iillusions.spacepiratetrainerquest', 'space-pirate-trainer.png', 'Space Pirate Trainer'
 ]
 
 twoDPackages = [
-  "dp.ws.popcorntime", "popcorn-time.png", "Popcorn Time",
-  "com.emulamer.beaton", "beat-on.png", "Beat On",
-  "com.discord", "discord.png", "Discord"
+  'dp.ws.popcorntime', 'popcorn-time.png', 'Popcorn Time',
+  'com.emulamer.beaton', 'beat-on.png', 'Beat On',
+  'com.discord', 'discord.png', 'Discord'
 ]
 
 tools = [
-  "com.android.settings", "settings.png", "Settings",
-  "net.dinglisch.android.taskerm", "tasker.png", "Tasker"
+  'com.android.settings', 'settings.png', 'Settings',
+  'net.dinglisch.android.taskerm', 'tasker.png', 'Tasker'
 ]
 
 function showVr() {
@@ -58,3 +61,41 @@ function showTools() {
   twoDAppArea.className = hiddenAppAreaClass
   vrArea.className = hiddenAppAreaClass
 }
+
+function packageListsToHTML() {
+  for (var i = 0; i < vrPackages.length; i++) {
+    if (vrPackages[i + 1] == '') {
+      vrPackages[i + 1] = 'notfound.png'
+    }
+    vrPackagesHTML.push(appOpenLinkStart + vrPackages[i] + '"><img style="width:150px" src="assets/app-icons/vr/' + vrPackages[i + 1] + '" /><p>' + vrPackages[i + 2] + '</p></a>')
+    i++
+    i++
+  }
+  for (var i = 0; i < twoDPackages.length; i++) {
+    twoDPackagesHTML.push(appOpenLinkStart + twoDPackages[i] + '"><img style="width:150px" src="assets/app-icons/2d/' + twoDPackages[i + 1] + '" /><p>' + twoDPackages[i + 2] + '</p></a>')
+    i++
+    i++
+  }
+  for (var i = 0; i < tools.length; i++) {
+    toolsHTML.push(appOpenLinkStart + tools[i] + '"><img style="width:150px" src="assets/app-icons/tools/' + tools[i + 1] + '" /><p>' + tools[i + 2] + '</p></a>')
+    i++
+    i++
+  }
+}
+packageListsToHTML()
+
+function htmlListsCreate() {
+  vrAppArea.innerHTML = ''
+  twoDAppArea.innerHTML = ''
+  toolsArea.innerHTML = ''
+  for (var i = 0; i < vrPackagesHTML.length; i++) {
+    vrAppArea.innerHTML += vrPackagesHTML[i]
+  }
+  for (var i = 0; i < twoDPackagesHTML.length; i++) {
+    twoDAppArea.innerHTML += twoDPackagesHTML[i]
+  }
+  for (var i = 0; i < toolsHTML.length; i++) {
+    toolsArea.innerHTML += toolsHTML[i]
+  }
+}
+htmlListsCreate()
