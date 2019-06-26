@@ -13,24 +13,32 @@
   <h2 align="center">Recon-Quest</h2>
   <div class="text-center">
     <div class="btn-group">
-      <input type="button" id="vrbtn" class="btn btn-secondary" value="  VR  " onclick="showVr()"></input>
-      <input type="button" id="2dbtn" class="btn btn-secondary" value="  2D  " onclick="show2D()"></input>
-      <input type="button" id="toolsbtn" class="btn btn-secondary" value="Tools " onclick="showTools()"></input>
+      <input type="button" id="vrbtn" class="btn btn-secondary"       value="        VR         " onclick="showVr()"></input>
+      <input type="button" id="legvrbtn" class="btn btn-secondary"    value="     GearVR/GO     " onclick="showLegVR()"></input>
+      <input type="button" id="2dbtn" class="btn btn-secondary"       value="        2D         " onclick="show2D()"></input>
+      <input type="button" id="sysutilsbtn" class="btn btn-secondary" value=" System Utilities  " onclick="showsysutils()"></input>
+      <input type="button" id="unsortedbtn" class="btn btn-secondary" value="     Unsorted      " onclick="showUnsorted()"></input>
     </div>
   </div>
   <br>
   <div class="body">
     <div id="vrapps" class="hidden">
     </div>
+    <div id="legvrapps" class="hidden">
+    </div>
     <div id="2dapps" class="hidden">
     </div>
-    <div id="tools" class="hidden">
+    <div id="sysutils" class="hidden">
+    </div>
+    <div id="unsorted" class="hidden">
+      <input id="textListInput" type="file">
+      <div id="unsortedlist">
+      </div>
     </div>
   </div>
-  <script src="assets/js/index.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</body>
+  <script src="assets/js/index.js"></script>
 
 </html>
