@@ -22,13 +22,14 @@ var activeButtonClass = 'btn btn-secondary active'
 var inactiveButtonClass = 'btn btn-secondary'
 var hiddenAppAreaClass = 'hidden'
 var visibleAppAreaClass = 'full-height text-center flex-row row'
-var appOpenLinkStart = '<a class="btn btn-link" href="autosysutilscommand://openapp=:='
+var appOpenLinkStart = '<a class="btn btn-link" href="autotoolscommand://openapp=:='
 var fileinput = document.getElementById('textListInput')
 
 vrPackages = [
   'com.beatgames.beatsaber', 'beat-saber.png', 'Beat Saber',
   'com.polygraphene.alvr', 'alvr.png', 'ALVR',
-  'com.iillusions.spacepiratetrainerquest', 'space-pirate-trainer.png', 'Space Pirate Trainer'
+  'com.iillusions.spacepiratetrainerquest', 'space-pirate-trainer.png', 'Space Pirate Trainer',
+  'com.davevillz.pavlov', 'pavlov.jpeg', 'Pavlov VR'
 ]
 
 twoDPackages = [
@@ -44,17 +45,19 @@ sysutils = [
 
 fileinput.addEventListener("change", function() {
   if (this.files && this.files[0]) {
-    var myFile = this.files[0];
-    var reader = new FileReader();
+    var myFile = this.files[0]
+    var reader = new FileReader()
     reader.addEventListener('load', function(e) {
       var textByLine = e.target.result.split("\n")
       for (var i = 0; i < textByLine.length; i++) {
-        var pNameSplit = textByLine[i].split('.')
-        var unsortedName = pNameSplit[pNameSplit.length - 1]
-        document.getElementById('unsortedlist').innerHTML += appOpenLinkStart + textByLine[i] + '"><p>' + unsortedName + '</p></a>'
+        if (textByLine[i] != '') {
+          var pNameSplit = textByLine[i].split('.')
+          var unsortedName = pNameSplit[pNameSplit.length - 1]
+          document.getElementById('unsortedlist').innerHTML += '<li>' + appOpenLinkStart + textByLine[i] + '"><p>' + unsortedName + '</p></a></li>'
+        }
       }
-    });
-    reader.readAsBinaryString(myFile);
+    })
+    reader.readAsBinaryString(myFile)
   }
 })
 
@@ -149,7 +152,7 @@ function showsysutils() {
 
 function showUnsorted() {
   unsortedBtn.className = activeButtonClass
-  unsortedArea.className = visibleAppAreaClass
+  unsortedArea.className = 'full-height flex-row row'
   var deactbtn = [sysutilsBtn, legacyBtn, twoDBtn, vrBtn]
   var deactareas = [sysutilsArea, legacyVrAppArea, twoDAppArea, vrAppArea]
   deactivateButton(deactbtn)
