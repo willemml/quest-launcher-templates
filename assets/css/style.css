@@ -30,6 +30,11 @@ img {
     clear: both;
 }
 
+.flex-row {
+  display: flex;
+  justify-content: center;
+}
+
 hr {
   display: block;
   position: relative;

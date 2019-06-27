@@ -1,18 +1,32 @@
 var vrPackages = []
 var vrPackagesHTML = []
-
-var twoDPackages = []
-var twoDPackagesHTML = []
+if ('vrPackages' in localStorage) {
+  vrPackages = localStorage.getItem('vrPackages').split(',')
+}
 
 var legacyVrApps = []
 var legacyVrAppsHTML = []
+if ('legacyVrApps' in localStorage) {
+  legacyVrApps = localStorage.getItem('legacyVrApps').split(',')
+}
+
+var twoDPackages = []
+var twoDPackagesHTML = []
+if ('twoDPackages' in localStorage) {
+  twoDPackages = localStorage.getItem('twoDPackages').split(',')
+}
 
 var sysutils = []
 var sysutilsHTML = []
+if ('sysutils' in localStorage) {
+  sysutils = localStorage.getItem('sysutils').split(',')
+}
 
 var unsorted = []
 var unsortedHTML = []
-unsorted = localStorage.getItem('unsortedListGVar').split(',')
+if ('unsorted' in localStorage) {
+  unsorted = localStorage.getItem('unsorted').split(',')
+}
 
 var vrBtn = document.getElementById('vrbtn')
 var vrAppArea = document.getElementById('vrapps')
@@ -34,7 +48,7 @@ var settingsArea = document.getElementById('settings')
 
 var activeButtonClass = 'btn btn-secondary btnwidth'
 var hiddenAppAreaClass = 'hidden'
-var visibleAppAreaClass = 'full-height text-center flex-row row'
+var visibleAppAreaClass = 'full-height text-center row flex-row'
 
 var appOpenLinkStart = '<a class="btn btn-link" href="autotoolscommand://openapp=:='
 
@@ -47,29 +61,30 @@ var fileinput = document.getElementById('textListInput')
 // quest home window height 564
 // quest home window width = 751
 
-vrPackages = [
-  'com.beatgames.beatsaber', 'beat-saber.png', 'Beat Saber',
-  'com.polygraphene.alvr', 'alvr.png', 'ALVR',
-  'com.iillusions.spacepiratetrainerquest', 'space-pirate-trainer.png', 'Space Pirate Trainer',
-  'com.davevillz.pavlov', 'pavlov.jpeg', 'Pavlov VR'
-]
-
-twoDPackages = [
-  'dp.ws.popcorntime', 'popcorn-time.png', 'Popcorn Time',
-  'com.emulamer.beaton', 'beat-on.png', 'Beat On',
-  'com.discord', 'discord.png', 'Discord'
-]
-
-sysutils = [
-  'com.android.settings', 'settings.png', 'Settings',
-  'net.dinglisch.android.taskerm', 'tasker.png', 'Tasker'
-]
-
 function addApplicationToLists() {
-  if (document.getElementById('categorielist') == 'vrPackages') {
+  if (document.getElementById('categorielist').value == 'vrPackages') {
     vrPackages.push(addPackageName.value)
     vrPackages.push(addPackageImage.value)
     vrPackages.push(addPackageTitle.value)
+    localStorage.setItem('vrPackages', vrPackages)
+  }
+  if (document.getElementById('categorielist').value == 'twoDPackages') {
+    twoDPackages.push(addPackageName.value)
+    twoDPackages.push(addPackageImage.value)
+    twoDPackages.push(addPackageTitle.value)
+    localStorage.setItem('twoDPackages', twoDPackages)
+  }
+  if (document.getElementById('categorielist').value == 'legacyVrApps') {
+    legacyVrApps.push(addPackageName.value)
+    legacyVrApps.push(addPackageImage.value)
+    legacyVrApps.push(addPackageTitle.value)
+    localStorage.setItem('legacyVrApps', legacyVrApps)
+  }
+  if (document.getElementById('categorielist').value == 'sysutils') {
+    sysutils.push(addPackageName.value)
+    sysutils.push(addPackageImage.value)
+    sysutils.push(addPackageTitle.value)
+    localStorage.setItem('sysutils', sysutils)
   }
   packageListsToHTML()
   htmlListsCreate()
@@ -89,7 +104,7 @@ fileinput.addEventListener("change", function() {
           unsorted[i] = textByLine[i]
         }
       }
-      localStorage.setItem('unsortedListGVar', unsorted)
+      localStorage.setItem('unsorted', unsorted)
       packageListsToHTML()
       htmlListsCreate()
       checkEmptyTabs()
@@ -99,7 +114,7 @@ fileinput.addEventListener("change", function() {
 })
 
 function clearUnsorted() {
-  localStorage.setItem('unsortedListGVar', [])
+  localStorage.setItem('unsorted', [])
   unsorted = []
   unsortedHTML = []
   unsortedArea.innerHTML = ''
@@ -128,7 +143,7 @@ function checkEmptyTabs() {
   } else {
     legacyBtn.className = activeButtonClass
   }
-  if (localStorage.getItem('unsortedListGVar') == null || localStorage.getItem('unsortedListGVar').length < 1 || localStorage.getItem('unsortedListGVar') == undefined) {
+  if (unsorted == null || unsorted.length < 1 || unsorted == undefined) {
     unsortedBtn.className = 'hidden'
   } else {
     unsortedBtn.className = activeButtonClass

@@ -45,10 +45,9 @@
       <input type="button" class="btn btn-danger btn-block" value="Clear unsorted packages" onclick="clearUnsorted()">
       <hr>
       <h6 class="text-center">Add an application to a list:</h6>
-      <form action="#" onsubmit="addApplicationToLists()">
         <div class="custom-control">
           <label for="categorielist">Select app categorie:</label>
-          <select class="custom-select" id="categorielist" name="categorielist" required>
+          <select class="custom-select" id="categorielist" name="categorielist">
             <option value="vrPackages">VR</option>
             <option value="legacyVrApps">GearVR/GO</option>
             <option value="twoDPackages">2D</option>
@@ -58,14 +57,14 @@
         <br>
         <div class="custom-control">
           <p id="pnameenterlabel">Enter package name:</p>
-          <input class="custom-select" id="pnamelist" list="pnamedatalist" required></input>
+          <input class="custom-select" id="pnamelist" list="pnamedatalist"></input>
           <datalist name="pnamedatalist" id="pnamedatalist">
           </datalist>
         </div>
         <br>
         <div class="custom-control">
           <p>Enter app name:</p>
-          <input type="text" class="form-control" id="appname" placeholder="Example App" required></input>
+          <input type="text" class="form-control" id="appname" placeholder="Example App"></input>
         </div>
         <br>
         <div class="custom-control">
@@ -73,8 +72,7 @@
           <input type="text" class="form-control" id="appicon" placeholder="exampleapp.png"></input>
         </div>
         <br>
-        <input type="submit" class="btn btn-primary btn-block" value="Add Application"></input>
-      </form>
+        <input type="button" class="btn btn-primary btn-block" value="Add Application" onclick="addApplicationToLists()"></input>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
