@@ -143,7 +143,7 @@ function checkEmptyTabs() {
   } else {
     legacyBtn.className = activeButtonClass
   }
-  if (unsorted == null || unsorted.length < 1 || unsorted == undefined) {
+  if (unsorted == null || unsorted.length < 1 || unsorted == undefined || unsorted == '') {
     unsortedBtn.className = 'hidden'
   } else {
     unsortedBtn.className = activeButtonClass
