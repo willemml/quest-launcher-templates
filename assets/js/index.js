@@ -203,6 +203,7 @@ function packageListsToHTML() {
     } else {
       unsortedHTML[i] = '<li class="listwrap">' + appOpenLinkStart + unsorted[i] + '"><p>' + pNameSplit + '</p></a></li>'
     }
+    document.getElementById('pnamedatalist').innerHTML += '<option value="' + unsorted[i] + '">' + unsorted[i] + '</option>'
   }
 }
 packageListsToHTML()
