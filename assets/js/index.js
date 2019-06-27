@@ -18,12 +18,15 @@ var legacyVrAppArea = document.getElementById('legvrapps')
 var twoDAppArea = document.getElementById('2dapps')
 var sysutilsArea = document.getElementById('sysutils')
 var unsortedArea = document.getElementById('unsorted')
-var activeButtonClass = 'btn btn-secondary active'
-var inactiveButtonClass = 'btn btn-secondary'
+var activeButtonClass = 'btn btn-secondary active btnwidth'
+var inactiveButtonClass = 'btn btn-secondary btnwidth'
 var hiddenAppAreaClass = 'hidden'
 var visibleAppAreaClass = 'full-height text-center flex-row row'
 var appOpenLinkStart = '<a class="btn btn-link" href="autotoolscommand://openapp=:='
 var fileinput = document.getElementById('textListInput')
+
+// quest home window height 564
+// quest home window width = 751
 
 vrPackages = [
   'com.beatgames.beatsaber', 'beat-saber.png', 'Beat Saber',
@@ -43,6 +46,8 @@ sysutils = [
   'net.dinglisch.android.taskerm', 'tasker.png', 'Tasker'
 ]
 
+document.getElementById('unsortedlist').innerHTML = localStorage.getItem('unsortedListGVar')
+
 fileinput.addEventListener("change", function() {
   if (this.files && this.files[0]) {
     var myFile = this.files[0]
@@ -53,13 +58,34 @@ fileinput.addEventListener("change", function() {
         if (textByLine[i] != '') {
           var pNameSplit = textByLine[i].split('.')
           var unsortedName = pNameSplit[pNameSplit.length - 1]
-          document.getElementById('unsortedlist').innerHTML += '<li>' + appOpenLinkStart + textByLine[i] + '"><p>' + unsortedName + '</p></a></li>'
+          if (unsortedName.length > 20) {
+            cut2start = unsortedName.length - 8
+            unsortedName = unsortedName.substr(0, 8) + ' ... ' + unsortedName.substr(cut2start, unsortedName.length)
+
+          }
+          document.getElementById('unsortedlist').innerHTML += '<li class="listwrap">' + appOpenLinkStart + textByLine[i] + '"><p>' + unsortedName + '</p></a></li>'
         }
       }
+      localStorage.setItem('unsortedListGVar', document.getElementById('unsortedlist').innerHTML)
     })
     reader.readAsBinaryString(myFile)
   }
 })
+
+function checkEmptyTabs() {
+  if (vrPackages.length < 1 || vrPackages == undefined) {
+    vrBtn.className = 'hidden'
+  }
+  if (twoDPackages.length < 1 || twoDPackages == undefined) {
+    twoDBtn.className = 'hidden'
+  }
+  if (sysutils.length < 1 || sysutils == undefined) {
+    sysutilsBtn.className = 'hidden'
+  }
+  if (legacyVrApps.length < 1 || legacyVrApps == undefined) {
+    legacyBtn.className = 'hidden'
+  }
+}
 
 function hideDiv(divs) {
   for (var i = 0; i < divs.length; i++) {
@@ -120,6 +146,7 @@ function showVr() {
   var deactareas = [sysutilsArea, legacyVrAppArea, twoDAppArea, unsortedArea]
   deactivateButton(deactbtn)
   hideDiv(deactareas)
+  checkEmptyTabs()
 }
 showVr()
 
@@ -130,6 +157,7 @@ function show2D() {
   var deactareas = [sysutilsArea, legacyVrAppArea, vrAppArea, unsortedArea]
   deactivateButton(deactbtn)
   hideDiv(deactareas)
+  checkEmptyTabs()
 }
 
 function showLegVR() {
@@ -139,6 +167,7 @@ function showLegVR() {
   var deactareas = [sysutilsArea, vrAppArea, twoDAppArea, unsortedArea]
   deactivateButton(deactbtn)
   hideDiv(deactareas)
+  checkEmptyTabs()
 }
 
 function showsysutils() {
@@ -148,6 +177,7 @@ function showsysutils() {
   var deactareas = [vrAppArea, legacyVrAppArea, twoDAppArea, unsortedArea]
   deactivateButton(deactbtn)
   hideDiv(deactareas)
+  checkEmptyTabs()
 }
 
 function showUnsorted() {
@@ -157,6 +187,7 @@ function showUnsorted() {
   var deactareas = [sysutilsArea, legacyVrAppArea, twoDAppArea, vrAppArea]
   deactivateButton(deactbtn)
   hideDiv(deactareas)
+  checkEmptyTabs()
 }
 
 function htmlListsCreate() {
