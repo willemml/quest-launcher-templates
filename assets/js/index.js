@@ -1,28 +1,47 @@
 var vrPackages = []
-var twoDPackages = []
-var legacyVrApps = []
-var sysutils = []
-var unsorted = []
 var vrPackagesHTML = []
+
+var twoDPackages = []
 var twoDPackagesHTML = []
+
+var legacyVrApps = []
 var legacyVrAppsHTML = []
+
+var sysutils = []
 var sysutilsHTML = []
+
+var unsorted = []
 var unsortedHTML = []
+unsorted = localStorage.getItem('unsortedListGVar').split(',')
+
 var vrBtn = document.getElementById('vrbtn')
-var legacyBtn = document.getElementById('legvrbtn')
-var twoDBtn = document.getElementById('2dbtn')
-var sysutilsBtn = document.getElementById('sysutilsbtn')
-var unsortedBtn = document.getElementById('unsortedbtn')
 var vrAppArea = document.getElementById('vrapps')
+
+var legacyBtn = document.getElementById('legvrbtn')
 var legacyVrAppArea = document.getElementById('legvrapps')
+
+var twoDBtn = document.getElementById('2dbtn')
 var twoDAppArea = document.getElementById('2dapps')
+
+var sysutilsBtn = document.getElementById('sysutilsbtn')
 var sysutilsArea = document.getElementById('sysutils')
+
+var unsortedBtn = document.getElementById('unsortedbtn')
 var unsortedArea = document.getElementById('unsorted')
-var activeButtonClass = 'btn btn-secondary active btnwidth'
-var inactiveButtonClass = 'btn btn-secondary btnwidth'
+
+var settingsBtn = document.getElementById('settingsbtn')
+var settingsArea = document.getElementById('settings')
+
+var activeButtonClass = 'btn btn-secondary btnwidth'
 var hiddenAppAreaClass = 'hidden'
 var visibleAppAreaClass = 'full-height text-center flex-row row'
+
 var appOpenLinkStart = '<a class="btn btn-link" href="autotoolscommand://openapp=:='
+
+var addPackageName = document.getElementById('pnamelist')
+var addPackageTitle = document.getElementById('appname')
+var addPackageImage = document.getElementById('appicon')
+
 var fileinput = document.getElementById('textListInput')
 
 // quest home window height 564
@@ -46,7 +65,16 @@ sysutils = [
   'net.dinglisch.android.taskerm', 'tasker.png', 'Tasker'
 ]
 
-document.getElementById('unsortedlist').innerHTML = localStorage.getItem('unsortedListGVar')
+function addApplicationToLists() {
+  if (document.getElementById('categorielist') == 'vrPackages') {
+    vrPackages.push(addPackageName.value)
+    vrPackages.push(addPackageImage.value)
+    vrPackages.push(addPackageTitle.value)
+  }
+  packageListsToHTML()
+  htmlListsCreate()
+  checkEmptyTabs()
+}
 
 fileinput.addEventListener("change", function() {
   if (this.files && this.files[0]) {
@@ -54,36 +82,56 @@ fileinput.addEventListener("change", function() {
     var reader = new FileReader()
     reader.addEventListener('load', function(e) {
       var textByLine = e.target.result.split("\n")
+      unsorted = []
       for (var i = 0; i < textByLine.length; i++) {
         if (textByLine[i] != '') {
           var pNameSplit = textByLine[i].split('.')
-          var unsortedName = pNameSplit[pNameSplit.length - 1]
-          if (unsortedName.length > 20) {
-            cut2start = unsortedName.length - 8
-            unsortedName = unsortedName.substr(0, 8) + ' ... ' + unsortedName.substr(cut2start, unsortedName.length)
-
-          }
-          document.getElementById('unsortedlist').innerHTML += '<li class="listwrap">' + appOpenLinkStart + textByLine[i] + '"><p>' + unsortedName + '</p></a></li>'
+          unsorted[i] = textByLine[i]
         }
       }
-      localStorage.setItem('unsortedListGVar', document.getElementById('unsortedlist').innerHTML)
+      localStorage.setItem('unsortedListGVar', unsorted)
+      packageListsToHTML()
+      htmlListsCreate()
+      checkEmptyTabs()
     })
     reader.readAsBinaryString(myFile)
   }
 })
 
+function clearUnsorted() {
+  localStorage.setItem('unsortedListGVar', [])
+  unsorted = []
+  unsortedHTML = []
+  unsortedArea.innerHTML = ''
+  unsortedBtn.className = 'hidden'
+  document.getElementById('pnameenterlabel').innerHTML = 'Enter package name:'
+}
+
 function checkEmptyTabs() {
   if (vrPackages.length < 1 || vrPackages == undefined) {
     vrBtn.className = 'hidden'
+  } else {
+    vrBtn.className = activeButtonClass
   }
   if (twoDPackages.length < 1 || twoDPackages == undefined) {
     twoDBtn.className = 'hidden'
+  } else {
+    twoDBtn.className = activeButtonClass
   }
   if (sysutils.length < 1 || sysutils == undefined) {
     sysutilsBtn.className = 'hidden'
+  } else {
+    sysutilsBtn.className = activeButtonClass
   }
   if (legacyVrApps.length < 1 || legacyVrApps == undefined) {
     legacyBtn.className = 'hidden'
+  } else {
+    legacyBtn.className = activeButtonClass
+  }
+  if (localStorage.getItem('unsortedListGVar') == null || localStorage.getItem('unsortedListGVar').length < 1 || localStorage.getItem('unsortedListGVar') == undefined) {
+    unsortedBtn.className = 'hidden'
+  } else {
+    unsortedBtn.className = activeButtonClass
   }
 }
 
@@ -130,71 +178,72 @@ function packageListsToHTML() {
     i++
     i++
   }
+  for (var i = 0; i < unsorted.length; i++) {
+    var pNameSplit = unsorted[i].split('.')
+    pNameSplit = pNameSplit[pNameSplit.length - 1]
+    if (pNameSplit.length > 20) {
+      var cut2start = pNameSplit.length - 8
+      var pNameSplitShort = pNameSplit.substr(0, 8) + ' ... ' + pNameSplit.substr(cut2start, pNameSplit.length)
+      unsortedHTML[i] = '<li class="listwrap">' + appOpenLinkStart + unsorted[i] + '"><p>' + pNameSplitShort + '</p></a></li>'
+    } else {
+      unsortedHTML[i] = '<li class="listwrap">' + appOpenLinkStart + unsorted[i] + '"><p>' + pNameSplit + '</p></a></li>'
+    }
+  }
 }
 packageListsToHTML()
 
-function deactivateButton(btns) {
-  for (var i = 0; i < btns.length; i++) {
-    btns[i].classname = inactiveButtonClass
-  }
-}
-
 function showVr() {
-  vrBtn.className = activeButtonClass
   vrAppArea.className = visibleAppAreaClass
-  var deactbtn = [sysutilsBtn, legacyBtn, twoDBtn, unsortedBtn]
-  var deactareas = [sysutilsArea, legacyVrAppArea, twoDAppArea, unsortedArea]
-  deactivateButton(deactbtn)
+  var deactareas = [sysutilsArea, settingsArea, legacyVrAppArea, twoDAppArea, unsortedArea]
   hideDiv(deactareas)
   checkEmptyTabs()
 }
-showVr()
+
+function showSettings() {
+  settingsArea.className = 'full-height'
+  var deactareas = [sysutilsArea, vrAppArea, legacyVrAppArea, twoDAppArea, unsortedArea]
+  hideDiv(deactareas)
+  checkEmptyTabs()
+}
 
 function show2D() {
   twoDBtn.className = activeButtonClass
   twoDAppArea.className = visibleAppAreaClass
-  var deactbtn = [sysutilsBtn, legacyBtn, vrBtn, unsortedBtn]
-  var deactareas = [sysutilsArea, legacyVrAppArea, vrAppArea, unsortedArea]
-  deactivateButton(deactbtn)
+  var deactbtn = [sysutilsBtn, settingsBtn, legacyBtn, vrBtn, unsortedBtn]
+  var deactareas = [sysutilsArea, settingsArea, legacyVrAppArea, vrAppArea, unsortedArea]
   hideDiv(deactareas)
   checkEmptyTabs()
 }
 
 function showLegVR() {
-  legacyBtn.className = activeButtonClass
   legacyVrAppArea.className = visibleAppAreaClass
-  var deactbtn = [sysutilsBtn, vrBtn, twoDBtn, unsortedBtn]
-  var deactareas = [sysutilsArea, vrAppArea, twoDAppArea, unsortedArea]
-  deactivateButton(deactbtn)
+  var deactareas = [sysutilsArea, settingsArea, vrAppArea, twoDAppArea, unsortedArea]
   hideDiv(deactareas)
   checkEmptyTabs()
 }
 
 function showsysutils() {
-  sysutilsBtn.className = activeButtonClass
   sysutilsArea.className = visibleAppAreaClass
-  var deactbtn = [vrBtn, legacyBtn, twoDBtn, unsortedBtn]
-  var deactareas = [vrAppArea, legacyVrAppArea, twoDAppArea, unsortedArea]
-  deactivateButton(deactbtn)
+  var deactareas = [vrAppArea, settingsArea, legacyVrAppArea, twoDAppArea, unsortedArea]
   hideDiv(deactareas)
   checkEmptyTabs()
 }
 
 function showUnsorted() {
-  unsortedBtn.className = activeButtonClass
-  unsortedArea.className = 'full-height flex-row row'
-  var deactbtn = [sysutilsBtn, legacyBtn, twoDBtn, vrBtn]
-  var deactareas = [sysutilsArea, legacyVrAppArea, twoDAppArea, vrAppArea]
-  deactivateButton(deactbtn)
+  unsortedArea.className = 'full-height'
+  var deactareas = [sysutilsArea, settingsArea, legacyVrAppArea, twoDAppArea, vrAppArea]
   hideDiv(deactareas)
   checkEmptyTabs()
 }
+
+showVr()
 
 function htmlListsCreate() {
   vrAppArea.innerHTML = ''
   twoDAppArea.innerHTML = ''
   sysutilsArea.innerHTML = ''
   legacyVrAppArea.innerHTML = ''
+  unsortedArea.innerHTML = ''
   for (var i = 0; i < vrPackagesHTML.length; i++) {
     vrAppArea.innerHTML += vrPackagesHTML[i]
   }
@@ -206,6 +255,9 @@ function htmlListsCreate() {
   }
   for (var i = 0; i < sysutilsHTML.length; i++) {
     sysutilsArea.innerHTML += sysutilsHTML[i]
+  }
+  for (var i = 0; i < unsortedHTML.length; i++) {
+    unsortedArea.innerHTML += unsortedHTML[i]
   }
 }
 htmlListsCreate()
