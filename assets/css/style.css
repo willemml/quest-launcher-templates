@@ -8,10 +8,6 @@ h2 {
   color: white;
 }
 
-img {
-  /*  border-radius: 50%; */
-}
-
 .hidden {
   display: none;
 }
@@ -28,6 +24,11 @@ img {
 
 .clear {
     clear: both;
+}
+
+.full-width-height {
+  width: 100%;
+  height: 200px;
 }
 
 .flex-row {

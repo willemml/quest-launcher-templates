@@ -295,26 +295,6 @@ function htmlListsCreate() {
 }
 htmlListsCreate()
 
-function download(data, filename, type) {
-  var file = new Blob([data], {
-    type: type
-  });
-  if (window.navigator.msSaveOrOpenBlob) // IE10+
-    window.navigator.msSaveOrOpenBlob(file, filename);
-  else { // Others
-    var a = document.createElement("a"),
-      url = URL.createObjectURL(file);
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function() {
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    }, 0);
-  }
-}
-
 function checkClearAll() {
   document.getElementById('startreset').className = 'hidden'
   document.getElementById('confirmdenyreset').className = 'btn-group flex-row'
@@ -337,4 +317,37 @@ function confirmClearAll() {
 function dontClearAll() {
   document.getElementById('startreset').className = 'btn btn-danger btn-block'
   document.getElementById('confirmdenyreset').className = 'hidden'
+}
+
+function exportHTML() {
+  var pagehtml = '<!DOCTYPE HTML>' + '\n' + document.documentElement.outerHTML
+  var scriptcallstring = '<script src="assets/js/index.js">'
+  var customcssstring = '<link href="assets/css/style.css" rel="stylesheet">'
+  var minscript = `
+  var settingsArea = document.getElementById('settings');
+  var vrBtn = document.getElementById('vrbtn');
+  var vrAppArea = document.getElementById('vrapps');
+  var legacyBtn = document.getElementById('legvrbtn');
+  var legacyVrAppArea = document.getElementById('legvrapps');
+  var twoDBtn = document.getElementById('2dbtn');
+  var twoDAppArea = document.getElementById('2dapps');
+  var sysutilsBtn = document.getElementById('sysutilsbtn');
+  var sysutilsArea = document.getElementById('sysutils');
+  var unsortedBtn = document.getElementById('unsortedbtn');
+  var unsortedArea = document.getElementById('unsorted');
+  settingsArea.className = 'hidden';
+  var activeButtonClass = 'btn btn-secondary btnwidth';
+  var hiddenAppAreaClass = 'hidden';
+  var visibleAppAreaClass = 'full-height text-center row flex-row';
+  document.getElementById('settingsbtn').className = 'hidden';
+  function showVr() { vrAppArea.className = visibleAppAreaClass; var deactareas = [sysutilsArea, legacyVrAppArea, twoDAppArea, unsortedArea]; hideDiv(deactareas); checkEmptyTabs(); };
+  function show2D() { twoDBtn.className = activeButtonClass; twoDAppArea.className = visibleAppAreaClass; var deactareas = [sysutilsArea, settingsArea, legacyVrAppArea, vrAppArea, unsortedArea]; hideDiv(deactareas); checkEmptyTabs(); };
+  function showLegVR() { legacyVrAppArea.className = visibleAppAreaClass; var deactareas = [sysutilsArea, settingsArea, vrAppArea, twoDAppArea, unsortedArea]; hideDiv(deactareas); checkEmptyTabs(); };
+  function showsysutils() { sysutilsArea.className = visibleAppAreaClass; var deactareas = [vrAppArea, settingsArea, legacyVrAppArea, twoDAppArea, unsortedArea]; hideDiv(deactareas); checkEmptyTabs(); };
+  function showUnsorted() { unsortedArea.className = 'full-height'; var deactareas = [sysutilsArea, settingsArea, legacyVrAppArea, twoDAppArea, vrAppArea]; hideDiv(deactareas); checkEmptyTabs(); };
+  function checkEmptyTabs() { if (vrPackages.length < 1 || vrPackages == undefined) { vrBtn.className = 'hidden'; } else { vrBtn.className = activeButtonClass; }; if (twoDPackages.length < 1 || twoDPackages == undefined) { twoDBtn.className = 'hidden'; } else { twoDBtn.className = activeButtonClass; }; if (sysutils.length < 1 || sysutils == undefined) { sysutilsBtn.className = 'hidden'; } else { sysutilsBtn.className = activeButtonClass; }; if (legacyVrApps.length < 1 || legacyVrApps == undefined) { legacyBtn.className = 'hidden'; } else { legacyBtn.className = activeButtonClass; }; if (unsorted == null || unsorted.length < 1 || unsorted == undefined || unsorted == '') { unsortedBtn.className = 'hidden'; } else { unsortedBtn.className = activeButtonClass; }; }; function hideDiv(divs) { for (var i = 0; i < divs.length; i++) { divs[i].className = hiddenAppAreaClass; }; }; showVr();
+  `
+  var htmlforexport = pagehtml.replace(scriptcallstring, '<script>' + minscript)
+  document.getElementById('htmlexporttextarea').innerHTML = htmlforexport
+  document.getElementById('htmlexporttextarea').className = 'full-width-height'
 }
