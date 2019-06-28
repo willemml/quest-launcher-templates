@@ -86,6 +86,9 @@ function addApplicationToLists() {
     sysutils.push(addPackageTitle.value)
     localStorage.setItem('sysutils', sysutils)
   }
+  addPackageName.value = ''
+  addPackageImage.value = ''
+  addPackageTitle.value = ''
   packageListsToHTML()
   htmlListsCreate()
   checkEmptyTabs()
