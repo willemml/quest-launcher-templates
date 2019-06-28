@@ -350,4 +350,11 @@ function exportHTML() {
   var htmlforexport = pagehtml.replace(scriptcallstring, '<script>' + minscript)
   document.getElementById('htmlexporttextarea').innerHTML = htmlforexport
   document.getElementById('htmlexporttextarea').className = 'full-width-height'
+  document.getElementById('clipbtn').className = 'btn btn-success btn-block'
+}
+
+function copyHTMLtoClipboard() {
+  var copyText = document.getElementById("htmlexporttextarea")
+  copyText.select()
+  document.execCommand("copy")
 }
