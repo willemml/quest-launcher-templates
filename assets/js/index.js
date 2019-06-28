@@ -169,6 +169,18 @@ function packageListsToHTML() {
     i++
     i++
   }
+  for (var i = 0; i < legacyVrApps.length; i++) {
+    if (legacyVrApps[i + 1] == '') {
+      legacyVrApps[i + 1] = 'notfound.png'
+    }
+    if (legacyVrApps[i + 2] == '') {
+      var pNameSplit = legacyVrApps[i].split('.')
+      legacyVrApps[i + 2] = pNameSplit[pNameSplit.length - 1]
+    }
+    legacyVrAppsHTML.push(appOpenLinkStart + legacyVrApps[i] + '"><img style="width:150px" src="assets/app-icons/2d/' + legacyVrApps[i + 1] + '" /><p>' + legacyVrApps[i + 2] + '</p></a>')
+    i++
+    i++
+  }
   for (var i = 0; i < twoDPackages.length; i++) {
     if (twoDPackages[i + 1] == '') {
       twoDPackages[i + 1] = 'notfound.png'
