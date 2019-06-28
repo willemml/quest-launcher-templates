@@ -157,6 +157,11 @@ function hideDiv(divs) {
 }
 
 function packageListsToHTML() {
+  vrPackagesHTML = []
+  legacyVrAppsHTML = []
+  twoDPackagesHTML = []
+  sysutilsHTML = []
+  unsortedHTML = []
   for (var i = 0; i < vrPackages.length; i++) {
     if (vrPackages[i + 1] == '') {
       vrPackages[i + 1] = 'notfound.png'
@@ -289,3 +294,47 @@ function htmlListsCreate() {
   }
 }
 htmlListsCreate()
+
+function download(data, filename, type) {
+  var file = new Blob([data], {
+    type: type
+  });
+  if (window.navigator.msSaveOrOpenBlob) // IE10+
+    window.navigator.msSaveOrOpenBlob(file, filename);
+  else { // Others
+    var a = document.createElement("a"),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  }
+}
+
+function checkClearAll() {
+  document.getElementById('startreset').className = 'hidden'
+  document.getElementById('confirmdenyreset').className = 'btn-group flex-row'
+}
+
+function confirmClearAll() {
+  vrPackages = []
+  legacyVrApps = []
+  twoDPackages = []
+  sysutils = []
+  unsorted = []
+  localStorage.clear()
+  checkEmptyTabs()
+  packageListsToHTML()
+  htmlListsCreate()
+  document.getElementById('startreset').className = 'btn btn-danger btn-block'
+  document.getElementById('confirmdenyreset').className = 'hidden'
+}
+
+function dontClearAll() {
+  document.getElementById('startreset').className = 'btn btn-danger btn-block'
+  document.getElementById('confirmdenyreset').className = 'hidden'
+}

@@ -45,34 +45,41 @@
       <input type="button" class="btn btn-danger btn-block" value="Clear unsorted packages" onclick="clearUnsorted()">
       <hr>
       <h6 class="text-center">Add an application to a list:</h6>
-        <div class="custom-control">
-          <label for="categorylist">Select app category:</label>
-          <select class="custom-select" id="categorylist" name="categorylist">
-            <option value="vrPackages">VR</option>
-            <option value="legacyVrApps">GearVR/GO</option>
-            <option value="twoDPackages">2D</option>
-            <option value="sysutils">System Tools</option>
-          </select>
-        </div>
-        <br>
-        <div class="custom-control">
-          <p id="pnameenterlabel">Enter package name:</p>
-          <input class="custom-select" id="pnamelist" list="pnamedatalist"></input>
-          <datalist name="pnamedatalist" id="pnamedatalist">
-          </datalist>
-        </div>
-        <br>
-        <div class="custom-control">
-          <p>Enter app name:</p>
-          <input type="text" class="form-control" id="appname" placeholder="Example App"></input>
-        </div>
-        <br>
-        <div class="custom-control">
-          <p>Enter image filename: <br>(image must be placed in assets/app-icon/categoryNAME/image.png example: <code>assets/app-icon/vr/beatsaber.png</code>)</p>
-          <input type="text" class="form-control" id="appicon" placeholder="exampleapp.png"></input>
-        </div>
-        <br>
-        <input type="button" class="btn btn-primary btn-block" value="Add Application" onclick="addApplicationToLists()"></input>
+      <div class="custom-control">
+        <label for="categorylist">Select app category:</label>
+        <select class="custom-select" id="categorylist" name="categorylist">
+          <option value="vrPackages">VR</option>
+          <option value="legacyVrApps">GearVR/GO</option>
+          <option value="twoDPackages">2D</option>
+          <option value="sysutils">System Tools</option>
+        </select>
+      </div>
+      <br>
+      <div class="custom-control">
+        <p id="pnameenterlabel">Enter package name:</p>
+        <input class="custom-select" id="pnamelist" list="pnamedatalist"></input>
+        <datalist name="pnamedatalist" id="pnamedatalist">
+        </datalist>
+      </div>
+      <br>
+      <div class="custom-control">
+        <p>Enter app name:</p>
+        <input type="text" class="form-control" id="appname" placeholder="Example App"></input>
+      </div>
+      <br>
+      <div class="custom-control">
+        <p>Enter image filename: <br>(image must be placed in assets/app-icon/categoryNAME/image.png example: <code>assets/app-icon/vr/beatsaber.png</code>)</p>
+        <input type="text" class="form-control" id="appicon" placeholder="exampleapp.png"></input>
+      </div>
+      <br>
+      <input type="button" class="btn btn-primary btn-block" value="Add Application" onclick="addApplicationToLists()"></input>
+      <hr>
+      <h5>DANGER SECTION</h5>
+      <input type="button" class="btn btn-danger btn-block" id="startreset" value="Reset EVERYTHING" onclick="checkClearAll()"></input>
+      <div class="hidden" id="confirmdenyreset">
+        <input type="button" class="btn btn-success" value="Confirm Reset EVERYTHING" onclick="confirmClearAll()"></input>
+        <input type="button" class="btn btn-danger" value="Don't Reset EVERYTHING" onclick="dontClearAll()"></input>
+      </div>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
