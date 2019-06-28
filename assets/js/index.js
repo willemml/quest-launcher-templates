@@ -62,25 +62,25 @@ var fileinput = document.getElementById('textListInput')
 // quest home window width = 751
 
 function addApplicationToLists() {
-  if (document.getElementById('categorielist').value == 'vrPackages') {
+  if (document.getElementById('categorylist').value == 'vrPackages') {
     vrPackages.push(addPackageName.value)
     vrPackages.push(addPackageImage.value)
     vrPackages.push(addPackageTitle.value)
     localStorage.setItem('vrPackages', vrPackages)
   }
-  if (document.getElementById('categorielist').value == 'twoDPackages') {
+  if (document.getElementById('categorylist').value == 'twoDPackages') {
     twoDPackages.push(addPackageName.value)
     twoDPackages.push(addPackageImage.value)
     twoDPackages.push(addPackageTitle.value)
     localStorage.setItem('twoDPackages', twoDPackages)
   }
-  if (document.getElementById('categorielist').value == 'legacyVrApps') {
+  if (document.getElementById('categorylist').value == 'legacyVrApps') {
     legacyVrApps.push(addPackageName.value)
     legacyVrApps.push(addPackageImage.value)
     legacyVrApps.push(addPackageTitle.value)
     localStorage.setItem('legacyVrApps', legacyVrApps)
   }
-  if (document.getElementById('categorielist').value == 'sysutils') {
+  if (document.getElementById('categorylist').value == 'sysutils') {
     sysutils.push(addPackageName.value)
     sysutils.push(addPackageImage.value)
     sysutils.push(addPackageTitle.value)
