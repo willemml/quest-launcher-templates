@@ -37,14 +37,18 @@ packageListsHTML[4] = []
 packageAreas[4] = document.getElementById('unsorted')
 navbarButtons[4] = document.getElementById('unsortedbtn')
 
+// Settings area placeholder
+
+packageLists[5] = null
+packageListsHTML[5] = null
+packageAreas[5] = document.getElementById('settings')
+navbarButtons[5] = document.getElementById('settingsbtn')
+
 if ('packageLists' in localStorage) {
   packageLists = JSON.parse(localStorage.getItem('packageLists'))
 } else {
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
 }
-
-var settingsBtn = document.getElementById('settingsbtn')
-var settingsArea = document.getElementById('settings')
 
 var activeButtonClass = 'btn btn-secondary btnwidth'
 var hiddenAppAreaClass = 'hidden'
@@ -108,17 +112,15 @@ function clearUnsorted() {
 
 function checkEmptyTabs() {
   for (var i = 0; i < packageLists.length; i++) {
-    if (packageLists[i] == null || packageLists[i].length < 1 || packageLists[i] == undefined || packageLists[i] == '') {
-      navbarButtons[i].className = 'hidden'
+    if (i == 5) {
+      // do nothing
     } else {
-      navbarButtons[i].className = activeButtonClass
+      if (packageLists[i] == null || packageLists[i].length < 1 || packageLists[i] == undefined || packageLists[i] == '') {
+        navbarButtons[i].className = 'hidden'
+      } else {
+        navbarButtons[i].className = activeButtonClass
+      }
     }
-  }
-}
-
-function hideDiv(divs) {
-  for (var i = 0; i < divs.length; i++) {
-    divs[i].className = hiddenAppAreaClass
   }
 }
 
@@ -127,7 +129,7 @@ function packageListsToHTML() {
     packageListsHTML[i] = []
   }
   for (var u = 0; u < packageLists.length; u++) {
-    if (u == 4) {
+    if (u == 4 || u == 5) {
       // do nothing
     } else {
       for (var i = 0; i < packageLists[u].length; i++) {
@@ -160,48 +162,17 @@ function packageListsToHTML() {
 }
 packageListsToHTML()
 
-function showVr() {
-  packageAreas[0].className = visibleAppAreaClass
-  var deactareas = [packageAreas[3], settingsArea, packageAreas[1], packageAreas[2], packageAreas[4]]
-  hideDiv(deactareas)
-  checkEmptyTabs()
-}
-
-function showSettings() {
-  settingsArea.className = 'full-height'
-  var deactareas = [packageAreas[3], packageAreas[0], packageAreas[1], packageAreas[2], packageAreas[4]]
-  hideDiv(deactareas)
-  checkEmptyTabs()
-}
-
-function show2D() {
-  navbarButtons[2].className = activeButtonClass
-  packageAreas[2].className = visibleAppAreaClass
-  var deactbtn = [navbarButtons[3], settingsBtn, navbarButtons[1], navbarButtons[0], navbarButtons[4]]
-  var deactareas = [packageAreas[3], settingsArea, packageAreas[1], packageAreas[0], packageAreas[4]]
-  hideDiv(deactareas)
-  checkEmptyTabs()
-}
-
-function showLegVR() {
-  packageAreas[1].className = visibleAppAreaClass
-  var deactareas = [packageAreas[3], settingsArea, packageAreas[0], packageAreas[2], packageAreas[4]]
-  hideDiv(deactareas)
-  checkEmptyTabs()
-}
-
-function showsysutils() {
-  packageAreas[3].className = visibleAppAreaClass
-  var deactareas = [packageAreas[0], settingsArea, packageAreas[1], packageAreas[2], packageAreas[4]]
-  hideDiv(deactareas)
-  checkEmptyTabs()
-}
-
-function showUnsorted() {
-  packageAreas[4].className = 'full-height'
-  var deactareas = [packageAreas[3], settingsArea, packageAreas[1], packageAreas[2], packageAreas[0]]
-  hideDiv(deactareas)
-  checkEmptyTabs()
+function showArea(area) {
+  for (var i = 0; i < packageAreas.length; i++) {
+    if (i != area) {
+      packageAreas[i].className = 'hidden'
+    }
+  }
+  if (area == 4 || area == 5) {
+    packageAreas[area].className = 'full-height'
+  } else {
+    packageAreas[area].className = visibleAppAreaClass
+  }
 }
 
 checkEmptyTabs()
@@ -245,7 +216,7 @@ function exportHTML() {
   var scriptcallstring = '<script src="assets/js/index.js">'
   var customcssstring = '<link href="assets/css/style.css" rel="stylesheet">'
   var minscript = `
-  var settingsArea = document.getElementById('settings');
+  var packageAreas[5] = document.getElementById('settings');
   var navbarButtons[0] = document.getElementById('vrbtn');
   var packageAreas[0] = document.getElementById('vrapps');
   var navbarButtons[1] = document.getElementById('legvrbtn');
@@ -256,11 +227,11 @@ function exportHTML() {
   var packageAreas[3] = document.getElementById('packageLists[3]');
   var navbarButtons[4] = document.getElementById('navbarButtons[4]');
   var packageAreas[4] = document.getElementById('packageLists[4]');
-  settingsArea.className = 'hidden';
+  packageAreas[5].className = 'hidden';
   var activeButtonClass = 'btn btn-secondary btnwidth';
   var hiddenAppAreaClass = 'hidden';
   var visibleAppAreaClass = 'full-height text-center row flex-row';
-  document.getElementById('settingsbtn').className = 'hidden';
+  document.getElementById('navbarButtons[5]').className = 'hidden';
   ${showVr}
   ${show2D}
   ${showLegVR}
