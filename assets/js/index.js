@@ -277,8 +277,7 @@ function showUnsorted() {
   checkEmptyTabs()
 }
 
-function showTab() {
-}
+checkEmptyTabs()
 
 function htmlListsCreate() {
   vrAppArea.innerHTML = ''
