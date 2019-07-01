@@ -64,15 +64,15 @@ function addApplicationToLists() {
   packageLists[category].push(addPackageImage.value)
   packageLists[category].push(addPackageTitle.value)
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
-  addPackageName.value = ''
-  addPackageImage.value = ''
-  addPackageTitle.value = ''
   if (packageLists[4].indexOf(addPackageName.value) > parseInt('-1')) {
     packageLists[4].splice(packageLists[4].indexOf(addPackageName.value), 1)
   }
   packageListsToHTML()
   htmlListsCreate()
   checkEmptyTabs()
+  addPackageName.value = ''
+  addPackageImage.value = ''
+  addPackageTitle.value = ''
 }
 
 fileinput.addEventListener("change", function() {
