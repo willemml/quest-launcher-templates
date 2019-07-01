@@ -12,7 +12,7 @@
 <body>
   <h2 align="center">Recon-Quest</h2>
   <div class="text-center">
-    <div class="btn-group">
+    <div class="btn-group" id="menubuttons">
       <input type="button" id="vrbtn" class="btn btn-secondary btnwidth" value="VR" onclick="showVr()"></input>
       <input type="button" id="legvrbtn" class="btn btn-secondary btnwidth" value="GearVR/GO" onclick="showLegVR()"></input>
       <input type="button" id="2dbtn" class="btn btn-secondary btnwidth" value="2D" onclick="show2D()"></input>
@@ -47,10 +47,10 @@
       <div class="custom-control">
         <label for="categorylist">Select app category:</label>
         <select class="custom-select" id="categorylist" name="categorylist">
-          <option value="vrPackages">VR</option>
-          <option value="legacyVrApps">GearVR/GO</option>
-          <option value="twoDPackages">2D</option>
-          <option value="sysutils">System Tools</option>
+          <option value="0">VR</option>
+          <option value="1">GearVR/GO</option>
+          <option value="2">2D</option>
+          <option value="3">System Tools</option>
         </select>
       </div>
       <br>
@@ -67,7 +67,7 @@
       </div>
       <br>
       <div class="custom-control">
-        <p>Enter image filename: <br>(image must be placed in assets/app-icon/categoryNAME/image.png example: <code>assets/app-icon/vr/beatsaber.png</code>)</p>
+        <p>Enter image filename: <br>(image must be placed in assets/app-icon/image.png example: <code>assets/app-icon/beatsaber.png</code>)</p>
         <input type="text" class="form-control" id="appicon" placeholder="exampleapp.png"></input>
       </div>
       <br>
