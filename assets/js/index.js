@@ -1,24 +1,25 @@
 var packageLists = []
 var packageListsHTML = []
 var packageAreas = []
+var packageAreasNames = []
 var navbarButtons = []
 
 // VR Packages
 packageLists[0] = ['com.oculus.tv', 'oculus.png', 'Oculus TV']
 packageListsHTML[0] = []
-packageAreas[0] = document.getElementById('vrapps')
+packageAreasNames[0] = 'vrapps'
 navbarButtons[0] = document.getElementById('vrbtn')
 
 // Legacy VR Packages (Oculus GO / Gear VR)
 packageLists[1] = []
 packageListsHTML[1] = []
-packageAreas[1] = document.getElementById('legvrapps')
+packageAreasNames[1] = 'legvrapps'
 navbarButtons[1] = document.getElementById('legvrbtn')
 
 // 2D Packages
 packageLists[2] = ['net.dinglisch.android.taskerm', 'tasker.png', 'Tasker']
 packageListsHTML[2] = []
-packageAreas[2] = document.getElementById('2dapps')
+packageAreasNames[2] = '2dapps'
 navbarButtons[2] = document.getElementById('2dbtn')
 
 // System Utilities
@@ -28,31 +29,31 @@ packageLists[3] = ['de.eye_interactive.atvl.settings', 'com.android.settings.png
   'com.oculus.systemactivities', 'oculus.png', 'System Activities'
 ]
 packageListsHTML[3] = []
-packageAreas[3] = document.getElementById('sysutils')
+packageAreasNames[3] = 'sysutils'
 navbarButtons[3] = document.getElementById('sysutilsbtn')
 
 // Unosorted Packages
 packageLists[4] = []
 packageListsHTML[4] = []
-packageAreas[4] = document.getElementById('unsorted')
+packageAreasNames[4] = 'unsorted'
 navbarButtons[4] = document.getElementById('unsortedbtn')
 
 // Settings area placeholder
 
 packageLists[5] = null
 packageListsHTML[5] = null
-packageAreas[5] = document.getElementById('settings')
+packageAreasNames[5] = 'settings'
 navbarButtons[5] = document.getElementById('settingsbtn')
+
+for (var i = 0; i < packageAreasNames.length; i++) {
+  packageAreas[i] = document.getElementById(packageAreasNames[i])
+}
 
 if ('packageLists' in localStorage) {
   packageLists = JSON.parse(localStorage.getItem('packageLists'))
 } else {
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
 }
-
-var activeButtonClass = 'btn btn-secondary btnwidth'
-var hiddenAppAreaClass = 'hidden'
-var visibleAppAreaClass = 'full-height text-center row flex-row'
 
 var appOpenLinkStart = '<a class="btn btn-link" href="autotoolscommand://openapp=:='
 
@@ -118,7 +119,7 @@ function checkEmptyTabs() {
       if (packageLists[i] == null || packageLists[i].length < 1 || packageLists[i] == undefined || packageLists[i] == '') {
         navbarButtons[i].className = 'hidden'
       } else {
-        navbarButtons[i].className = activeButtonClass
+        navbarButtons[i].className = 'btn btn-secondary btnwidth'
       }
     }
   }
@@ -140,7 +141,7 @@ function packageListsToHTML() {
           var pNameSplit = packageLists[u][i].split('.')
           packageLists[u][i + 2] = pNameSplit[pNameSplit.length - 1]
         }
-        packageListsHTML[u].push(appOpenLinkStart + packageLists[u][i] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[u][i + 1] + '" /><p>' + packageLists[u][i + 2] + '</p></a>')
+        packageListsHTML[u].push(appOpenLinkStart + packageLists[u][i] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[u][i + 1] + '" /><p>' + packageLists[u][i + 2] + '</p></a>\n')
         i++
         i++
       }
@@ -153,11 +154,11 @@ function packageListsToHTML() {
     if (pNameSplit.length > 20) {
       var cut2start = pNameSplit.length - 8
       var pNameSplitShort = pNameSplit.substr(0, 8) + ' ... ' + pNameSplit.substr(cut2start, pNameSplit.length)
-      packageListsHTML[4][i] = '<li class="listwrap">' + appOpenLinkStart + packageLists[4][i] + '"><p>' + pNameSplitShort + '</p></a></li>'
+      packageListsHTML[4][i] = '<li class="listwrap">' + appOpenLinkStart + packageLists[4][i] + '"><p>' + pNameSplitShort + '</p></a></li>\n'
     } else {
-      packageListsHTML[4][i] = '<li class="listwrap">' + appOpenLinkStart + packageLists[4][i] + '"><p>' + pNameSplit + '</p></a></li>'
+      packageListsHTML[4][i] = '<li class="listwrap">' + appOpenLinkStart + packageLists[4][i] + '"><p>' + pNameSplit + '</p></a></li>\n'
     }
-    document.getElementById('pnamedatalist').innerHTML += '<option id="' + packageLists[4][i] + '" value="' + packageLists[4][i] + '">' + packageLists[4][i] + '</option>'
+    document.getElementById('pnamedatalist').innerHTML += '<option id="' + packageLists[4][i] + '" value="' + packageLists[4][i] + '">' + packageLists[4][i] + '</option>\n'
   }
 }
 packageListsToHTML()
@@ -171,17 +172,22 @@ function showArea(area) {
   if (area == 4 || area == 5) {
     packageAreas[area].className = 'full-height'
   } else {
-    packageAreas[area].className = visibleAppAreaClass
+    packageAreas[area].className = 'full-height text-center row flex-row'
   }
 }
+showArea(0)
 
 checkEmptyTabs()
 
 function htmlListsCreate() {
   for (var u = 0; u < packageLists.length; u++) {
-    packageAreas[u].innerHTML = ''
-    for (var i = 0; i < packageListsHTML[u].length; i++) {
-      packageAreas[u].innerHTML += packageListsHTML[u][i]
+    if (u == 5) {
+      // do nothing
+    } else {
+      packageAreas[u].innerHTML = ''
+      for (var i = 0; i < packageListsHTML[u].length; i++) {
+        packageAreas[u].innerHTML += packageListsHTML[u][i]
+      }
     }
   }
 }
@@ -193,12 +199,7 @@ function checkClearAll() {
 }
 
 function confirmClearAll() {
-  packageLists[0] = []
-  packageLists[1] = []
-  packageLists[2] = []
-  packageLists[3] = []
-  packageLists[4] = []
-  localStorage.clear()
+  localStorage.clear('packageLists')
   checkEmptyTabs()
   packageListsToHTML()
   htmlListsCreate()
@@ -216,28 +217,17 @@ function exportHTML() {
   var scriptcallstring = '<script src="assets/js/index.js">'
   var customcssstring = '<link href="assets/css/style.css" rel="stylesheet">'
   var minscript = `
-  var packageAreas[5] = document.getElementById('settings');
-  var navbarButtons[0] = document.getElementById('vrbtn');
-  var packageAreas[0] = document.getElementById('vrapps');
-  var navbarButtons[1] = document.getElementById('legvrbtn');
-  var packageAreas[1] = document.getElementById('legvrapps');
-  var navbarButtons[2] = document.getElementById('2dbtn');
-  var packageAreas[2] = document.getElementById('2dapps');
-  var navbarButtons[3] = document.getElementById('navbarButtons[3]');
-  var packageAreas[3] = document.getElementById('packageLists[3]');
-  var navbarButtons[4] = document.getElementById('navbarButtons[4]');
-  var packageAreas[4] = document.getElementById('packageLists[4]');
-  packageAreas[5].className = 'hidden';
-  var activeButtonClass = 'btn btn-secondary btnwidth';
-  var hiddenAppAreaClass = 'hidden';
-  var visibleAppAreaClass = 'full-height text-center row flex-row';
-  document.getElementById('navbarButtons[5]').className = 'hidden';
-  ${showVr}
-  ${show2D}
-  ${showLegVR}
-  ${showpackageLists[3]}
-  ${showpackageLists[4]}
+  var packageAreasNames = '${packageAreasNames}'
+  packageAreasNames = packageAreasNames.split(',')
+  var packageAreas = []
+  for (var i = 0; i < packageAreasNames.length; i++) {
+    packageAreas[i] = document.getElementById(packageAreasNames[i])
+  }
+  document.getElementById('menubuttons').removeChild(document.getElementById('settingsbtn'))
+  document.getElementById('body').removeChild(document.getElementById('settings'))
+  ${showArea}
   ${checkEmptyTabs}
+  showArea(0)
   `
   var htmlforexport = pagehtml.replace(scriptcallstring, '<script>' + minscript)
   document.getElementById('htmlexporttextarea').innerHTML = htmlforexport
