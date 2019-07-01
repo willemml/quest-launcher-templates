@@ -1,0 +1,9 @@
+{
+  "name": "quest-launcher-templates",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "git@github.com:wnuke/quest-launcher-templates.git",
+  "author": "willem",
+  "license": "MIT",
+  "dependencies": {}
+}

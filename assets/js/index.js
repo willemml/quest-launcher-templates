@@ -1,4 +1,4 @@
-var vrPackages = []
+var vrPackages = ['com.oculus.tv', 'oculus.png', 'Oculus TV']
 var vrPackagesHTML = []
 if ('vrPackages' in localStorage) {
   vrPackages = localStorage.getItem('vrPackages').split(',')
@@ -10,13 +10,18 @@ if ('legacyVrApps' in localStorage) {
   legacyVrApps = localStorage.getItem('legacyVrApps').split(',')
 }
 
-var twoDPackages = []
+var twoDPackages = ['net.dinglisch.android.taskerm', 'tasker.png', 'Tasker']
 var twoDPackagesHTML = []
 if ('twoDPackages' in localStorage) {
   twoDPackages = localStorage.getItem('twoDPackages').split(',')
 }
 
-var sysutils = []
+var sysutils = ['de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Settings',
+  'com.android.calendar', 'com.android.calendar.png', 'Calendar',
+  'com.android.deskclock', 'com.android.deskclock.png', 'Clock',
+  'com.oculus.systemactivities', 'oculus.png', 'System Activities'
+]
+localStorage.setItem('sysutils', sysutils)
 var sysutilsHTML = []
 if ('sysutils' in localStorage) {
   sysutils = localStorage.getItem('sysutils').split(',')
@@ -272,7 +277,8 @@ function showUnsorted() {
   checkEmptyTabs()
 }
 
-showVr()
+function showTab() {
+}
 
 function htmlListsCreate() {
   vrAppArea.innerHTML = ''
@@ -343,12 +349,12 @@ function exportHTML() {
   var hiddenAppAreaClass = 'hidden';
   var visibleAppAreaClass = 'full-height text-center row flex-row';
   document.getElementById('settingsbtn').className = 'hidden';
-  function showVr() { vrAppArea.className = visibleAppAreaClass; var deactareas = [sysutilsArea, legacyVrAppArea, twoDAppArea, unsortedArea]; hideDiv(deactareas); checkEmptyTabs(); };
-  function show2D() { twoDBtn.className = activeButtonClass; twoDAppArea.className = visibleAppAreaClass; var deactareas = [sysutilsArea, settingsArea, legacyVrAppArea, vrAppArea, unsortedArea]; hideDiv(deactareas); checkEmptyTabs(); };
-  function showLegVR() { legacyVrAppArea.className = visibleAppAreaClass; var deactareas = [sysutilsArea, settingsArea, vrAppArea, twoDAppArea, unsortedArea]; hideDiv(deactareas); checkEmptyTabs(); };
-  function showsysutils() { sysutilsArea.className = visibleAppAreaClass; var deactareas = [vrAppArea, settingsArea, legacyVrAppArea, twoDAppArea, unsortedArea]; hideDiv(deactareas); checkEmptyTabs(); };
-  function showUnsorted() { unsortedArea.className = 'full-height'; var deactareas = [sysutilsArea, settingsArea, legacyVrAppArea, twoDAppArea, vrAppArea]; hideDiv(deactareas); checkEmptyTabs(); };
-  function checkEmptyTabs() { if (vrPackages.length < 1 || vrPackages == undefined) { vrBtn.className = 'hidden'; } else { vrBtn.className = activeButtonClass; }; if (twoDPackages.length < 1 || twoDPackages == undefined) { twoDBtn.className = 'hidden'; } else { twoDBtn.className = activeButtonClass; }; if (sysutils.length < 1 || sysutils == undefined) { sysutilsBtn.className = 'hidden'; } else { sysutilsBtn.className = activeButtonClass; }; if (legacyVrApps.length < 1 || legacyVrApps == undefined) { legacyBtn.className = 'hidden'; } else { legacyBtn.className = activeButtonClass; }; if (unsorted == null || unsorted.length < 1 || unsorted == undefined || unsorted == '') { unsortedBtn.className = 'hidden'; } else { unsortedBtn.className = activeButtonClass; }; }; function hideDiv(divs) { for (var i = 0; i < divs.length; i++) { divs[i].className = hiddenAppAreaClass; }; }; showVr();
+  ${showVr}
+  ${show2D}
+  ${showLegVR}
+  ${showsysutils}
+  ${showUnsorted}
+  ${checkEmptyTabs}
   `
   var htmlforexport = pagehtml.replace(scriptcallstring, '<script>' + minscript)
   document.getElementById('htmlexporttextarea').innerHTML = htmlforexport
