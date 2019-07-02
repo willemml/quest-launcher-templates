@@ -125,6 +125,13 @@ function checkEmptyTabs() {
   }
 }
 
+function deletePackage(pnum, catnum) {
+  packageLists[catnum].splice(pnum, 3)
+  packageListsToHTML()
+  htmlListsCreate()
+  checkEmptyTabs()
+}
+
 function packageListsToHTML() {
   for (var i = 0; i < packageListsHTML.length; i++) {
     packageListsHTML[i] = []
@@ -141,7 +148,7 @@ function packageListsToHTML() {
           var pNameSplit = packageLists[u][i].split('.')
           packageLists[u][i + 2] = pNameSplit[pNameSplit.length - 1]
         }
-        packageListsHTML[u].push(appOpenLinkStart + packageLists[u][i] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[u][i + 1] + '" /><p>' + packageLists[u][i + 2] + '</p></a>\n')
+        packageListsHTML[u].push('<div style="position:relative;">' + appOpenLinkStart + packageLists[u][i] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[u][i + 1] + '" /><p>' + packageLists[u][i + 2] + '</p></a><input type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" onclick="deletePackage(' + i + ', ' + u + ')" value="&#10005;"></div>\n')
         i++
         i++
       }
