@@ -4,6 +4,8 @@ var packageAreas = []
 var packageAreasNames = []
 var navbarButtons = []
 
+// s.replace(/[^A-Za-z]/g
+
 // VR Packages
 packageLists[0] = ['com.oculus.tv', 'oculus.png', 'Oculus TV']
 packageListsHTML[0] = []
@@ -123,6 +125,7 @@ function checkEmptyTabs() {
       }
     }
   }
+  loadToArea()
 }
 
 function deletePackage(pnum, catnum) {
@@ -130,6 +133,7 @@ function deletePackage(pnum, catnum) {
   packageListsToHTML()
   htmlListsCreate()
   checkEmptyTabs()
+  loadToArea()
 }
 
 function packageListsToHTML() {
@@ -182,7 +186,15 @@ function showArea(area) {
     packageAreas[area].className = 'full-height text-center row flex-row'
   }
 }
-showArea(0)
+
+function loadToArea() {
+  for (var i = 0; i < packageLists.length; i++) {
+    if (packageLists[i] != 0) {
+      showArea(i)
+      break
+    }
+  }
+}
 
 checkEmptyTabs()
 
