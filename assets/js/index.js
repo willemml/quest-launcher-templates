@@ -99,6 +99,9 @@ var settingsHTML = `<div id="settings" class="hidden">
   <input id="clipbtn" type="button" class="btn btn-success btn-block hidden" value="Copy to clipboard" onclick="copyHTMLtoClipboard()">
   <textarea id="htmlexporttextarea" class="hidden"></textarea>
   <hr>
+  <h6 class="text-center">Reset system utilities apps to default:</h6><br>
+  <input type="button" class="btn btn-warning btn-block" value="Reset" onclick="readdSystemApps()">
+  <hr>
   <h5 class="text-center">RESET GENERATOR:</h5><br>
   <input type="button" class="btn btn-danger btn-block" id="startreset" value="RESET" onclick="checkClearAll()">
   <div class="hidden" id="confirmdenyreset">
@@ -149,6 +152,19 @@ function addApplicationToLists() {
   document.getElementById('pnamelist').value = ''
   document.getElementById('appname').value = ''
   document.getElementById('appicon').value = ''
+  location.reload()
+}
+
+function readdSystemApps() {
+  packageLists[0] = ['de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Settings',
+    'com.android.calendar', 'com.android.calendar.png', 'Calendar',
+    'com.android.deskclock', 'com.android.deskclock.png', 'Clock',
+    'com.oculus.systemactivities', 'oculus.png', 'System Activities',
+    'net.dinglisch.android.taskerm', 'tasker.png', 'Tasker'
+  ]
+  localStorage.setItem('packageLists', JSON.stringify(packageLists))
+  packageListsToHTML()
+  htmlListsCreate()
   location.reload()
 }
 
