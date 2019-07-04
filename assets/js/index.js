@@ -178,6 +178,7 @@ function clearUnsorted() {
   unsortedList = []
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
   document.getElementById('pnameenterlabel').innerHTML = 'Enter package name:'
+  location.reload()
 }
 
 function createCategory() {
@@ -282,6 +283,7 @@ function confirmClearAll() {
   htmlListsCreate()
   document.getElementById('startreset').className = 'btn btn-danger btn-block'
   document.getElementById('confirmdenyreset').className = 'hidden'
+  location.reload()
 }
 
 function dontClearAll() {
@@ -290,6 +292,7 @@ function dontClearAll() {
 }
 
 function exportHTML() {
+  var packageAreasNamesSimple
   for (var i = 0; i < packageAreasNames.length; i++) {
     packageAreasNamesSimple += packageAreasNames[i][0]
   }
