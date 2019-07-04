@@ -32,9 +32,9 @@ if ('packageLists' in localStorage) {
 }
 
 if ('packageListsHTML' in localStorage) {
-  packageLists = JSON.parse(localStorage.getItem('packageLists'))
+  packageListsHTML = JSON.parse(localStorage.getItem('packageListsHTML'))
 } else {
-  localStorage.setItem('packageLists', JSON.stringify(packageLists))
+  localStorage.setItem('packageListsHTML', JSON.stringify(packageListsHTML))
 }
 
 if ('packageAreasNames' in localStorage) {
@@ -66,10 +66,23 @@ var settingsHTML = `<div id="settings" class="hidden">
   <br>
   <input type="button" class="btn btn-primary btn-block" value="Create Category" onclick="createCategory()">
   <hr>
+  <h6 class="text-center">Delete a category:</h6>
+  <div class="custom-control">
+    <label for="categorylist">Select category to delete:</label>
+    <select class="custom-select categorylist" id="categorydellist" name="categorydellist">
+    </select>
+  </div>
+  <br>
+  <input type="button" class="btn btn-danger btn-block" id="deletecatbtn" value="Delete Category" onclick="deleteCategory()">
+  <div class="hidden" id="confirmdenycatdel">
+    <input type="button" class="btn btn-danger" value="Confirm" onclick="confirmCatDel()">
+    <input type="button" class="btn btn-success" value="Cancel" onclick="dontDelCat()">
+  </div>
+  <hr>
   <h6 class="text-center">Add an application to a list:</h6>
   <div class="custom-control">
     <label for="categorylist">Select app category:</label>
-    <select class="custom-select" id="categorylist" name="categorylist">
+    <select class="custom-select categorylist" id="categorylist" name="categorylist">
     </select>
   </div>
   <br>
@@ -116,18 +129,19 @@ function generateCategoriesHTML() {
   for (var i = 0; i < packageAreasNames.length; i++) {
     if (i == packageAreasNames.length - 1) {
       body.innerHTML += settingsHTML
-      buttons.innerHTML += '<input type="button" id="settingsbtn" class="btn btn-secondary btnwidth" value="Settings" onclick="showArea(' + i + ')">'
+      buttons.innerHTML += '<input type="button" id="settingsbtn" class="btn btn-secondary" value="Settings" onclick="showArea(' + i + ')">'
     } else {
-      body.innerHTML += '<div id="' + packageAreasNames[i][0] + '" class="hidden"></div>'
-      buttons.innerHTML += '<input type="button" id="' + packageAreasNames[i][0] + 'btn" class="btn btn-secondary btnwidth" value="' + packageAreasNames[i][1] + '" onclick="showArea(' + i + ')">'
+      body.innerHTML += '<div id="' + packageAreasNames[i][0] + '" class="hidden connectedSort"></div>'
+      buttons.innerHTML += '<input type="button" id="' + packageAreasNames[i][0] + 'btn" class="btn btn-secondary connectedSort" value="' + packageAreasNames[i][1] + '" onclick="showArea(' + i + ')">'
     }
   }
   for (var i = 0; i < packageAreasNames.length; i++) {
     packageAreas[i] = document.getElementById(packageAreasNames[i][0])
     navbarButtons[i] = document.getElementById(packageAreasNames[i][0] + 'btn')
   }
+  $('.categorylist').html('')
   for (var i = 0; i < packageAreasNames.length - 1; i++) {
-    document.getElementById('categorylist').innerHTML += '<option value="' + i + '">' + packageAreasNames[i][1] + '</option>'
+    $('.categorylist').append('<option value="' + i + '">' + packageAreasNames[i][1] + '</option>')
   }
   addPackageName = document.getElementById('pnamelist')
   addPackageTitle = document.getElementById('appname')
@@ -191,15 +205,30 @@ function addFileInputEvent() {
   })
 }
 
+function deleteCategory() {
+  category = $('#categorydellist').val()
+  packageLists.splice(category, 1)
+  packageListsHTML.splice(category, 1)
+  packageAreasNames.splice(category, 1)
+  localStorage.setItem('packageLists', JSON.stringify(packageLists))
+  localStorage.setItem('packageListsHTML', JSON.stringify(packageListsHTML))
+  localStorage.setItem('packageAreasNames', JSON.stringify(packageAreasNames))
+  generateCategoriesHTML()
+  packageListsToHTML()
+  htmlListsCreate()
+  location.reload()
+}
+
 function clearUnsorted() {
   unsortedList = []
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
-  document.getElementById('pnameenterlabel').innerHTML = 'Enter package name:'
+  $('#pnamedatalist').html('')
+  $('#pnameenterlabel').html('Enter package name:')
   location.reload()
 }
 
 function createCategory() {
-  catname = document.getElementById('newcatname').value
+  catname = $('#newcatname').val()
   if (catname != '') {
     packageAreasNames.splice(packageLists.length - 1, 0, [catname, catname])
     packageLists.splice(packageLists.length - 1, 0, [])
@@ -208,7 +237,7 @@ function createCategory() {
     localStorage.setItem('packageListsHTML', JSON.stringify(packageListsHTML))
     localStorage.setItem('packageLists', JSON.stringify(packageLists))
   }
-  document.getElementById('newcatname').value = ''
+  $('#newcatname').val('')
   generateCategoriesHTML()
   packageListsToHTML()
   htmlListsCreate()
@@ -239,15 +268,15 @@ function packageListsToHTML() {
           var pNameSplit = packageLists[u][i].split('.')
           packageLists[u][i + 2] = pNameSplit[pNameSplit.length - 1]
         }
-        packageListsHTML[u].push('<div style="position:relative;">' + appOpenLinkStart + packageLists[u][i] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[u][i + 1] + '" /><p>' + packageLists[u][i + 2] + '</p></a><input type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" onclick="deletePackage(' + i + ', ' + u + ')" value="&#10005;"></div>\n')
+        packageListsHTML[u].push('<div class="draggable ' + packageAreasNames[u][0] + '-slide' + '" style="position:relative;">' + appOpenLinkStart + packageLists[u][i] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[u][i + 1] + '" /><p>' + packageLists[u][i + 2] + '</p></a><input type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" onclick="deletePackage(' + i + ', ' + u + ')" value="&#10005;"></div>\n')
         i++
         i++
       }
     }
   }
-  document.getElementById('pnamedatalist').innerHTML = ''
+  $('#pnamedatalist').html('')
   for (var i = 0; i < unsortedList.length; i++) {
-    document.getElementById('pnamedatalist').innerHTML += '<option id="' + unsortedList[i] + '" value="' + unsortedList[i] + '">' + unsortedList[i] + '</option>\n'
+    $('#pnamedatalist').append('<option id="' + unsortedList[i] + '" value="' + unsortedList[i] + '">' + unsortedList[i] + '</option>\n')
   }
 }
 packageListsToHTML()
@@ -255,13 +284,13 @@ packageListsToHTML()
 function showArea(area) {
   for (var i = 0; i < packageAreas.length; i++) {
     if (i != area) {
-      packageAreas[i].className = 'hidden'
+      packageAreas[i].className = 'hidden list'
     }
   }
   if (area == packageAreasNames.length - 1) {
     packageAreas[area].className = 'full-height'
   } else {
-    packageAreas[area].className = 'full-height text-center row flex-row'
+    packageAreas[area].className = 'full-height text-center row flex-row list'
   }
 }
 
@@ -286,8 +315,8 @@ function htmlListsCreate() {
 htmlListsCreate()
 
 function checkClearAll() {
-  document.getElementById('startreset').className = 'hidden'
-  document.getElementById('confirmdenyreset').className = 'btn-group flex-row'
+  $('#startreset').css('hidden')
+  $('#confirmdenyreset').css('btn-group flex-row')
 }
 
 function confirmClearAll() {
@@ -297,14 +326,14 @@ function confirmClearAll() {
 
   packageListsToHTML()
   htmlListsCreate()
-  document.getElementById('startreset').className = 'btn btn-danger btn-block'
-  document.getElementById('confirmdenyreset').className = 'hidden'
+  $('#startreset').css('btn btn-danger btn-block')
+  $('#confirmdenyreset').css('hidden')
   location.reload()
 }
 
 function dontClearAll() {
-  document.getElementById('startreset').className = 'btn btn-danger btn-block'
-  document.getElementById('confirmdenyreset').className = 'hidden'
+  $('#startreset').css('btn btn-danger btn-block')
+  $('#confirmdenyreset').css('hidden')
 }
 
 function exportHTML() {
@@ -337,4 +366,13 @@ function copyHTMLtoClipboard() {
   var copyText = document.getElementById("htmlexporttextarea")
   copyText.select()
   document.execCommand("copy")
+}
+
+// begin jquery
+
+for (var i = 0; i < packageAreasNames.length; i++) {
+  $(function() {
+    $('.list').sortable()
+    $('.list').disableSelection();
+  });
 }

@@ -13,6 +13,10 @@ h2 {
   color: white;
 }
 
+.draggable {}
+
+.droppable {}
+
 .hidden {
   display: none;
 }
