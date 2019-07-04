@@ -3,6 +3,7 @@ var packageListsHTML = []
 var packageAreas = []
 var packageAreasNames = []
 var navbarButtons = []
+var unsortedList = []
 
 var addPackageName
 var addPackageTitle
@@ -19,16 +20,10 @@ packageLists[0] = ['de.eye_interactive.atvl.settings', 'com.android.settings.png
 packageListsHTML[0] = []
 packageAreasNames[0] = ['sysutils', 'System Tools']
 
-// Unosorted Packages
-packageLists[1] = []
-packageListsHTML[1] = []
-packageAreasNames[1] = ['unsorted', 'Unsorted']
-
 // Settings area placeholder
-
-packageLists[2] = null
-packageListsHTML[2] = null
-packageAreasNames[2] = ['settings', 'Settings']
+packageLists[1] = null
+packageListsHTML[1] = null
+packageAreasNames[1] = ['settings', 'Settings']
 
 if ('packageLists' in localStorage) {
   packageLists = JSON.parse(localStorage.getItem('packageLists'))
@@ -46,6 +41,10 @@ if ('packageAreasNames' in localStorage) {
   packageAreasNames = JSON.parse(localStorage.getItem('packageAreasNames'))
 } else {
   localStorage.setItem('packageAreasNames', JSON.stringify(packageAreasNames))
+}
+
+if ('unsortedList' in localStorage) {
+  unsortedList = JSON.parse(localStorage.getItem('unsortedList'))
 }
 
 var body = document.getElementById('body')
@@ -129,7 +128,7 @@ function generateCategoriesHTML() {
     packageAreas[i] = document.getElementById(packageAreasNames[i][0])
     navbarButtons[i] = document.getElementById(packageAreasNames[i][0] + 'btn')
   }
-  for (var i = 0; i < packageAreasNames.length - 2; i++) {
+  for (var i = 0; i < packageAreasNames.length - 1; i++) {
     document.getElementById('categorylist').innerHTML += '<option value="' + i + '">' + packageAreasNames[i][1] + '</option>'
   }
   addPackageName = document.getElementById('pnamelist')
@@ -146,12 +145,12 @@ function addApplicationToLists() {
   packageLists[category].push(addPackageImage.value)
   packageLists[category].push(addPackageTitle.value)
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
-  if (packageLists[packageLists.length - 2].indexOf(addPackageName.value) > parseInt('-1')) {
-    packageLists[packageLists.length - 2].splice(packageLists[packageLists.length - 2].indexOf(addPackageName.value), 1)
+  if (unsortedList.indexOf(addPackageName.value) > parseInt('-1')) {
+    unsortedList.splice(unsortedList.indexOf(addPackageName.value), 1)
+    localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
   }
   packageListsToHTML()
   htmlListsCreate()
-  checkEmptyTabs()
   addPackageName.value = ''
   addPackageImage.value = ''
   addPackageTitle.value = ''
@@ -164,17 +163,16 @@ function addFileInputEvent() {
       var reader = new FileReader()
       reader.addEventListener('load', function(e) {
         var textByLine = e.target.result.split("\n")
-        packageLists[packageLists.length - 2] = []
+        unsortedList = []
         for (var i = 0; i < textByLine.length; i++) {
           if (textByLine[i] != '') {
             var pNameSplit = textByLine[i].split('.')
-            packageLists[packageLists.length - 2][i] = textByLine[i]
+            unsortedList[i] = textByLine[i]
           }
         }
-        localStorage.setItem('packageLists', JSON.stringify(packageLists))
+        localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
         packageListsToHTML()
         htmlListsCreate()
-        checkEmptyTabs()
       })
       reader.readAsBinaryString(myFile)
     }
@@ -182,27 +180,9 @@ function addFileInputEvent() {
 }
 
 function clearUnsorted() {
-  packageLists[packageLists.length - 2] = []
-  packageListsHTML[packageListsHTML.length - 2] = []
-  packageAreas[4].innerHTML = ''
-  navbarButtons[4].className = 'hidden'
+  unsortedList = []
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
   document.getElementById('pnameenterlabel').innerHTML = 'Enter package name:'
-}
-
-function checkEmptyTabs() {
-  for (var i = 0; i < packageLists.length; i++) {
-    if (i == packageAreasNames.length - 1) {
-      // do nothing
-    } else {
-      if (packageLists[i] == null || packageLists[i].length < 1 || packageLists[i] == undefined || packageLists[i] == '') {
-        navbarButtons[i].className = 'hidden'
-      } else {
-        navbarButtons[i].className = 'btn btn-secondary btnwidth'
-      }
-    }
-  }
-  loadToArea()
 }
 
 function createCategory() {
@@ -218,16 +198,16 @@ function createCategory() {
     generateCategoriesHTML()
     packageListsToHTML()
     htmlListsCreate()
-    checkEmptyTabs()
+
   }
 }
 
 function deletePackage(pnum, catnum) {
   packageLists[catnum].splice(pnum, 3)
+  localStorage.setItem('packageLists', JSON.stringify(packageLists))
   packageListsToHTML()
   htmlListsCreate()
-  checkEmptyTabs()
-  loadToArea()
+
 }
 
 function packageListsToHTML() {
@@ -235,7 +215,7 @@ function packageListsToHTML() {
     packageListsHTML[i] = []
   }
   for (var u = 0; u < packageLists.length; u++) {
-    if (u == packageAreasNames.length - 2 || u == packageAreasNames.length - 1) {
+    if (u == packageAreasNames.length - 1) {
       // do nothing
     } else {
       for (var i = 0; i < packageLists[u].length; i++) {
@@ -253,17 +233,8 @@ function packageListsToHTML() {
     }
   }
   document.getElementById('pnamedatalist').innerHTML = ''
-  for (var i = 0; i < packageLists[packageLists.length - 2].length; i++) {
-    var pNameSplit = packageLists[packageLists.length - 2][i].split('.')
-    pNameSplit = pNameSplit[pNameSplit.length - 1]
-    if (pNameSplit.length > 20) {
-      var cut2start = pNameSplit.length - 8
-      var pNameSplitShort = pNameSplit.substr(0, 8) + ' ... ' + pNameSplit.substr(cut2start, pNameSplit.length)
-      packageListsHTML[packageListsHTML.length - 2][i] = '<li class="listwrap">' + appOpenLinkStart + packageLists[packageLists.length - 2][i] + '"><p>' + pNameSplitShort + '</p></a></li>\n'
-    } else {
-      packageListsHTML[packageListsHTML.length - 2][i] = '<li class="listwrap">' + appOpenLinkStart + packageLists[packageLists.length - 2][i] + '"><p>' + pNameSplit + '</p></a></li>\n'
-    }
-    document.getElementById('pnamedatalist').innerHTML += '<option id="' + packageLists[packageLists.length - 2][i] + '" value="' + packageLists[packageLists.length - 2][i] + '">' + packageLists[packageLists.length - 2][i] + '</option>\n'
+  for (var i = 0; i < unsortedList.length; i++) {
+    document.getElementById('pnamedatalist').innerHTML += '<option id="' + unsortedList[i] + '" value="' + unsortedList[i] + '">' + unsortedList[i] + '</option>\n'
   }
 }
 packageListsToHTML()
@@ -274,23 +245,20 @@ function showArea(area) {
       packageAreas[i].className = 'hidden'
     }
   }
-  if (area == packageAreasNames.length - 2 || area == packageAreasNames.length - 1) {
+  if (area == packageAreasNames.length - 1) {
     packageAreas[area].className = 'full-height'
   } else {
     packageAreas[area].className = 'full-height text-center row flex-row'
   }
 }
 
-function loadToArea() {
-  for (var i = 0; i < packageLists.length; i++) {
-    if (packageLists[i] != 0) {
-      showArea(i)
-      break
-    }
-  }
+if (packageAreasNames.length > 2) {
+  showArea(1)
+} else {
+  showArea(0)
 }
 
-checkEmptyTabs()
+
 
 function htmlListsCreate() {
   for (var u = 0; u < packageLists.length; u++) {
@@ -314,7 +282,8 @@ function checkClearAll() {
 function confirmClearAll() {
   localStorage.clear('packageLists')
   localStorage.clear('packageAreasNames')
-  checkEmptyTabs()
+  localStorage.clear('packageListsHTML')
+
   packageListsToHTML()
   htmlListsCreate()
   document.getElementById('startreset').className = 'btn btn-danger btn-block'
@@ -340,7 +309,6 @@ function exportHTML() {
   document.getElementById('menubuttons').removeChild(document.getElementById('settingsbtn'))
   document.getElementById('body').removeChild(document.getElementById('settings'))
   ${showArea}
-  ${checkEmptyTabs}
   showArea(0)
   `
   var htmlforexport = pagehtml.replace(scriptcallstring, '<script>' + minscript)
