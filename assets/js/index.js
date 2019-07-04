@@ -4,42 +4,31 @@ var packageAreas = []
 var packageAreasNames = []
 var navbarButtons = []
 
-// s.replace(/[^A-Za-z]/g
-
-// VR Packages
-packageLists[0] = ['com.oculus.tv', 'oculus.png', 'Oculus TV']
-packageListsHTML[0] = []
-packageAreasNames[0] = ['vrapps', 'VR']
-
-// Legacy VR Packages (Oculus GO / Gear VR)
-packageLists[1] = []
-packageListsHTML[1] = []
-packageAreasNames[1] = ['legvrapps', 'GearVR/GO']
-
-// 2D Packages
-packageLists[2] = ['net.dinglisch.android.taskerm', 'tasker.png', 'Tasker']
-packageListsHTML[2] = []
-packageAreasNames[2] = ['2dapps', '2D']
+var addPackageName
+var addPackageTitle
+var addPackageImage
+var fileinput
 
 // System Utilities
-packageLists[3] = ['de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Settings',
+packageLists[0] = ['de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Settings',
   'com.android.calendar', 'com.android.calendar.png', 'Calendar',
   'com.android.deskclock', 'com.android.deskclock.png', 'Clock',
-  'com.oculus.systemactivities', 'oculus.png', 'System Activities'
+  'com.oculus.systemactivities', 'oculus.png', 'System Activities',
+  'net.dinglisch.android.taskerm', 'tasker.png', 'Tasker'
 ]
-packageListsHTML[3] = []
-packageAreasNames[3] = ['sysutils', 'System Tools']
+packageListsHTML[0] = []
+packageAreasNames[0] = ['sysutils', 'System Tools']
 
 // Unosorted Packages
-packageLists[4] = []
-packageListsHTML[4] = []
-packageAreasNames[4] = ['unsorted', 'Unsorted']
+packageLists[1] = []
+packageListsHTML[1] = []
+packageAreasNames[1] = ['unsorted', 'Unsorted']
 
 // Settings area placeholder
 
-packageLists[5] = null
-packageListsHTML[5] = null
-packageAreasNames[5] = ['settings', 'Settings']
+packageLists[2] = null
+packageListsHTML[2] = null
+packageAreasNames[2] = ['settings', 'Settings']
 
 if ('packageLists' in localStorage) {
   packageLists = JSON.parse(localStorage.getItem('packageLists'))
@@ -143,14 +132,13 @@ function generateCategoriesHTML() {
   for (var i = 0; i < packageAreasNames.length - 2; i++) {
     document.getElementById('categorylist').innerHTML += '<option value="' + i + '">' + packageAreasNames[i][1] + '</option>'
   }
+  addPackageName = document.getElementById('pnamelist')
+  addPackageTitle = document.getElementById('appname')
+  addPackageImage = document.getElementById('appicon')
+  fileinput = document.getElementById('textListInput')
+  addFileInputEvent()
 }
 generateCategoriesHTML()
-
-var addPackageName = document.getElementById('pnamelist')
-var addPackageTitle = document.getElementById('appname')
-var addPackageImage = document.getElementById('appicon')
-
-var fileinput = document.getElementById('textListInput')
 
 function addApplicationToLists() {
   category = document.getElementById('categorylist').value
@@ -169,31 +157,29 @@ function addApplicationToLists() {
   addPackageTitle.value = ''
 }
 
-function getUnsortedPos() {
-  return packageLists.length - 2
-}
-
-fileinput.addEventListener("change", function() {
-  if (this.files && this.files[0]) {
-    var myFile = this.files[0]
-    var reader = new FileReader()
-    reader.addEventListener('load', function(e) {
-      var textByLine = e.target.result.split("\n")
-      packageLists[packageLists.length - 2] = []
-      for (var i = 0; i < textByLine.length; i++) {
-        if (textByLine[i] != '') {
-          var pNameSplit = textByLine[i].split('.')
-          packageLists[packageLists.length - 2][i] = textByLine[i]
+function addFileInputEvent() {
+  fileinput.addEventListener("change", function() {
+    if (this.files && this.files[0]) {
+      var myFile = this.files[0]
+      var reader = new FileReader()
+      reader.addEventListener('load', function(e) {
+        var textByLine = e.target.result.split("\n")
+        packageLists[packageLists.length - 2] = []
+        for (var i = 0; i < textByLine.length; i++) {
+          if (textByLine[i] != '') {
+            var pNameSplit = textByLine[i].split('.')
+            packageLists[packageLists.length - 2][i] = textByLine[i]
+          }
         }
-      }
-      localStorage.setItem('packageLists', JSON.stringify(packageLists))
-      packageListsToHTML()
-      htmlListsCreate()
-      checkEmptyTabs()
-    })
-    reader.readAsBinaryString(myFile)
-  }
-})
+        localStorage.setItem('packageLists', JSON.stringify(packageLists))
+        packageListsToHTML()
+        htmlListsCreate()
+        checkEmptyTabs()
+      })
+      reader.readAsBinaryString(myFile)
+    }
+  })
+}
 
 function clearUnsorted() {
   packageLists[packageLists.length - 2] = []
@@ -223,9 +209,9 @@ function createCategory() {
   catid = document.getElementById('newcatid').value
   catname = document.getElementById('newcatname').value
   if (catid != '' && catname != '') {
-    packageAreasNames.splice(packageAreasNames.length - 2, 0, [catid, catname])
-    packageLists.splice(packageLists.length - 2, 0, [])
-    packageListsHTML.splice(packageLists.length - 2, 0, [])
+    packageAreasNames.splice(packageAreasNames.length - 3, 0, [catid, catname])
+    packageLists.splice(packageLists.length - 3, 0, [])
+    packageListsHTML.splice(packageLists.length - 3, 0, [])
     localStorage.setItem('packageAreasNames', JSON.stringify(packageAreasNames))
     localStorage.setItem('packageListsHTML', JSON.stringify(packageListsHTML))
     localStorage.setItem('packageLists', JSON.stringify(packageLists))
