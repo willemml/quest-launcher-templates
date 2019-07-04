@@ -315,8 +315,8 @@ function htmlListsCreate() {
 htmlListsCreate()
 
 function checkClearAll() {
-  $('#startreset').css('hidden')
-  $('#confirmdenyreset').css('btn-group flex-row')
+  $('#startreset').toggleClass('hidden')
+  $('#confirmdenyreset').toggleClass('btn-group flex-row')
 }
 
 function confirmClearAll() {
@@ -326,14 +326,14 @@ function confirmClearAll() {
 
   packageListsToHTML()
   htmlListsCreate()
-  $('#startreset').css('btn btn-danger btn-block')
-  $('#confirmdenyreset').css('hidden')
+  $('#startreset').toggleClass('hidden')
+  $('#confirmdenyreset').toggleClass('hidden')
   location.reload()
 }
 
 function dontClearAll() {
-  $('#startreset').css('btn btn-danger btn-block')
-  $('#confirmdenyreset').css('hidden')
+  $('#startreset').toggleClass('hidden')
+  $('#confirmdenyreset').toggleClass('hidden')
 }
 
 function exportHTML() {
