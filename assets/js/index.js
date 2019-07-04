@@ -292,9 +292,9 @@ function dontClearAll() {
 }
 
 function exportHTML() {
-  var packageAreasNamesSimple
+  var packageAreasNamesSimple = []
   for (var i = 0; i < packageAreasNames.length; i++) {
-    packageAreasNamesSimple += packageAreasNames[i][0]
+    packageAreasNamesSimple[i] = packageAreasNames[i][0]
   }
   var pagehtml = '<!DOCTYPE HTML>' + '\n' + document.documentElement.outerHTML
   var scriptcallstring = '<script src="assets/js/index.js">'
