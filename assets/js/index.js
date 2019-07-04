@@ -323,17 +323,14 @@ function confirmClearAll() {
   localStorage.clear('packageLists')
   localStorage.clear('packageAreasNames')
   localStorage.clear('packageListsHTML')
-
   packageListsToHTML()
   htmlListsCreate()
-  $('#startreset').toggleClass('hidden')
-  $('#confirmdenyreset').toggleClass('hidden')
   location.reload()
 }
 
 function dontClearAll() {
   $('#startreset').toggleClass('hidden')
-  $('#confirmdenyreset').toggleClass('hidden')
+  $('#confirmdenyreset').toggleClass('btn-group flex-row')
 }
 
 function exportHTML() {
