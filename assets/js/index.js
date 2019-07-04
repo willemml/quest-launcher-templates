@@ -146,9 +146,10 @@ function addApplicationToLists() {
   }
   packageListsToHTML()
   htmlListsCreate()
-  addPackageName.value = ''
-  addPackageImage.value = ''
-  addPackageTitle.value = ''
+  document.getElementById('pnamelist').value = ''
+  document.getElementById('appname').value = ''
+  document.getElementById('appicon').value = ''
+  location.reload()
 }
 
 function addFileInputEvent() {
@@ -184,17 +185,18 @@ function clearUnsorted() {
 function createCategory() {
   catname = document.getElementById('newcatname').value
   if (catname != '') {
-    packageAreasNames.splice(packageAreasNames.length - 3, 0, [catname, catname])
-    packageLists.splice(packageLists.length - 3, 0, [])
-    packageListsHTML.splice(packageLists.length - 3, 0, [])
+    packageAreasNames.splice(packageLists.length - 1, 0, [catname, catname])
+    packageLists.splice(packageLists.length - 1, 0, [])
+    packageListsHTML.splice(packageLists.length - 1, 0, [])
     localStorage.setItem('packageAreasNames', JSON.stringify(packageAreasNames))
     localStorage.setItem('packageListsHTML', JSON.stringify(packageListsHTML))
     localStorage.setItem('packageLists', JSON.stringify(packageLists))
-    generateCategoriesHTML()
-    packageListsToHTML()
-    htmlListsCreate()
-
   }
+  document.getElementById('newcatname').value = ''
+  generateCategoriesHTML()
+  packageListsToHTML()
+  htmlListsCreate()
+  location.reload()
 }
 
 function deletePackage(pnum, catnum) {
@@ -247,11 +249,7 @@ function showArea(area) {
   }
 }
 
-if (packageAreasNames.length > 2) {
-  showArea(1)
-} else {
-  showArea(0)
-}
+showArea(packageAreas.length - 1)
 
 
 
@@ -261,8 +259,10 @@ function htmlListsCreate() {
       // do nothing
     } else {
       packageAreas[u].innerHTML = ''
-      for (var i = 0; i < packageListsHTML[u].length; i++) {
-        packageAreas[u].innerHTML += packageListsHTML[u][i]
+      if (packageListsHTML[u] != undefined) {
+        for (var i = 0; i < packageListsHTML[u].length; i++) {
+          packageAreas[u].innerHTML += packageListsHTML[u][i]
+        }
       }
     }
   }
