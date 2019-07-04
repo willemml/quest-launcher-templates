@@ -58,6 +58,14 @@ var settingsHTML = `<div id="settings" class="hidden">
   </label>
   <input type="button" class="btn btn-danger btn-block" value="Clear unsorted packages" onclick="clearUnsorted()">
   <hr>
+  <h6 class="text-center">Add a new category:</h6>
+  <div class="custom-control">
+    <p>Enter category name:</p>
+    <input type="text" class="form-control" id="newcatname" placeholder="Example Category">
+  </div>
+  <br>
+  <input type="button" class="btn btn-primary btn-block" value="Create Category" onclick="createCategory()">
+  <hr>
   <h6 class="text-center">Add an application to a list:</h6>
   <div class="custom-control">
     <label for="categorylist">Select app category:</label>
@@ -83,19 +91,6 @@ var settingsHTML = `<div id="settings" class="hidden">
   </div>
   <br>
   <input type="button" class="btn btn-primary btn-block" value="Add Application" onclick="addApplicationToLists()">
-  <hr>
-  <h6 class="text-center">Add a new category:</h6>
-  <div class="custom-control">
-    <p>Enter category id:</p>
-    <input type="text" class="form-control" id="newcatid" pattern="![^a-zA-Z0-9]" placeholder="examplecat">
-  </div>
-  <br>
-  <div class="custom-control">
-    <p>Enter category name:</p>
-    <input type="text" class="form-control" id="newcatname" placeholder="Example Category">
-  </div>
-  <br>
-  <input type="button" class="btn btn-primary btn-block" value="Create Category" onclick="createCategory()">
   <hr>
   <h6 class="text-center">Export for copy to oculus quest:</h6>
   <br>
@@ -186,10 +181,9 @@ function clearUnsorted() {
 }
 
 function createCategory() {
-  catid = document.getElementById('newcatid').value
   catname = document.getElementById('newcatname').value
-  if (catid != '' && catname != '') {
-    packageAreasNames.splice(packageAreasNames.length - 3, 0, [catid, catname])
+  if (catname != '') {
+    packageAreasNames.splice(packageAreasNames.length - 3, 0, [catname, catname])
     packageLists.splice(packageLists.length - 3, 0, [])
     packageListsHTML.splice(packageLists.length - 3, 0, [])
     localStorage.setItem('packageAreasNames', JSON.stringify(packageAreasNames))
@@ -296,11 +290,14 @@ function dontClearAll() {
 }
 
 function exportHTML() {
+  for (var i = 0; i < packageAreasNames.length; i++) {
+    packageAreasNamesSimple += packageAreasNames[i][0]
+  }
   var pagehtml = '<!DOCTYPE HTML>' + '\n' + document.documentElement.outerHTML
   var scriptcallstring = '<script src="assets/js/index.js">'
   var customcssstring = '<link href="assets/css/style.css" rel="stylesheet">'
   var minscript = `
-  var packageAreasNames = '${packageAreasNames}'
+  var packageAreasNames = '${packageAreasNamesSimple}'
   packageAreasNames = packageAreasNames.split(',')
   var packageAreas = []
   for (var i = 0; i < packageAreasNames.length; i++) {
