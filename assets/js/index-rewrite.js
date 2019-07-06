@@ -42,12 +42,19 @@ function generateCategoriesHTML() {
       value: categories[i][1],
       type: 'button'
     }).appendTo('#buttondiv')
+    $('<input/>', {
+      id: categories[i][0] + 'delbtn',
+      'class': 'btn btn-link delbtn',
+      value: 'X',
+      type: 'button'
+    }).appendTo('#buttondiv')
     $('<div/>', {
       id: categories[i][0],
       'class': 'full-height text-center row flex-row catdivs'
     }).appendTo('#categoriesdiv')
     var currentdiv = '#' + categories[i][0]
     var currentbtn = '#' + categories[i][0] + 'btn'
+    var currentdelbtn = '#' + categories[i][0] + 'delbtn'
     $(currentbtn).click(function() {
       var thisdiv = $(this).val().replace(/\s/g, '')
       for (var u = 0; u < categories.length; u++) {
@@ -55,6 +62,26 @@ function generateCategoriesHTML() {
         $(otherdiv).hide()
       }
       $('#' + thisdiv).show()
+    })
+    $(currentdelbtn).click(function() {
+      var thisdiv = $(this).attr('id').replace('delbtn', '')
+      var thisbtn = $(this).attr('id').replace('delbtn', 'btn')
+      function getThisCat() {
+        for (var i = 0; i < categories.length; i++) {
+          if (categories[i][0] === thisdiv) {
+            return i;
+          }
+        }
+      }
+      var thiscatnum = getThisCat()
+        var thisdelbtn = $(this).attr('id')
+      $('#' + thisdiv).remove()
+      $('#' + thisbtn).remove()
+      $('#' + thisdelbtn).remove()
+      categories.splice(thiscatnum, 1)
+      packageLists.splice(thiscatnum, 1)
+      localStorage.setItem('packageLists', JSON.stringify(packageLists))
+      localStorage.setItem('categories', JSON.stringify(categories))
     })
   }
 }
