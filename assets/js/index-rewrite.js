@@ -23,14 +23,14 @@ function createPageBase() {
   $('<div/>', {
     id: 'buttondivcontainer',
     "class": 'text-center',
-  }).appendTo('#body');
+  }).appendTo('#body')
   $('<div/>', {
     id: 'buttondiv',
     "class": 'btn-group',
-  }).appendTo('#buttondivcontainer');
+  }).appendTo('#buttondivcontainer')
   $('<div/>', {
     id: 'categoriesdiv'
-  }).appendTo('#body');
+  }).appendTo('#body')
 }
 createPageBase()
 
@@ -41,13 +41,20 @@ function generateCategoriesHTML() {
       'class': 'btn btn-secondary',
       value: categories[i][1],
       type: 'button'
-    }).appendTo('#buttondiv');
+    }).appendTo('#buttondiv')
     $('<div/>', {
       id: categories[i][0],
       'class': 'full-height text-center row flex-row catdivs'
-    }).appendTo('#categoriesdiv');
-    $('#' + categories[i][0] + 'btn').click(function() {
-      $('#' + categories[i][0]).toggle();
+    }).appendTo('#categoriesdiv')
+    var currentdiv = '#' + categories[i][0]
+    var currentbtn = '#' + categories[i][0] + 'btn'
+    $(currentbtn).click(function() {
+      var thisdiv = $(this).val().replace(/\s/g, '')
+      for (var u = 0; u < categories.length; u++) {
+        var otherdiv = '#' + categories[u][0]
+        $(otherdiv).hide()
+      }
+      $('#' + thisdiv).show()
     })
   }
 }
