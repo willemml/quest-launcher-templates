@@ -2,23 +2,21 @@ var packageLists = []
 var unsortedList = []
 var categories = []
 
-/*if ('packageLists' in localStorage) {
+if ('packageLists' in localStorage) {
   packageLists = JSON.parse(localStorage.getItem('packageLists'))
 } else {
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
 }
-
 if ('categories' in localStorage) {
-  packageLists = JSON.parse(localStorage.getItem('packageLists'))
+  categories = JSON.parse(localStorage.getItem('categories'))
 } else {
-  localStorage.setItem('packageLists', JSON.stringify(categories))
+  localStorage.setItem('categories', JSON.stringify(categories))
 }
-
 if ('unsortedList' in localStorage) {
   unsortedList = JSON.parse(localStorage.getItem('unsortedList'))
 } else {
   localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
-}*/
+}
 
 function createPageBase() {
   $('#body').append('<h2 align="center">Recon-Quest</h2>')
@@ -34,66 +32,57 @@ function createPageBase() {
     id: 'categoriesdiv'
   }).appendTo('#body');
 }
+createPageBase()
 
 function generateCategoriesHTML() {
-  for (var i = 0; i < categories.length; ++i) {
+  for (var i = 0; i < categories.length; i++) {
     $('<input/>', {
-      id: categories[i] + 'btn',
+      id: categories[i][0] + 'btn',
       'class': 'btn btn-secondary',
-      value: categories[i],
+      value: categories[i][1],
       type: 'button'
     }).appendTo('#buttondiv');
     $('<div/>', {
-      id: categories[i],
+      id: categories[i][0],
       'class': 'full-height text-center row flex-row catdivs'
     }).appendTo('#categoriesdiv');
-    $('#' + categories[i] + 'btn').click(function() {
-      $('#' + categories[i]).toggle();
+    $('#' + categories[i][0] + 'btn').click(function() {
+      $('#' + categories[i][0]).toggle();
     })
   }
 }
 
-function createCategory(catname) {
-  if (categories.indexOf(catname) == parseInt('-1')) {
-    categories.push(catname)
-    packageLists.push([])
-    generateCategoriesHTML()
-  }
+function createCategory(catname, addtoarray) {
+  catid = catname.replace(/\s/g, '')
+  categories.push([catid, catname])
+  packageLists.push([])
+  localStorage.setItem('packageLists', JSON.stringify(packageLists))
+  localStorage.setItem('categories', JSON.stringify(categories))
+  generateCategoriesHTML()
+}
+var done = 0
+if (categories.length == 0) {
+  createCategory('System Utilities')
+} else {
+  generateCategoriesHTML()
 }
 
-function packageListsHTML() {
-  if (packageLists.length != 0) {
-    for (var i = 0; i < packageLists.length; ++i) {
-      $('#' + categories[i]).html('')
-      if (packageLists[i] != null && packageLists[i] != undefined) {
-        for (var u = 0; u < packageLists[i].length; ++u) {
-          var pname = packageLists[i][u][0]
-          var pimg = packageLists[i][u][1]
-          var aname = packageLists[i][u][2]
-          var divid = pname.split('.')[1]
-          $('#' + categories[i]).append('<div id="' + divid + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + pname + '"><img style="width:150px" src="assets/app-icons/' + pimg + '" /><p>' + aname + '</p></a><input onclick="deletePackage(' + i + ', ' + u + ')" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
-        }
-      }
+function generatePackagesHTML() {
+  for (var i = 0; i < packageLists.length; i++) {
+    for (var u = 0; u < packageLists[i].length; u++) {
+      var catarraynum = '#' + categories[i][0]
+      $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[i][u][1] + '" /><p>' + packageLists[i][u][2] + '</p></a><input onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove()" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
     }
   }
 }
+generatePackagesHTML()
 
 function addPackage(packagename, imagefilename, appname, category) {
   packageLists[category].push([packagename, imagefilename, appname])
-  //localStorage.setItem('packageLists', JSON.stringify(packageLists))
-  packageListsHTML()
-}
-
-function deletePackage(catnum, pnum) {
-  var divid = '#' + packageLists[catnum][pnum][0].split('.')[1]
-  packageLists[catnum].splice(pnum, 1)
-  //localStorage.setItem('packageLists', JSON.stringify(packageLists))
-  $(divid).remove()
-}
-createPageBase()
-
-if (categories.length == 0) {
-  createCategory('System Utilities')
+  var catarraynum = '#' + categories[category][0]
+  $(catarraynum).append('<div id="' + packagename.replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packagename + '"><img style="width:150px" src="assets/app-icons/' + imagefilename + '" /><p>' + appname + '</p></a><input onclick="$(\'#' + packagename.replace(/\./g, '') + '\').remove()" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
+  localStorage.clear('packageLists')
+  localStorage.setItem('packageLists', JSON.stringify(packageLists))
 }
 
 if (packageLists.length == 1 && packageLists[0].length == 0) {
