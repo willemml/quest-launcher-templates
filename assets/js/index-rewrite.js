@@ -78,7 +78,7 @@ function generatePackagesHTML() {
   for (var i = 0; i < packageLists.length; i++) {
     for (var u = 0; u < packageLists[i].length; u++) {
       var catarraynum = '#' + categories[i][0]
-      $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[i][u][1] + '" /><p>' + packageLists[i][u][2] + '</p></a><input onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove()" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
+      $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[i][u][1] + '" /><p>' + packageLists[i][u][2] + '</p></a><input onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
     }
   }
 }
