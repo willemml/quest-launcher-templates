@@ -44,7 +44,7 @@ function generateCategoriesHTML() {
     }).appendTo('#buttondiv')
     $('<input/>', {
       id: categories[i][0] + 'delbtn',
-      'class': 'btn btn-link delbtn',
+      'class': 'btn btn-dark',
       value: 'X',
       type: 'button'
     }).appendTo('#buttondiv')
@@ -56,7 +56,7 @@ function generateCategoriesHTML() {
     var currentbtn = '#' + categories[i][0] + 'btn'
     var currentdelbtn = '#' + categories[i][0] + 'delbtn'
     $(currentbtn).click(function() {
-      var thisdiv = $(this).val().replace(/\s/g, '')
+      var thisdiv = $(this).val().replace(/\s/g, '').replace(/\W/g, '')
       for (var u = 0; u < categories.length; u++) {
         var otherdiv = '#' + categories[u][0]
         $(otherdiv).hide()
@@ -87,12 +87,12 @@ function generateCategoriesHTML() {
 }
 
 function createCategory(catname, addtoarray) {
-  catid = catname.replace(/\s/g, '')
+  catid = catname.replace(/\s/g, '').replace(/\W/g, '')
   categories.push([catid, catname])
   packageLists.push([])
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
   localStorage.setItem('categories', JSON.stringify(categories))
-  generateCategoriesHTML()
+  location.reload()
 }
 var done = 0
 if (categories.length == 0) {
