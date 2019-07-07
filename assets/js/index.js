@@ -59,11 +59,6 @@ function generateCategoriesHTML() {
     var currentdiv = '#' + categories[i][0]
     var currentbtn = '#' + categories[i][0] + 'btn'
     var currentdelbtn = '#' + categories[i][0] + 'delbtn'
-    /*$(currentbtn).click(function() {
-      var thisdiv = $(this).val().replace(/\s/g, '').replace(/\W/g, '')
-      $('.areadivs').hide()
-      $('#' + thisdiv).show()
-    })*/
     $(currentdelbtn).click(function() {
       var thisdiv = $(this).attr('id').replace('delbtn', '')
       var thisbtn = $(this).attr('id').replace('delbtn', 'btn')
@@ -165,7 +160,7 @@ function exportHTML() {
 
 $(document).ready(function() {
   $('.areadivs').hide()
-  $('#' + categories[0][0]).show()
+  $('#settingsdiv').show()
   $('<input/>', {
     id: 'unsortedbtn',
     'class': 'btn btn-secondary',
