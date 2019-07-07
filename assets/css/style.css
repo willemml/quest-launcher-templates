@@ -13,38 +13,6 @@ h2 {
   color: white;
 }
 
-.draggable {}
-
-.droppable {}
-
-.hidden {
-  display: none;
-}
-
-.listwrap {
-  display: block;
-  width: 25%;
-  float: left;
-}
-
-.btnwidth {
-  width: 125px;
-}
-
-.clear {
-    clear: both;
-}
-
-.full-width-height {
-  width: 100%;
-  height: 200px;
-}
-
-.flex-row {
-  display: flex;
-  justify-content: center;
-}
-
 hr {
   display: block;
   position: relative;
@@ -57,4 +25,14 @@ hr {
   clear: both;
   border: none;
   border-bottom: 1px solid #ffffff;
+}
+
+.flex-row {
+  display: flex;
+  justify-content: center;
+}
+
+.full-width-height {
+  width: 100%;
+  height: 200px;
 }
