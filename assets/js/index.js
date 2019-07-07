@@ -97,12 +97,6 @@ function createCategory(catname, addtoarray) {
   localStorage.setItem('categories', JSON.stringify(categories))
   location.reload()
 }
-var done = 0
-if (categories.length == 0) {
-  createCategory('System Utilities')
-} else {
-  generateCategoriesHTML()
-}
 
 function generatePackagesHTML() {
   for (var i = 0; i < packageLists.length; i++) {
@@ -116,26 +110,15 @@ function generatePackagesHTML() {
     }
   }
 }
-generatePackagesHTML()
 
 function addPackage(packagename, imagefilename, appname, category) {
   packageLists[category].push([packagename, imagefilename, appname])
   var catarraynum = '#' + categories[category][0]
-  generatePackagesHTML()
-  localStorage.clear('packageLists')
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
   $('#pnamelist').val('')
   $('#appname').val('')
   $('#appicon').val('')
   location.reload()
-}
-
-if (packageLists.length == 1 && packageLists[0].length == 0) {
-  addPackage('de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Settings', '0')
-  addPackage('com.android.calendar', 'com.android.calendar.png', 'Calendar', '0')
-  addPackage('com.android.deskclock', 'com.android.deskclock.png', 'Clock', '0')
-  addPackage('com.oculus.systemactivities', 'oculus.png', 'System Activities', '0')
-  addPackage('net.dinglisch.android.taskerm', 'tasker.png', 'Tasker', '0')
 }
 
 function generateUnsortedList() {
@@ -243,3 +226,16 @@ $(document).ready(function() {
     }
   })
 })
+if (categories.length == 0) {
+  createCategory('System Utilities')
+} else {
+  generateCategoriesHTML()
+  generatePackagesHTML()
+}
+if (categories.length == 1 && packageLists[0].length == 0) {
+  addPackage('de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Settings', '0')
+  addPackage('com.android.calendar', 'com.android.calendar.png', 'Calendar', '0')
+  addPackage('com.android.deskclock', 'com.android.deskclock.png', 'Clock', '0')
+  addPackage('com.oculus.systemactivities', 'oculus.png', 'System Activities', '0')
+  addPackage('net.dinglisch.android.taskerm', 'tasker.png', 'Tasker', '0')
+}
