@@ -36,36 +36,38 @@ createPageBase()
 
 function generateCategoriesHTML() {
   for (var i = 0; i < categories.length; i++) {
+    $('#categorylist').append('<option value="' + i + '">' + categories[i][1] + '</option>')
+    if (i != 0) {
+      $('<input/>', {
+        id: categories[i][0] + 'delbtn',
+        'class': 'btn btn-dark',
+        value: 'X',
+        type: 'button'
+      }).prependTo('#buttondiv')
+    }
     $('<input/>', {
       id: categories[i][0] + 'btn',
       'class': 'btn btn-secondary',
+      'onclick': '$(".areadivs").hide();$("#" + $(this).attr("id").replace("btn", "")).show()',
       value: categories[i][1],
       type: 'button'
-    }).appendTo('#buttondiv')
-    $('<input/>', {
-      id: categories[i][0] + 'delbtn',
-      'class': 'btn btn-dark',
-      value: 'X',
-      type: 'button'
-    }).appendTo('#buttondiv')
+    }).prependTo('#buttondiv')
     $('<div/>', {
       id: categories[i][0],
-      'class': 'full-height text-center row flex-row catdivs'
+      'class': 'full-height text-center row flex-row areadivs'
     }).appendTo('#categoriesdiv')
     var currentdiv = '#' + categories[i][0]
     var currentbtn = '#' + categories[i][0] + 'btn'
     var currentdelbtn = '#' + categories[i][0] + 'delbtn'
-    $(currentbtn).click(function() {
+    /*$(currentbtn).click(function() {
       var thisdiv = $(this).val().replace(/\s/g, '').replace(/\W/g, '')
-      for (var u = 0; u < categories.length; u++) {
-        var otherdiv = '#' + categories[u][0]
-        $(otherdiv).hide()
-      }
+      $('.areadivs').hide()
       $('#' + thisdiv).show()
-    })
+    })*/
     $(currentdelbtn).click(function() {
       var thisdiv = $(this).attr('id').replace('delbtn', '')
       var thisbtn = $(this).attr('id').replace('delbtn', 'btn')
+
       function getThisCat() {
         for (var i = 0; i < categories.length; i++) {
           if (categories[i][0] === thisdiv) {
@@ -74,7 +76,7 @@ function generateCategoriesHTML() {
         }
       }
       var thiscatnum = getThisCat()
-        var thisdelbtn = $(this).attr('id')
+      var thisdelbtn = $(this).attr('id')
       $('#' + thisdiv).remove()
       $('#' + thisbtn).remove()
       $('#' + thisdelbtn).remove()
@@ -82,6 +84,7 @@ function generateCategoriesHTML() {
       packageLists.splice(thiscatnum, 1)
       localStorage.setItem('packageLists', JSON.stringify(packageLists))
       localStorage.setItem('categories', JSON.stringify(categories))
+      location.reload()
     })
   }
 }
@@ -105,7 +108,11 @@ function generatePackagesHTML() {
   for (var i = 0; i < packageLists.length; i++) {
     for (var u = 0; u < packageLists[i].length; u++) {
       var catarraynum = '#' + categories[i][0]
-      $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[i][u][1] + '" /><p>' + packageLists[i][u][2] + '</p></a><input onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
+      if (i == 0 && u < 5) {
+        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a></div>\n')
+      } else {
+        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a><input class="btn btn-link" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
+      }
     }
   }
 }
@@ -114,9 +121,13 @@ generatePackagesHTML()
 function addPackage(packagename, imagefilename, appname, category) {
   packageLists[category].push([packagename, imagefilename, appname])
   var catarraynum = '#' + categories[category][0]
-  $(catarraynum).append('<div id="' + packagename.replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packagename + '"><img style="width:150px" src="assets/app-icons/' + imagefilename + '" /><p>' + appname + '</p></a><input onclick="$(\'#' + packagename.replace(/\./g, '') + '\').remove()" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
+  generatePackagesHTML()
   localStorage.clear('packageLists')
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
+  $('#pnamelist').val('')
+  $('#appname').val('')
+  $('#appicon').val('')
+  location.reload()
 }
 
 if (packageLists.length == 1 && packageLists[0].length == 0) {
@@ -126,3 +137,109 @@ if (packageLists.length == 1 && packageLists[0].length == 0) {
   addPackage('com.oculus.systemactivities', 'oculus.png', 'System Activities', '0')
   addPackage('net.dinglisch.android.taskerm', 'tasker.png', 'Tasker', '0')
 }
+
+function generateUnsortedList() {
+  $('#unsortedlist').empty()
+  $('#pnamedatalist').empty()
+  for (var i = 0; i < unsortedList.length; i++) {
+    var unsorteditemname = unsortedList[i]
+    $('#unsortedlist').append('<li id="' + unsortedList[i] + '"><a href="' + unsortedList[i] + '">' + unsorteditemname + '</a></li>')
+    $('#pnamedatalist').append('<option value="' + unsortedList[i] + '">' + unsortedList[i] + '</option>')
+  }
+  $('#unsortedbtn').show()
+}
+
+function clearUnsorted() {
+  unsortedList = []
+  localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
+  $('#unsortedbtn').hide()
+}
+
+function copyHTMLtoClipboard() {
+  var copyText = document.getElementById("htmlexporttextarea")
+  copyText.select()
+  document.execCommand("copy")
+}
+
+function exportHTML() {
+  var minjs = `
+  categories = ${JSON.stringify(categories)}
+  `
+  $('#settingsdiv').hide()
+  $('#settingsbtn').hide()
+  $('.btn-dark').hide()
+  $('#scriptimport').removeAttr('src')
+  $('#scriptimport').html(minjs)
+  $('#htmlexporttextarea').val($('html')[0].outerHTML)
+  $('#scriptimport').html('')
+  $('#scriptimport').attr('src', '/assets/js/index-rewrite.js')
+  $('#settingsdiv').show()
+  $('#settingsbtn').show()
+  $('.btn-dark').show()
+  $('#htmlexporttextarea').show()
+  $('#clipbtn').show()
+}
+
+$(document).ready(function() {
+  $('.areadivs').hide()
+  $('#' + categories[0][0]).show()
+  $('<input/>', {
+    id: 'unsortedbtn',
+    'class': 'btn btn-secondary',
+    value: 'Unsorted',
+    type: 'button'
+  }).appendTo('#buttondiv')
+  $('<input/>', {
+    id: 'settingsbtn',
+    'class': 'btn btn-secondary',
+    value: 'Settings',
+    type: 'button'
+  }).appendTo('#buttondiv')
+  $('#settingsbtn').click(function() {
+    $('.areadivs').hide()
+    $('#settingsdiv').show()
+  })
+  $('#unsortedbtn').click(function() {
+    $('.areadivs').hide()
+    $('#unsorteddiv').show()
+  })
+  if (unsortedList.length == 0) {
+    $('#unsortedbtn').hide()
+  } else {
+    generateUnsortedList()
+  }
+  $('#confirmcancelreset').hide()
+  $('#startreset').click(function() {
+    $(this).hide()
+    $('#confirmcancelreset').show()
+  })
+  $('#confirmreset').click(function() {
+    localStorage.clear('all')
+    location.reload()
+  })
+  $('#cancelreset').click(function() {
+    $('#confirmcancelreset').hide()
+    $('#startreset').show()
+  })
+  $('#htmlexporttextarea').hide()
+  $('#clipbtn').hide()
+  document.getElementById('textListInput').addEventListener("change", function() {
+    if (this.files && this.files[0]) {
+      var myFile = this.files[0]
+      var reader = new FileReader()
+      reader.addEventListener('load', function(e) {
+        var textByLine = e.target.result.split("\n")
+        unsortedList = []
+        for (var i = 0; i < textByLine.length; i++) {
+          if (textByLine[i] != '') {
+            var pNameSplit = textByLine[i].split('.')
+            unsortedList[i] = textByLine[i]
+          }
+        }
+        generateUnsortedList()
+        localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
+      })
+      reader.readAsBinaryString(myFile)
+    }
+  })
+})
