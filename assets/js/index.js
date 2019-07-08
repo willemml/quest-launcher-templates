@@ -37,13 +37,17 @@ createPageBase()
 function generateCategoriesHTML() {
   for (var i = 0; i < categories.length; i++) {
     $('#categorylist').append('<option value="' + i + '">' + categories[i][1] + '</option>')
+    $('<div/>', {
+      id: categories[i][0] + 'buttondiv',
+      'class': 'btn-group btnsortable'
+    }).prependTo('#buttondiv')
     if (i != 0) {
       $('<input/>', {
         id: categories[i][0] + 'delbtn',
         'class': 'btn btn-dark',
         value: 'X',
         type: 'button'
-      }).prependTo('#buttondiv')
+      }).prependTo('#' + categories[i][0] + 'buttondiv')
     }
     $('<input/>', {
       id: categories[i][0] + 'btn',
@@ -51,7 +55,7 @@ function generateCategoriesHTML() {
       'onclick': '$(".areadivs").hide();$("#" + $(this).attr("id").replace("btn", "")).show()',
       value: categories[i][1],
       type: 'button'
-    }).prependTo('#buttondiv')
+    }).prependTo('#' + categories[i][0] + 'buttondiv')
     $('<div/>', {
       id: categories[i][0],
       'class': 'full-height text-center row flex-row areadivs'
@@ -61,7 +65,7 @@ function generateCategoriesHTML() {
     var currentdelbtn = '#' + categories[i][0] + 'delbtn'
     $(currentdelbtn).click(function() {
       var thisdiv = $(this).attr('id').replace('delbtn', '')
-      var thisbtn = $(this).attr('id').replace('delbtn', 'btn')
+      var thisbtndiv = $(this).attr('id').replace('delbtn', 'buttondiv')
 
       function getThisCat() {
         for (var i = 0; i < categories.length; i++) {
@@ -71,10 +75,8 @@ function generateCategoriesHTML() {
         }
       }
       var thiscatnum = getThisCat()
-      var thisdelbtn = $(this).attr('id')
       $('#' + thisdiv).remove()
-      $('#' + thisbtn).remove()
-      $('#' + thisdelbtn).remove()
+      $('#' + thisbtndiv).remove()
       categories.splice(thiscatnum, 1)
       packageLists.splice(thiscatnum, 1)
       localStorage.setItem('packageLists', JSON.stringify(packageLists))
@@ -141,7 +143,7 @@ function copyHTMLtoClipboard() {
 
 function exportHTML() {
   var minjs = `
-  categories = ${JSON.stringify(categories)}
+  // empty
   `
   $('#settingsdiv').hide()
   $('#settingsbtn').hide()
@@ -201,6 +203,10 @@ $(document).ready(function() {
   })
   $('#htmlexporttextarea').hide()
   $('#clipbtn').hide()
+  $('.btnsortable').sortable({
+    connectWith: '.sortable'
+  })
+  $('.btnsortable').disableSelection()
   document.getElementById('textListInput').addEventListener("change", function() {
     if (this.files && this.files[0]) {
       var myFile = this.files[0]
