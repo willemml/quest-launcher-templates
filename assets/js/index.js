@@ -220,7 +220,11 @@ $(document).ready(function() {
       var myFile = this.files[0]
       var reader = new FileReader()
       reader.addEventListener('load', function(e) {
-        var textByLine = e.target.result.split("\n")
+        var lineEnding = '\n'
+        if (e.target.result.indexOf('\r\n') != parseInt('-1')) {
+          lineEnding = '\r\n'
+        }
+        var textByLine = e.target.result.split(lineEnding)
         unsortedList = []
         for (var i = 0; i < textByLine.length; i++) {
           if (textByLine[i] != '') {
