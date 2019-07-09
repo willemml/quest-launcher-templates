@@ -22,15 +22,20 @@ function createPageBase() {
   $('#body').append('<h2 align="center">Recon-Quest</h2>')
   $('<div/>', {
     id: 'buttondivcontainer',
-    "class": 'text-center',
+    "class": 'text-center'
   }).appendTo('#body')
   $('<div/>', {
     id: 'buttondiv',
-    "class": 'btn-group',
+    "class": 'btn-group sort'
   }).appendTo('#buttondivcontainer')
   $('<div/>', {
     id: 'categoriesdiv'
   }).appendTo('#body')
+  $('.sort').sortable({
+    handle: 'input',
+    cancel: '',
+    items: '.sortable',
+  })
 }
 createPageBase()
 
@@ -39,7 +44,8 @@ function generateCategoriesHTML() {
     $('#categorylist').append('<option value="' + i + '">' + categories[i][1] + '</option>')
     $('<div/>', {
       id: categories[i][0] + 'buttondiv',
-      'class': 'btn-group btnsortable'
+      'class': 'btn-group sortable',
+      'catname': categories[i][1]
     }).prependTo('#buttondiv')
     if (i != 0) {
       $('<input/>', {
@@ -99,10 +105,10 @@ function generatePackagesHTML() {
   for (var i = 0; i < packageLists.length; i++) {
     for (var u = 0; u < packageLists[i].length; u++) {
       var catarraynum = '#' + categories[i][0]
-      if (i == 0 && u < 5) {
-        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a></div>\n')
+      if (i == 0 && u < 8) {
+        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px;height:150px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a></div>\n')
       } else {
-        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a><input class="btn btn-link" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
+        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px;height:150px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a><input class="btn btn-link" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
       }
     }
   }
@@ -110,6 +116,12 @@ function generatePackagesHTML() {
 
 function addPackage(packagename, imagefilename, appname, category) {
   packageLists[category].push([packagename, imagefilename, appname])
+  if (unsortedList.length > 0) {
+    if (unsortedList.indexOf(packagename) != parseInt('-1')) {
+      unsortedList.splice(unsortedList.indexOf(packagename), 1)
+      localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
+    }
+  }
   var catarraynum = '#' + categories[category][0]
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
   $('#pnamelist').val('')
@@ -203,10 +215,6 @@ $(document).ready(function() {
   })
   $('#htmlexporttextarea').hide()
   $('#clipbtn').hide()
-  $('.btnsortable').sortable({
-    connectWith: '.sortable'
-  })
-  $('.btnsortable').disableSelection()
   document.getElementById('textListInput').addEventListener("change", function() {
     if (this.files && this.files[0]) {
       var myFile = this.files[0]
@@ -239,4 +247,7 @@ if (categories.length == 1 && packageLists[0].length == 0) {
   addPackage('com.android.deskclock', 'com.android.deskclock.png', 'Clock', '0')
   addPackage('com.oculus.systemactivities', 'oculus.png', 'System Activities', '0')
   addPackage('net.dinglisch.android.taskerm', 'tasker.png', 'Tasker', '0')
+  addPackage('com.joaomgcd.autoappshub', 'autoappshub.png', 'Auto Apps Hub', '0')
+  addPackage('com.joaomgcd.autoapps', 'autoapps.png', 'Auto Apps', '0')
+  addPackage('com.joaomgcd.autotools', 'autotools.png', 'Auto Tools', '0')
 }
