@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <div id="body">
+  <div id="body" style="padding-top:5px">
   </div>
   <div id="unsorteddiv" class="areadivs">
     <ul id="unsortedlist">
@@ -62,6 +62,43 @@
     <input type="button" class="btn btn-primary btn-block" value="Add Application" onclick="addPackage($('#pnamelist').val(), $('#appicon').val(), $('#appname').val(), $('#categorylist').val())">
     <hr>
     <h6 class="text-center">Export for copy to oculus quest:</h6>
+    <div class="custom-control">
+      <p>Show TV / Home switcher:</p>
+      <input class="custom-select" id="showswitcherinput" list="showswitcher">
+      <datalist name="showswitcher" id="showswitcher">
+        <option value="Yes"></option>
+        <option value="No"></option>
+    </div>
+    <br>
+    <div class="custom-control">
+      <p>Choose package to use from oculus home:</p>
+      <input class="custom-select" id="ohapplistinput" list="ohapplist">
+      <datalist name="ohapplist" id="ohapplist">
+        <option value="com.beatgames.beatsaber.demo"></option>
+        <option value="com.survios.CreedDemo"></option>
+        <option value="gg.trs.grappa_demo"></option>
+        <option value="com.iillusions.spacepiratetrainerdemo"></option>
+        <option value="com.Armature.SportsScrambleDemo"></option>
+      </datalist>
+    </div>
+    <br>
+    <div class="custom-control">
+      <p id="pnameenterlabel">Choose package to use from oculus TV:</p>
+      <input class="custom-select" id="otapplistinput" list="otapplist">
+      <datalist name="otapplist" id="otapplist">
+        <option value="com.showtime.showtimeanytime.vr.tv"></option>
+        <option value="com.showtime.standalone.vr.tv"></option>
+        <option value="com.neverthink"></option>
+        <option value="com.facebook.tv"></option>
+        <option value="com.espn.score_center"></option>
+        <option value="com.google.android.apps.youtube.vr.oculus"></option>
+        <option value="com.fox.now"></option>
+        <option value="com.sling"></option>
+        <option value="com.netflix.ninja.vr"></option>
+        <option value="tv.pluto.android"></option>
+        <option value="com.nousguide.android.rbtv"></option>
+      </datalist>
+    </div>
     <br>
     <input type="button" class="btn btn-primary btn-block" value="Export as static HTML page" onclick="exportHTML()">
     <br>

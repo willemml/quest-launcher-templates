@@ -22,7 +22,7 @@ if ('unsortedList' in localStorage) {
 }
 
 function createPageBase() {
-  $('#body').append('<h2 align="center">Recon-Quest</h2>')
+  $('#body').append('<h2 align="center" style="margin-left:125px" id="title">Recon-Quest</h2>')
   $('<div/>', {
     id: 'buttondivcontainer',
     "class": 'text-center'
@@ -162,6 +162,15 @@ function exportHTML() {
   var minjs = `
   // empty
   `
+  $('#changetotv').attr('href', 'autotoolscommand://openapp=:=' + $('#otapplistinput').val())
+  $('#changetohome').attr('href', 'autotoolscommand://openapp=:=' + $('#ohapplistinput').val())
+  if ($('#showswitcherinput').val() == 'No') {
+    $('#changemodebtndiv').hide()
+    $('#title').attr('style', '')
+  } else {
+    $('#changemodebtndiv').show()
+    $('#title').attr('style', 'margin-left:125px')
+  }
   $('#settingsdiv').hide()
   $('#settingsbtn').hide()
   $('.btn-dark').hide()
@@ -180,7 +189,7 @@ function exportHTML() {
 $(document).ready(function() {
   $('.areadivs').hide()
   if ('category' in localStorage) {
-     $('#categorylist').val(category)
+    $('#categorylist').val(category)
   }
   $('#settingsdiv').show()
   $('<input/>', {
@@ -195,6 +204,20 @@ $(document).ready(function() {
     value: 'Settings',
     type: 'button'
   }).appendTo('#buttondiv')
+  $('<div/>', {
+    id: 'changemodebtndiv',
+    'class': 'btn-group stayright',
+  }).prependTo('body')
+  $('<a/>', {
+    id: 'changetotv',
+    'class': 'btn btn-secondary',
+    html: 'TV'
+  }).appendTo('#changemodebtndiv')
+  $('<a/>', {
+    id: 'changetohome',
+    'class': 'btn btn-secondary',
+    html: 'Home'
+  }).appendTo('#changemodebtndiv')
   $('#settingsbtn').click(function() {
     $('.areadivs').hide()
     $('#settingsdiv').show()
