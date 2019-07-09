@@ -53,6 +53,10 @@
     <div class="custom-control">
       <p>Enter image filename: <br>(image must be placed in <code>assets/app-icon/image.png</code>)</p>
       <input type="text" class="form-control" id="appicon" placeholder="exampleapp.png">
+      <br>
+      <label class="btn btn-light btn-block btn-file">
+        Get image name from file <input type="file" id="imageInput" style="display: none;">
+      </label>
     </div>
     <br>
     <input type="button" class="btn btn-primary btn-block" value="Add Application" onclick="addPackage($('#pnamelist').val(), $('#appicon').val(), $('#appname').val(), $('#categorylist').val())">

@@ -215,7 +215,7 @@ $(document).ready(function() {
   })
   $('#htmlexporttextarea').hide()
   $('#clipbtn').hide()
-  document.getElementById('textListInput').addEventListener("change", function() {
+  $('#textListInput').change(function() {
     if (this.files && this.files[0]) {
       var myFile = this.files[0]
       var reader = new FileReader()
@@ -233,6 +233,9 @@ $(document).ready(function() {
       })
       reader.readAsBinaryString(myFile)
     }
+  })
+  $('#imageInput').change(function() {
+    $('#appicon').val(this.files && this.files.length ? this.files[0].name : '')
   })
 })
 if (categories.length == 0) {
