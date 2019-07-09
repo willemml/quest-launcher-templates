@@ -2,6 +2,9 @@ var packageLists = []
 var unsortedList = []
 var categories = []
 
+if ('category' in localStorage) {
+  category = JSON.parse(localStorage.getItem('category'))
+}
 if ('packageLists' in localStorage) {
   packageLists = JSON.parse(localStorage.getItem('packageLists'))
 } else {
@@ -92,12 +95,13 @@ function generateCategoriesHTML() {
   }
 }
 
-function createCategory(catname, addtoarray) {
+function createCategory(catname) {
   catid = catname.replace(/\s/g, '').replace(/\W/g, '')
   categories.push([catid, catname])
   packageLists.push([])
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
   localStorage.setItem('categories', JSON.stringify(categories))
+  localStorage.setItem('category', JSON.stringify(catname))
   location.reload()
 }
 
@@ -127,6 +131,7 @@ function addPackage(packagename, imagefilename, appname, category) {
   $('#pnamelist').val('')
   $('#appname').val('')
   $('#appicon').val('')
+  localStorage.setItem('category', JSON.stringify(category))
   location.reload()
 }
 
@@ -174,6 +179,9 @@ function exportHTML() {
 
 $(document).ready(function() {
   $('.areadivs').hide()
+  if ('category' in localStorage) {
+     $('#categorylist').val(category)
+  }
   $('#settingsdiv').show()
   $('<input/>', {
     id: 'unsortedbtn',
