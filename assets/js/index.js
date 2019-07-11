@@ -53,7 +53,7 @@ function generateCategoriesHTML() {
     if (i != 0) {
       $('<input/>', {
         id: categories[i][0] + 'delbtn',
-        'class': 'btn btn-dark',
+        'class': 'btn btn-dark delbtn',
         value: 'X',
         type: 'button'
       }).prependTo('#' + categories[i][0] + 'buttondiv')
@@ -112,7 +112,7 @@ function generatePackagesHTML() {
       if (i == 0 && u < 8) {
         $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px;height:84px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a></div>\n')
       } else {
-        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px;height:84px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a><input class="btn btn-link" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));" type="button" style="position:absolute;right:0;botton:0;color:red;" class="btn btn-sm btn-link" value="&#10005;"></div>\n')
+        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px;height:84px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a><input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));" type="button" style="position:absolute;right:0;botton:0;color:red;" value="&#10005;"></div>\n')
       }
     }
   }
@@ -171,9 +171,9 @@ function exportHTML() {
     $('#changemodebtndiv').show()
     $('#title').attr('style', 'margin-left:125px')
   }
+  $('.delbtn').hide()
   $('#settingsdiv').hide()
   $('#settingsbtn').hide()
-  $('.btn-dark').hide()
   $('#scriptimport').removeAttr('src')
   $('#scriptimport').html(minjs)
   $('#htmlexporttextarea').val($('html')[0].outerHTML)
@@ -181,12 +181,20 @@ function exportHTML() {
   $('#scriptimport').attr('src', '/assets/js/index-rewrite.js')
   $('#settingsdiv').show()
   $('#settingsbtn').show()
-  $('.btn-dark').show()
+  $('.delbtn').show()
   $('#htmlexporttextarea').show()
   $('#clipbtn').show()
 }
 
 $(document).ready(function() {
+  if ('showswitcher' in localStorage) {
+    $('#showswitcherinput').val(localStorage.getItem('showswitcher'))
+  } else {
+    $('#showswitcherinput').val('No')
+  }
+  $('#showswitcherinput').change(function() {
+    localStorage.setItem('showswitcher', $('#showswitcherinput').val())
+  })
   $('.areadivs').hide()
   if ('category' in localStorage) {
     $('#categorylist').val(category)
@@ -196,7 +204,8 @@ $(document).ready(function() {
     id: 'unsortedbtn',
     'class': 'btn btn-secondary',
     value: 'Unsorted',
-    type: 'button'
+    type: 'button',
+    onclick: '$(".areadivs").hide();$("#unsorteddiv").show()'
   }).appendTo('#buttondiv')
   $('<input/>', {
     id: 'settingsbtn',
@@ -221,10 +230,6 @@ $(document).ready(function() {
   $('#settingsbtn').click(function() {
     $('.areadivs').hide()
     $('#settingsdiv').show()
-  })
-  $('#unsortedbtn').click(function() {
-    $('.areadivs').hide()
-    $('#unsorteddiv').show()
   })
   if (unsortedList.length == 0) {
     $('#unsortedbtn').hide()
