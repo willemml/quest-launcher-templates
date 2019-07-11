@@ -193,7 +193,7 @@ $(document).ready(function() {
     $('#showswitcherinput').val('No')
   }
   $('#showswitcherinput').change(function() {
-    localStorage.setItem('showswitcher', $('#showswitcherinput').val())
+    localStorage.setItem('showswitcherinput', $('#showswitcherinput').val())
   })
   if ('ohapplistinput' in localStorage) {
     $('#ohapplistinput').val(localStorage.getItem('ohapplistinput'))
