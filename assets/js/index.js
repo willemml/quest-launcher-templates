@@ -156,6 +156,7 @@ function copyHTMLtoClipboard() {
   var copyText = document.getElementById("htmlexporttextarea")
   copyText.select()
   document.execCommand("copy")
+  window.close()
 }
 
 function exportHTML() {
