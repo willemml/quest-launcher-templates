@@ -187,13 +187,29 @@ function exportHTML() {
 }
 
 $(document).ready(function() {
-  if ('showswitcher' in localStorage) {
-    $('#showswitcherinput').val(localStorage.getItem('showswitcher'))
+  if ('showswitcherinput' in localStorage) {
+    $('#showswitcherinput').val(localStorage.getItem('showswitcherinput'))
   } else {
     $('#showswitcherinput').val('No')
   }
   $('#showswitcherinput').change(function() {
     localStorage.setItem('showswitcher', $('#showswitcherinput').val())
+  })
+  if ('ohapplistinput' in localStorage) {
+    $('#ohapplistinput').val(localStorage.getItem('ohapplistinput'))
+  } else {
+    $('#ohapplistinput').val('com.survios.CreedDemo')
+  }
+  $('#ohapplistinput').change(function() {
+    localStorage.setItem('ohapplistinput', $('#ohapplistinput').val())
+  })
+  if ('otapplistinput' in localStorage) {
+    $('#otapplistinput').val(localStorage.getItem('otapplistinput'))
+  } else {
+    $('#otapplistinput').val('com.nousguide.android.rbtv')
+  }
+  $('#otapplistinput').change(function() {
+    localStorage.setItem('otapplistinput', $('#otapplistinput').val())
   })
   $('.areadivs').hide()
   if ('category' in localStorage) {
