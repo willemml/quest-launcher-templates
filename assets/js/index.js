@@ -21,6 +21,11 @@ if ('unsortedList' in localStorage) {
 } else {
   localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
 }
+if ('addedPackages' in localStorage) {
+  addedPackages = JSON.parse(localStorage.getItem('addedPackages'))
+} else {
+  localStorage.setItem('addedPackages', JSON.stringify(addedPackages))
+}
 
 function createPageBase() {
   $('#body').append('<h2 align="center" style="margin-left:125px" id="title">Recon-Quest</h2>')
@@ -106,23 +111,33 @@ function createCategory(catname) {
   location.reload()
 }
 
+function deletePackage(cat, arraypos) {
+  if (addedPackages.indexOf(packageLists[cat][arraypos][0]) != parseInt('-1')) {
+    unsortedList.push(addedPackages[addedPackages.indexOf(packageLists[cat][arraypos][0])])
+    addedPackages.splice(addedPackages.indexOf(packageLists[cat][arraypos][0]), 1)
+    localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
+  }
+  generateUnsortedList()
+}
+
 function generatePackagesHTML() {
   for (var i = 0; i < packageLists.length; i++) {
     for (var u = 0; u < packageLists[i].length; u++) {
       var catarraynum = '#' + categories[i][0]
-      if (i == 0 && u < 8) {
+      if (packageLists[i][u][3] != '1') {
         $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px;height:84px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a></div>\n')
       } else {
-        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px;height:84px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a><input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));unsortedList.push(\'' + packageLists[i][u][0] + '\');generateUnsortedList()" type="button" style="position:absolute;right:0;botton:0;color:red;" value="&#10005;"></div>\n')
+        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px;height:84px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a><input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();deletePackage(' + i + ', ' + u + ');packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));location.reload()" type="button" style="position:absolute;right:0;botton:0;color:red;" value="&#10005;"></div>\n')
       }
     }
   }
 }
 
-function addPackage(packagename, imagefilename, appname, category) {
-  packageLists[category].push([packagename, imagefilename, appname])
-  if (unsortedList.indexOf(packagename) == parseInt('-1')) {
+function addPackage(packagename, imagefilename, appname, category, deletable) {
+  packageLists[category].push([packagename, imagefilename, appname, deletable])
+  if (unsortedList.indexOf(packagename) != parseInt('-1')) {
     addedPackages.push(packagename)
+    localStorage.setItem('addedPackages', JSON.stringify(addedPackages))
   }
   if (unsortedList.length > 0) {
     if (unsortedList.indexOf(packagename) != parseInt('-1')) {
@@ -147,6 +162,7 @@ function addPackage(packagename, imagefilename, appname, category) {
 function generateUnsortedList() {
   $('#unsortedlist').empty()
   $('#pnamedatalist').empty()
+  unsortedList.sort()
   for (var i = 0; i < unsortedList.length; i++) {
     var unsorteditemname = unsortedList[i]
     $('#unsortedlist').append('<li id="' + unsortedList[i] + '"><a href="' + unsortedList[i] + '">' + unsorteditemname + '</a></li>')
@@ -294,7 +310,6 @@ $(document).ready(function() {
             unsortedList[i] = textByLine[i]
           }
         }
-        unsortedList.sort()
         generateUnsortedList()
         localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
       })
@@ -312,12 +327,12 @@ if (categories.length == 0) {
   generatePackagesHTML()
 }
 if (categories.length == 1 && packageLists[0].length == 0) {
-  addPackage('de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Settings', '0')
-  addPackage('com.android.calendar', 'com.android.calendar.png', 'Calendar', '0')
-  addPackage('com.android.deskclock', 'com.android.deskclock.png', 'Clock', '0')
-  addPackage('com.oculus.systemactivities', 'oculus.png', 'System Activities', '0')
-  addPackage('net.dinglisch.android.taskerm', 'tasker.png', 'Tasker', '0')
-  addPackage('com.joaomgcd.autoappshub', 'autoappshub.png', 'Auto Apps Hub', '0')
-  addPackage('com.joaomgcd.autoapps', 'autoapps.png', 'Auto Apps', '0')
-  addPackage('com.joaomgcd.autotools', 'autotools.png', 'Auto Tools', '0')
+  addPackage('de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Settings', '0', '0')
+  addPackage('com.android.calendar', 'com.android.calendar.png', 'Calendar', '0', '0')
+  addPackage('com.android.deskclock', 'com.android.deskclock.png', 'Clock', '0', '0')
+  addPackage('com.oculus.systemactivities', 'oculus.png', 'System Activities', '0', '0')
+  addPackage('net.dinglisch.android.taskerm', 'tasker.png', 'Tasker', '0', '0')
+  addPackage('com.joaomgcd.autoappshub', 'autoappshub.png', 'Auto Apps Hub', '0', '0')
+  addPackage('com.joaomgcd.autoapps', 'autoapps.png', 'Auto Apps', '0', '0')
+  addPackage('com.joaomgcd.autotools', 'autotools.png', 'Auto Tools', '0', '0')
 }
