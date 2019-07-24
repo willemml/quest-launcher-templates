@@ -1,6 +1,7 @@
 var packageLists = []
 var unsortedList = []
 var categories = []
+var addedPackages = []
 
 if ('category' in localStorage) {
   category = JSON.parse(localStorage.getItem('category'))
@@ -47,7 +48,7 @@ function generateCategoriesHTML() {
     $('#categorylist').append('<option value="' + i + '">' + categories[i][1] + '</option>')
     $('<div/>', {
       id: categories[i][0] + 'buttondiv',
-      'class': 'btn-group sortable',
+      'class': 'btn-group',
       'catname': categories[i][1]
     }).prependTo('#buttondiv')
     if (i != 0) {
@@ -120,12 +121,20 @@ function generatePackagesHTML() {
 
 function addPackage(packagename, imagefilename, appname, category) {
   packageLists[category].push([packagename, imagefilename, appname])
+  if (unsortedList.indexOf(packagename) == parseInt('-1')) {
+    addedPackages.push(packagename)
+  }
   if (unsortedList.length > 0) {
     if (unsortedList.indexOf(packagename) != parseInt('-1')) {
       unsortedList.splice(unsortedList.indexOf(packagename), 1)
       localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
     }
   }
+  packageLists[category].sort((function(index) {
+    return function(a, b) {
+      return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1))
+    }
+  })(2))
   var catarraynum = '#' + categories[category][0]
   localStorage.setItem('packageLists', JSON.stringify(packageLists))
   $('#pnamelist').val('')
@@ -285,6 +294,7 @@ $(document).ready(function() {
             unsortedList[i] = textByLine[i]
           }
         }
+        unsortedList.sort()
         generateUnsortedList()
         localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
       })
