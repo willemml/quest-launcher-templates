@@ -117,6 +117,7 @@ function deletePackage(cat, arraypos) {
       unsortedList.push(addedPackages[addedPackages.indexOf(packageLists[cat][arraypos][0])])
     }
     addedPackages.splice(addedPackages.indexOf(packageLists[cat][arraypos][0]), 1)
+    localStorage.setItem('addedPackages', JSON.stringify(addedPackages))
     localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
   }
   generateUnsortedList()
@@ -308,8 +309,9 @@ $(document).ready(function() {
         unsortedList = []
         for (var i = 0; i < textByLine.length; i++) {
           if (textByLine[i] != '') {
-            var pNameSplit = textByLine[i].split('.')
-            unsortedList[i] = textByLine[i]
+            if (addedPackages.indexOf(textByLine[i]) == parseInt('-1')) {
+              unsortedList[i] = textByLine[i]
+            }
           }
         }
         generateUnsortedList()
