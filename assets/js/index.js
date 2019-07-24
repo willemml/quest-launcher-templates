@@ -113,7 +113,9 @@ function createCategory(catname) {
 
 function deletePackage(cat, arraypos) {
   if (addedPackages.indexOf(packageLists[cat][arraypos][0]) != parseInt('-1')) {
-    unsortedList.push(addedPackages[addedPackages.indexOf(packageLists[cat][arraypos][0])])
+    if (unsortedList.indexOf(packageLists[cat][arraypos][0]) == parseInt('-1')) {
+      unsortedList.push(addedPackages[addedPackages.indexOf(packageLists[cat][arraypos][0])])
+    }
     addedPackages.splice(addedPackages.indexOf(packageLists[cat][arraypos][0]), 1)
     localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
   }
