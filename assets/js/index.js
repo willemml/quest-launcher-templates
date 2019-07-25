@@ -43,7 +43,7 @@ function createPageBase() {
   $('.sort').sortable({
     handle: 'input',
     cancel: '',
-    items: '.sortable',
+    items: '.sortable'
   })
 }
 createPageBase()
@@ -53,7 +53,7 @@ function generateCategoriesHTML() {
     $('#categorylist').append('<option value="' + i + '">' + categories[i][1] + '</option>')
     $('<div/>', {
       id: categories[i][0] + 'buttondiv',
-      'class': 'btn-group',
+      'class': 'btn-group sortable',
       'catname': categories[i][1]
     }).prependTo('#buttondiv')
     if (i != 0) {
