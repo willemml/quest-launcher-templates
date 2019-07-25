@@ -164,12 +164,12 @@ function addPackage(packagename, imagefilename, appname, category, deletable) {
 
 function generateUnsortedList() {
   $('#unsortedlist').empty()
-  $('#pnamedatalist').empty()
+  $('#pnamelist').empty()
   unsortedList.sort()
   for (var i = 0; i < unsortedList.length; i++) {
     var unsorteditemname = unsortedList[i]
     $('#unsortedlist').append('<li id="' + unsortedList[i] + '"><a href="' + unsortedList[i] + '">' + unsorteditemname + '</a></li>')
-    $('#pnamedatalist').append('<option value="' + unsortedList[i] + '">' + unsortedList[i] + '</option>')
+    $('#pnamelist').append('<option value="' + unsortedList[i] + '">' + unsortedList[i] + '</option>')
   }
   $('#unsortedbtn').show()
 }
