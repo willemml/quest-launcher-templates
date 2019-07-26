@@ -111,24 +111,24 @@ function generateCategoriesHTML() {
     })
   }
   $(function() {
-  var $sortable = $('.sort');
-  var positions = JSON.parse(localStorage.getItem('positions'));
-  if (positions) {
-    $.each(positions, function(i, position) {
-      var $target = $sortable.find('#' + position)
-      $target.appendTo($sortable) // or prependTo for reverse
+    var $sortable = $('.sort');
+    var positions = JSON.parse(localStorage.getItem('positions'));
+    if (positions) {
+      $.each(positions, function(i, position) {
+        var $target = $sortable.find('#' + position)
+        $target.appendTo($sortable) // or prependTo for reverse
+      })
+    }
+
+    $sortable.sortable({
+      update: saveNewOrder
     })
-  }
 
-  $sortable.sortable({
-    update: saveNewOrder
+    function saveNewOrder() {
+      var positions = JSON.stringify($sortable.sortable("toArray"))
+      localStorage.setItem('positions', positions)
+    }
   })
-
-  function saveNewOrder() {
-    var positions = JSON.stringify($sortable.sortable("toArray"))
-    localStorage.setItem('positions', positions)
-  }
-})
 }
 
 function createCategory(catname) {
@@ -326,31 +326,49 @@ $(document).ready(function() {
   $('#htmlexporttextarea').hide()
   $('#clipbtn').hide()
   $('#textListInput').change(function() {
-    if (this.files && this.files[0]) {
-      var myFile = this.files[0]
-      var reader = new FileReader()
-      reader.addEventListener('load', function(e) {
-        var lineEnding = '\n'
-        if (e.target.result.indexOf('\r\n') != parseInt('-1')) {
-          lineEnding = '\r\n'
-        }
-        var textByLine = e.target.result.split(lineEnding)
-        unsortedList = []
-        for (var i = 0; i < textByLine.length; i++) {
-          if (textByLine[i] != '') {
-            if (addedPackages.indexOf(textByLine[i]) == parseInt('-1')) {
-              unsortedList[i] = textByLine[i]
+    var ext = this.value.split('\\')[this.value.split('\\').length - 1]
+    switch (ext) {
+      case 'MyInstalledPackages.txt':
+        if (this.files && this.files[0]) {
+          var myFile = this.files[0]
+          var reader = new FileReader()
+          reader.addEventListener('load', function(e) {
+            var lineEnding = '\n'
+            if (e.target.result.indexOf('\r\n') != parseInt('-1')) {
+              lineEnding = '\r\n'
             }
-          }
+            var textByLine = e.target.result.split(lineEnding)
+            unsortedList = []
+            for (var i = 0; i < textByLine.length; i++) {
+              if (textByLine[i] != '') {
+                if (addedPackages.indexOf(textByLine[i]) == parseInt('-1')) {
+                  unsortedList[i] = textByLine[i]
+                }
+              }
+            }
+            generateUnsortedList()
+            localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
+          })
+          reader.readAsBinaryString(myFile)
         }
-        generateUnsortedList()
-        localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
-      })
-      reader.readAsBinaryString(myFile)
+        break;
+      default:
+        alert('Not allowed, needs to be MyInstalledPackages.txt not ' + ext);
+        this.value = '';
     }
   })
   $('#imageInput').change(function() {
-    $('#appicon').val(this.files && this.files.length ? this.files[0].name : '')
+    var ext = this.value.match(/.([^.]+)$/)[1];
+    switch (ext) {
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+        $('#appicon').val(this.files && this.files.length ? this.files[0].name : '')
+        break;
+      default:
+        alert('Not allowed, needs to be .png, .jpg or .jpeg.');
+        this.value = '';
+    }
   })
 })
 if (categories.length == 0) {
