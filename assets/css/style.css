@@ -42,3 +42,9 @@ hr {
   margin-right: 10px;
   margin-top: 10px
 }
+
+.stayleft {
+  float: left;
+  margin-left: 10px;
+  margin-top: 10px
+}

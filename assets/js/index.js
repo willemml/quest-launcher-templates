@@ -38,6 +38,17 @@ function createPageBase() {
     "class": 'btn-group sort'
   }).appendTo('#buttondivcontainer')
   $('<div/>', {
+    id: 'unsortedbuttondiv',
+    'class': 'btn-group sortable'
+  }).appendTo('#buttondiv')
+  $('<input/>', {
+    id: 'unsortedbtn',
+    'class': 'btn btn-secondary',
+    value: 'Unsorted',
+    type: 'button',
+    onclick: '$(".areadivs").hide();$("#unsorteddiv").show()'
+  }).appendTo('#unsortedbuttondiv')
+  $('<div/>', {
     id: 'categoriesdiv'
   }).appendTo('#body')
   $('.sort').sortable({
@@ -99,6 +110,25 @@ function generateCategoriesHTML() {
       location.reload()
     })
   }
+  $(function() {
+  var $sortable = $('.sort');
+  var positions = JSON.parse(localStorage.getItem('positions'));
+  if (positions) {
+    $.each(positions, function(i, position) {
+      var $target = $sortable.find('#' + position)
+      $target.appendTo($sortable) // or prependTo for reverse
+    })
+  }
+
+  $sortable.sortable({
+    update: saveNewOrder
+  })
+
+  function saveNewOrder() {
+    var positions = JSON.stringify($sortable.sortable("toArray"))
+    localStorage.setItem('positions', positions)
+  }
+})
 }
 
 function createCategory(catname) {
@@ -127,10 +157,18 @@ function generatePackagesHTML() {
   for (var i = 0; i < packageLists.length; i++) {
     for (var u = 0; u < packageLists[i].length; u++) {
       var catarraynum = '#' + categories[i][0]
+      var linkdiv = '<div id="'
+      var applink = '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:='
+      var imagelink = '"><img style="width:150px;height:84px" src="assets/app-icons/'
+      var noimagelink = '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>'
+      var linkdivend = '</p></a></div>\n'
+      var deletebutton = '<input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();deletePackage(' + i + ', ' + u + ');packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));location.reload()" type="button" style="position:absolute;right:0;botton:0;color:red;" value="&#10005;"></div>\n'
+      var backupbutton
+      var restorebutton
       if (packageLists[i][u][3] != '1') {
-        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px;height:84px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a></div>\n')
+        $(catarraynum).append(linkdiv + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + linkdivend)
       } else {
-        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:=' + packageLists[i][u][0] + '"><img style="width:150px;height:84px" src="assets/app-icons/' + packageLists[i][u][1] + '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>' + packageLists[i][u][2] + '</p></a><input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();deletePackage(' + i + ', ' + u + ');packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));location.reload()" type="button" style="position:absolute;right:0;botton:0;color:red;" value="&#10005;"></div>\n')
+        $(catarraynum).append(linkdiv + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a>' + deletebutton + '</div>\n')
       }
     }
   }
@@ -246,18 +284,11 @@ $(document).ready(function() {
   }
   $('#settingsdiv').show()
   $('<input/>', {
-    id: 'unsortedbtn',
-    'class': 'btn btn-secondary',
-    value: 'Unsorted',
-    type: 'button',
-    onclick: '$(".areadivs").hide();$("#unsorteddiv").show()'
-  }).appendTo('#buttondiv')
-  $('<input/>', {
     id: 'settingsbtn',
-    'class': 'btn btn-secondary',
+    'class': 'btn btn-secondary stayleft',
     value: 'Settings',
     type: 'button'
-  }).appendTo('#buttondiv')
+  }).prependTo('body')
   $('<div/>', {
     id: 'changemodebtndiv',
     'class': 'btn-group stayright',
