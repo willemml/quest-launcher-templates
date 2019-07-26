@@ -157,18 +157,16 @@ function generatePackagesHTML() {
   for (var i = 0; i < packageLists.length; i++) {
     for (var u = 0; u < packageLists[i].length; u++) {
       var catarraynum = '#' + categories[i][0]
-      var linkdiv = '<div id="'
       var applink = '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:='
       var imagelink = '"><img style="width:150px;height:84px" src="assets/app-icons/'
       var noimagelink = '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>'
-      var linkdivend = '</p></a></div>\n'
       var deletebutton = '<input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();deletePackage(' + i + ', ' + u + ');packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));location.reload()" type="button" style="position:absolute;right:0;botton:0;color:red;" value="&#10005;"></div>\n'
       var backupbutton
       var restorebutton
       if (packageLists[i][u][3] != '1') {
-        $(catarraynum).append(linkdiv + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + linkdivend)
+        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a></div>\n')
       } else {
-        $(catarraynum).append(linkdiv + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a>' + deletebutton + '</div>\n')
+        $(catarraynum).append('<div id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a>' + deletebutton + '</div>\n')
       }
     }
   }
