@@ -190,7 +190,7 @@ function generatePackagesHTML() {
       var rbtn = '<a class="btn btn-sm btn-link" href="autotoolscommand://restoreappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;right:0;top:70px;color:blue"><i class="fas fa-sign-out-alt"></i></a>'
       var sbtn = '<a class="btn btn-sm btn-link" href="autotoolscommand://openappsettings=:=' + packageLists[i][u][0] + '" style="position:absolute;right:0;top:105px;color:gray"><i class="fas fa-sliders-h"></i></a>'
       if (packageLists[i][u][3] != '1') {
-        $(catarraynum).append('<div style="width:190px;position:relative" id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a>' + bbtn + rbtn + sbtn + '</div>\n')
+        $(catarraynum).append('<div style="width:190px;position:relative" id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a></div>\n')
       } else {
         $(catarraynum).append('<div style="width:190px;position:relative" id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a>' + deletebutton + bbtn + rbtn + sbtn + '</div>\n')
       }
