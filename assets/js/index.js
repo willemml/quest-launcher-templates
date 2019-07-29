@@ -27,6 +27,27 @@ if ('addedPackages' in localStorage) {
   localStorage.setItem('addedPackages', JSON.stringify(addedPackages))
 }
 
+function checkDuplicateAndMissing() {
+  for (var i = 0; i < packageLists.length; i++) {
+    for (var u = 0; u < packageLists[i].length; u++) {
+      if (unsortedList.indexOf(packageLists[i][u][0]) == parseInt('-1')) {
+        packageLists[i].splice(u, 1)
+      }
+    }
+  }
+  for (var i = 0; i < packageLists.length; i++) {
+    for (var u = 0; u < packageLists[i].length; u++) {
+      for (var o = 0; o < unsortedList.length; o++) {
+        if (packageLists[i][u][0] == unsortedList[o]) {
+          unsortedList.splice(o, 1)
+        }
+      }
+    }
+  }
+  localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
+  localStorage.setItem('packageLists', JSON.stringify(packageLists))
+}
+
 function createPageBase() {
   $('#body').append('<h2 align="center" style="margin-left:125px" id="title">Recon-Quest</h2>')
   $('<div/>', {
@@ -341,13 +362,13 @@ $(document).ready(function() {
             unsortedList = []
             for (var i = 0; i < textByLine.length; i++) {
               if (textByLine[i] != '') {
-                if (addedPackages.indexOf(textByLine[i]) == parseInt('-1')) {
-                  unsortedList[i] = textByLine[i]
-                }
+                unsortedList[i] = textByLine[i]
               }
             }
             generateUnsortedList()
+            checkDuplicateAndMissing()
             localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
+            location.reload()
           })
           reader.readAsBinaryString(myFile)
         }
