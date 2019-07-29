@@ -124,9 +124,13 @@ function generateCategoriesHTML() {
       var thiscatnum = getThisCat()
       $('#' + thisdiv).remove()
       $('#' + thisbtndiv).remove()
+      for (var i = 0; i < packageLists[thiscatnum].length; i++) {
+        unsortedList.push(packageLists[thiscatnum][i][0])
+      }
       categories.splice(thiscatnum, 1)
       packageLists.splice(thiscatnum, 1)
       localStorage.setItem('packageLists', JSON.stringify(packageLists))
+      localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
       localStorage.setItem('categories', JSON.stringify(categories))
       location.reload()
     })
