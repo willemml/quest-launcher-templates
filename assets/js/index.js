@@ -184,7 +184,7 @@ function generatePackagesHTML() {
       var catarraynum = '#' + categories[i][0]
       var applink = '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:='
       var imagelink = '"><img style="width:150px;height:84px" src="assets/app-icons/'
-      var noimagelink = '" onerror="javascript:this.src=\'assets/app-icons/notfound.png\'" /><p>'
+      var noimagelink = '" onerror="javascript:this.src=\'assets/notfound.png\'" /><p>'
       var deletebutton = '<input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();deletePackage(' + i + ', ' + u + ');packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));location.reload()" type="button" style="position:absolute;right:0;top:0px;color:red;" value="&#10005;">'
       var bbtn = '<a class="btn btn-sm btn-link" href="autotoolscommand://backupappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;right:0;top:35px;color:green"><i class="fas fa-sign-in-alt"></i></a>'
       var rbtn = '<a class="btn btn-sm btn-link" href="autotoolscommand://restoreappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;right:0;top:70px;color:blue"><i class="fas fa-sign-out-alt"></i></a>'
