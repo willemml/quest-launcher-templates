@@ -199,29 +199,33 @@ function generatePackagesHTML() {
 }
 
 function addPackage(packagename, imagefilename, appname, category, deletable) {
-  packageLists[category].push([packagename, imagefilename, appname, deletable])
-  if (unsortedList.indexOf(packagename) != parseInt('-1')) {
-    addedPackages.push(packagename)
-    localStorage.setItem('addedPackages', JSON.stringify(addedPackages))
-  }
-  if (unsortedList.length > 0) {
+  if (imagefilename != '' && appname != '') {
+    packageLists[category].push([packagename, imagefilename, appname, deletable])
     if (unsortedList.indexOf(packagename) != parseInt('-1')) {
-      unsortedList.splice(unsortedList.indexOf(packagename), 1)
-      localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
+      addedPackages.push(packagename)
+      localStorage.setItem('addedPackages', JSON.stringify(addedPackages))
     }
+    if (unsortedList.length > 0) {
+      if (unsortedList.indexOf(packagename) != parseInt('-1')) {
+        unsortedList.splice(unsortedList.indexOf(packagename), 1)
+        localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
+      }
+    }
+    packageLists[category].sort((function(index) {
+      return function(a, b) {
+        return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1))
+      }
+    })(2))
+    var catarraynum = '#' + categories[category][0]
+    localStorage.setItem('packageLists', JSON.stringify(packageLists))
+    $('#pnamelist').val('')
+    $('#appname').val('')
+    $('#appicon').val('')
+    localStorage.setItem('category', JSON.stringify(category))
+    location.reload()
+  } else {
+    alert('Make sure you have selected an image and entered an app name.')
   }
-  packageLists[category].sort((function(index) {
-    return function(a, b) {
-      return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1))
-    }
-  })(2))
-  var catarraynum = '#' + categories[category][0]
-  localStorage.setItem('packageLists', JSON.stringify(packageLists))
-  $('#pnamelist').val('')
-  $('#appname').val('')
-  $('#appicon').val('')
-  localStorage.setItem('category', JSON.stringify(category))
-  location.reload()
 }
 
 function generateUnsortedList() {
