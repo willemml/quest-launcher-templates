@@ -186,9 +186,9 @@ function generatePackagesHTML() {
       var imagelink = '"><img style="width:150px;height:84px" src="assets/app-icons/'
       var noimagelink = '" onerror="javascript:this.src=\'assets/notfound.png\'" /><p>'
       var deletebutton = '<input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();deletePackage(' + i + ', ' + u + ');packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));location.reload()" type="button" style="position:absolute;right:0;top:0px;color:red;" value="&#10005;">'
-      var bbtn = '<a class="btn btn-sm btn-link" href="autotoolscommand://backupappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;right:0;top:35px;color:green"><i class="fas fa-sign-in-alt"></i></a>'
-      var rbtn = '<a class="btn btn-sm btn-link" href="autotoolscommand://restoreappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;right:0;top:70px;color:blue"><i class="fas fa-sign-out-alt"></i></a>'
-      var sbtn = '<a class="btn btn-sm btn-link" href="autotoolscommand://openappsettings=:=' + packageLists[i][u][0] + '" style="position:absolute;right:0;top:105px;color:gray"><i class="fas fa-sliders-h"></i></a>'
+      var bbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://backupappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;right:0;top:35px;color:green"><i class="fas fa-sign-in-alt"></i></a>'
+      var rbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://restoreappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;right:0;top:70px;color:blue"><i class="fas fa-sign-out-alt"></i></a>'
+      var sbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://openappsettings=:=' + packageLists[i][u][0] + '" style="position:absolute;right:0;top:105px;color:gray"><i class="fas fa-sliders-h"></i></a>'
       if (packageLists[i][u][3] != '1') {
         $(catarraynum).append('<div style="width:190px;position:relative" id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a></div>\n')
       } else {
@@ -255,13 +255,6 @@ function exportHTML() {
   `
   $('#changetotv').attr('href', 'autotoolscommand://openapp=:=' + $('#otapplistinput').val())
   $('#changetohome').attr('href', 'autotoolscommand://openapp=:=' + $('#ohapplistinput').val())
-  if ($('#showswitcherinput').val() == 'No') {
-    $('#changemodebtndiv').hide()
-    $('#title').attr('style', '')
-  } else {
-    $('#changemodebtndiv').show()
-    $('#title').attr('style', 'margin-left:125px')
-  }
   $('.delbtn').hide()
   $('#settingsdiv').hide()
   $('#settingsbtn').hide()
@@ -277,14 +270,45 @@ function exportHTML() {
   $('#clipbtn').show()
 }
 
+function buttonsOnOff() {
+  if ($('#showswitcherinput').val() == 'No') {
+    $('#changemodebtndiv').hide()
+    $('#title').attr('style', 'margin-right:90px')
+  } else {
+    $('#changemodebtndiv').show()
+    $('#title').attr('style', 'margin-left:125px')
+  }
+  if ($('#showbuttoninput').val() == 'No') {
+    $('.brsbtn').hide()
+  } else {
+    $('.brsbtn').show()
+  }
+}
+
 $(document).ready(function() {
   if ('showswitcherinput' in localStorage) {
     $('#showswitcherinput').val(localStorage.getItem('showswitcherinput'))
+    buttonsOnOff()
   } else {
     $('#showswitcherinput').val('No')
+    localStorage.setItem('showswitcherinput', $('#showswitcherinput').val())
+    buttonsOnOff()
+  }
+  if ('showbuttoninput' in localStorage) {
+    $('#showbuttoninput').val(localStorage.getItem('showbuttoninput'))
+    buttonsOnOff()
+  } else {
+    $('#showbuttoninput').val('Yes')
+    localStorage.setItem('showbuttoninput', $('#showbuttoninput').val())
+    buttonsOnOff()
   }
   $('#showswitcherinput').change(function() {
     localStorage.setItem('showswitcherinput', $('#showswitcherinput').val())
+    buttonsOnOff()
+  })
+  $('#showbuttoninput').change(function() {
+    localStorage.setItem('showbuttoninput', $('#showbuttoninput').val())
+    buttonsOnOff()
   })
   if ('ohapplistinput' in localStorage) {
     $('#ohapplistinput').val(localStorage.getItem('ohapplistinput'))
