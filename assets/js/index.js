@@ -246,19 +246,59 @@ function clearUnsorted() {
   $('#unsortedbtn').hide()
 }
 
+function close_window() {
+  if (confirm("Go back to script?")) {
+    close();
+  }
+}
+
 function copyHTMLtoClipboard() {
+  $('#htmlexporttextarea').show()
   var copyText = document.getElementById("htmlexporttextarea")
   copyText.select()
   document.execCommand("copy")
-  window.close()
+  $('#htmlexporttextarea').hide()
+  close_window()
 }
 
 function exportHTML() {
   var minjs = `
-  // empty
+    function checkToggle() {
+      if ($('#togglebtns').prop('checked') == true) {
+        $('.brsbtn').show()
+      } else {
+        $('.brsbtn').hide()
+      }
+    }
+    $('#togglebtnsdiv').append('<p style="position:absolute;left:10px;top:15px">Show Backup/Restore: </p>')
+    $('#togglebtnsdiv').append('<div style="position:absolute;left:185px;top:10px"><input id="togglebtns" type="checkbox" checked></div>')
+    $('#togglebtns').bootstrapToggle({
+        on: 'Yes',
+        off: 'No',
+        onstyle: 'success',
+        offstyle: 'danger'
+      })
+      if ('togglebtn' in localStorage) {
+        $('#togglebtns').prop('checked', JSON.parse(localStorage.getItem('togglebtn'))).change()
+      }
+      checkToggle()
+      $('#togglebtns').change(function() {
+        localStorage.setItem('togglebtn', JSON.stringify($('#togglebtns').prop('checked')))
+        checkToggle()
+      })
+      $('.areadivs').hide()
+      var firstCat = $('#buttondiv :first-child').attr('id').replace('buttondiv', '')
+      $('#' + firstCat).show()
   `
   $('#changetotv').attr('href', 'autotoolscommand://openapp=:=' + $('#otapplistinput').val())
   $('#changetohome').attr('href', 'autotoolscommand://openapp=:=' + $('#ohapplistinput').val())
+  if ($('#showswitcherinput').val() == 'No') {
+    $('#changemodebtndiv').hide()
+    $('#title').attr('style', '')
+  } else {
+    $('#changemodebtndiv').show()
+    $('#title').attr('style', 'margin-left:125px')
+  }
   $('.delbtn').hide()
   $('#settingsdiv').hide()
   $('#settingsbtn').hide()
@@ -266,53 +306,21 @@ function exportHTML() {
   $('#scriptimport').html(minjs)
   $('#htmlexporttextarea').val($('html')[0].outerHTML)
   $('#scriptimport').html('')
-  $('#scriptimport').attr('src', '/assets/js/index-rewrite.js')
+  $('#scriptimport').attr('src', '/assets/js/index.js')
   $('#settingsdiv').show()
   $('#settingsbtn').show()
   $('.delbtn').show()
-  $('#htmlexporttextarea').show()
   $('#clipbtn').show()
-}
-
-function buttonsOnOff() {
-  if ($('#showswitcherinput').val() == 'No') {
-    $('#changemodebtndiv').hide()
-    $('#title').attr('style', 'margin-right:90px')
-  } else {
-    $('#changemodebtndiv').show()
-    $('#title').attr('style', 'margin-left:125px')
-  }
-  if ($('#showbuttoninput').val() == 'No') {
-    $('.brsbtn').hide()
-  } else {
-    $('.brsbtn').show()
-  }
 }
 
 $(document).ready(function() {
   if ('showswitcherinput' in localStorage) {
     $('#showswitcherinput').val(localStorage.getItem('showswitcherinput'))
-    buttonsOnOff()
   } else {
     $('#showswitcherinput').val('No')
-    localStorage.setItem('showswitcherinput', $('#showswitcherinput').val())
-    buttonsOnOff()
-  }
-  if ('showbuttoninput' in localStorage) {
-    $('#showbuttoninput').val(localStorage.getItem('showbuttoninput'))
-    buttonsOnOff()
-  } else {
-    $('#showbuttoninput').val('Yes')
-    localStorage.setItem('showbuttoninput', $('#showbuttoninput').val())
-    buttonsOnOff()
   }
   $('#showswitcherinput').change(function() {
     localStorage.setItem('showswitcherinput', $('#showswitcherinput').val())
-    buttonsOnOff()
-  })
-  $('#showbuttoninput').change(function() {
-    localStorage.setItem('showbuttoninput', $('#showbuttoninput').val())
-    buttonsOnOff()
   })
   if ('ohapplistinput' in localStorage) {
     $('#ohapplistinput').val(localStorage.getItem('ohapplistinput'))
@@ -331,13 +339,17 @@ $(document).ready(function() {
     localStorage.setItem('otapplistinput', $('#otapplistinput').val())
   })
   $('.areadivs').hide()
+  $('#settingsdiv').show()
   if ('category' in localStorage) {
     $('#categorylist').val(category)
   }
-  $('#settingsdiv').show()
+  $('<div/>', {
+    id: 'togglebtnsdiv'
+  }).prependTo('body')
   $('<input/>', {
     id: 'settingsbtn',
-    'class': 'btn btn-secondary stayleft',
+    'class': 'btn btn-secondary',
+    'style': 'position:absolute;left:10px;top:10px',
     value: 'Settings',
     type: 'button'
   }).prependTo('body')
