@@ -185,10 +185,10 @@ function generatePackagesHTML() {
       var applink = '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:='
       var imagelink = '"><img style="width:150px;height:84px" src="assets/app-icons/'
       var noimagelink = '" onerror="javascript:this.src=\'assets/notfound.png\'" /><p>'
-      var deletebutton = '<input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();deletePackage(' + i + ', ' + u + ');packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));location.reload()" type="button" style="position:absolute;right:0;top:-20px;color:red;" value="&#10005;">'
-      var bbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://backupappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;left:35px;top:-20px;color:green"><i class="fas fa-sign-in-alt"></i></a>'
-      var rbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://restoreappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;left:70px;top:-20px;color:blue"><i class="fas fa-sign-out-alt"></i></a>'
-      var sbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://openappsettings=:=' + packageLists[i][u][0] + '" style="position:absolute;left:105px;top:-20px;color:gray"><i class="fas fa-sliders-h"></i></a>'
+      var deletebutton = '<input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();deletePackage(' + i + ', ' + u + ');packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));location.reload()" type="button" style="position:absolute;right:12px;bottom:38px;color:red;" value="&#10005;">'
+      var bbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://backupappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;left:10px;top:-20px;color:green"><i class="fas fa-sign-in-alt"></i></a>'
+      var rbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://restoreappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;left:79px;top:-20px;color:blue"><i class="fas fa-sign-out-alt"></i></a>'
+      var sbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://openappsettings=:=' + packageLists[i][u][0] + '" style="position:absolute;left:148px;top:-20px;color:gray"><i class="fas fa-sliders-h"></i></a>'
       if (packageLists[i][u][3] != '1') {
         $(catarraynum).append('<div style="width:190px;position:relative;margin-top:25px" id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a></div>\n')
       } else {
