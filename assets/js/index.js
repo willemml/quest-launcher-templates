@@ -157,13 +157,17 @@ function generateCategoriesHTML() {
 }
 
 function createCategory(catname) {
-  catid = catname.replace(/\s/g, '').replace(/\W/g, '')
-  categories.push([catid, catname])
-  packageLists.push([])
-  localStorage.setItem('packageLists', JSON.stringify(packageLists))
-  localStorage.setItem('categories', JSON.stringify(categories))
-  localStorage.setItem('category', JSON.stringify(catname))
-  location.reload()
+  if (catname == '') {
+    alert('Make sure category name is not blank!')
+  } else {
+    catid = catname.replace(/\s/g, '').replace(/\W/g, '')
+    categories.push([catid, catname])
+    packageLists.push([])
+    localStorage.setItem('packageLists', JSON.stringify(packageLists))
+    localStorage.setItem('categories', JSON.stringify(categories))
+    localStorage.setItem('category', JSON.stringify(catname))
+    location.reload()
+  }
 }
 
 function deletePackage(cat, arraypos) {
