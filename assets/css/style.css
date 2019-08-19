@@ -2,6 +2,33 @@ body {
   font-family: Arial;
   color: white;
   background-color: black;
+  margin: 0;
+}
+
+.header {
+  background-color: #f1f1f1;
+  padding: 30px;
+  text-align: center;
+}
+
+#navbar {
+  overflow: hidden;
+  z-index: 100;
+  width: 100%;
+}
+
+.content {
+  padding: 16px;
+}
+
+.sticky {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+}
+
+.sticky + .content {
+  padding-top: 60px;
 }
 
 html, body {

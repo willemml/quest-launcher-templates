@@ -49,26 +49,11 @@ function checkDuplicateAndMissing() {
 }
 
 function createPageBase() {
-  $('#body').append('<h2 align="center" style="margin-left:125px" id="title">Recon-Quest</h2>')
   $('<div/>', {
     id: 'buttondivcontainer',
-    "class": 'text-center'
-  }).appendTo('#body')
-  $('<div/>', {
-    id: 'buttondiv',
-    "class": 'btn-group sort'
-  }).appendTo('#buttondivcontainer')
-  $('<div/>', {
-    id: 'unsortedbuttondiv',
-    'class': 'btn-group sortable'
-  }).appendTo('#buttondiv')
-  $('<input/>', {
-    id: 'unsortedbtn',
-    'class': 'btn btn-secondary',
-    value: 'Unsorted',
-    type: 'button',
-    onclick: '$(".areadivs").hide();$("#unsorteddiv").show()'
-  }).appendTo('#unsortedbuttondiv')
+    "style": 'padding-bottom:20px',
+    "class": 'text-center navbar navbar-fixed-top'
+  }).prependTo('#body')
   $('<div/>', {
     id: 'categoriesdiv'
   }).appendTo('#body')
@@ -85,6 +70,7 @@ function generateCategoriesHTML() {
     $('#categorylist').append('<option value="' + i + '">' + categories[i][1] + '</option>')
     $('<div/>', {
       id: categories[i][0] + 'buttondiv',
+      'style': 'padding-bottom: 5px;',
       'class': 'btn-group sortable',
       'catname': categories[i][1]
     }).prependTo('#buttondiv')
@@ -158,7 +144,7 @@ function generateCategoriesHTML() {
 
 function createCategory(catname) {
   if (catname == '') {
-    alert('Make sure category name is not blank!')
+    alert('If you want to create a new Navigation Bar Item you need to add a name for it!')
   } else {
     catid = catname.replace(/\s/g, '').replace(/\W/g, '')
     categories.push([catid, catname])
@@ -194,16 +180,16 @@ function generatePackagesHTML() {
       var rbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://restoreappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;left:79px;top:-20px;color:blue"><i class="fas fa-sign-out-alt"></i></a>'
       var sbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://openappsettings=:=' + packageLists[i][u][0] + '" style="position:absolute;left:148px;top:-20px;color:gray"><i class="fas fa-sliders-h"></i></a>'
       if (packageLists[i][u][3] != '1') {
-        $(catarraynum).append('<div style="width:190px;position:relative;margin-top:25px" id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a></div>\n')
+        $(catarraynum).append('<div style="width:190px;position:relative" id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a></div>\n')
       } else {
-        $(catarraynum).append('<div style="width:190px;position:relative;margin-top:25px" id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a>' + deletebutton + bbtn + rbtn + sbtn + '</div>\n')
+        $(catarraynum).append('<div style="width:190px;position:relative" id="' + packageLists[i][u][0].replace(/\./g, '') + applink + packageLists[i][u][0] + imagelink + packageLists[i][u][1] + noimagelink + packageLists[i][u][2] + '</p></a>' + deletebutton + bbtn + rbtn + sbtn + '</div>\n')
       }
     }
   }
 }
 
 function addPackage(packagename, imagefilename, appname, category, deletable) {
-  if (imagefilename != '' && appname != '') {
+  if (imagefilename != '' && appname != '' && packagename != '' && category != '') {
     packageLists[category].push([packagename, imagefilename, appname, deletable])
     if (unsortedList.indexOf(packagename) != parseInt('-1')) {
       addedPackages.push(packagename)
@@ -225,35 +211,30 @@ function addPackage(packagename, imagefilename, appname, category, deletable) {
     $('#pnamelist').val('')
     $('#appname').val('')
     $('#appicon').val('')
+    $('#appiconfilename').html('no image selected')
     localStorage.setItem('category', JSON.stringify(category))
     location.reload()
   } else {
-    alert('Make sure you have selected an image and entered an app name.')
+    alert('Looks like your new link is missing one of the required elements!! Make sure you have an app package, a title, an image and an appropriate Navigation Bar Item selected, then try again')
   }
 }
 
 function generateUnsortedList() {
+  $('#unsortedbuttondiv').remove()
   $('#unsortedlist').empty()
-  $('#pnamelist').empty()
+  $('#pnamedatalist').empty()
   unsortedList.sort()
   for (var i = 0; i < unsortedList.length; i++) {
-    var unsorteditemname = unsortedList[i]
-    $('#unsortedlist').append('<li id="' + unsortedList[i] + '"><a href="' + unsortedList[i] + '">' + unsorteditemname + '</a></li>')
+    $('#unsortedlist').append('<li id="' + unsortedList[i] + '"><a href="autotoolscommand://openapp=:=' + unsortedList[i] + '">' + unsortedList[i] + '</a></li>')
     $('#pnamelist').append('<option value="' + unsortedList[i] + '">' + unsortedList[i] + '</option>')
   }
-  $('#unsortedbtn').show()
+  $('#buttondiv').append('<div id="unsortedbuttondiv" class="btn-group sortable" style="padding-bottom: 5px;"><input type="button" class="btn btn-secondary" value="Unsorted" id="unsortedbtn" onclick="$(\'.areadivs\').hide();$(\'#unsorteddiv\').show()"></div>')
 }
 
 function clearUnsorted() {
   unsortedList = []
-  localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
-  $('#unsortedbtn').hide()
-}
-
-function close_window() {
-  if (confirm("Go back to script?")) {
-    close();
-  }
+  localStorage.clear('unsortedList')
+  $('#unsortedbuttondiv').remove()
 }
 
 function copyHTMLtoClipboard() {
@@ -262,7 +243,6 @@ function copyHTMLtoClipboard() {
   copyText.select()
   document.execCommand("copy")
   $('#htmlexporttextarea').hide()
-  close_window()
 }
 
 function exportHTML() {
@@ -274,11 +254,10 @@ function exportHTML() {
         $('.brsbtn').hide()
       }
     }
-    $('#togglebtnsdiv').append('<p style="position:absolute;left:10px;top:15px">Show Backup/Restore: </p>')
-    $('#togglebtnsdiv').append('<div style="position:absolute;left:185px;top:10px"><input id="togglebtns" type="checkbox" checked></div>')
+    $('#togglebtnsdiv').append('<div style="position:absolute;left:10px;top:10px"><input id="togglebtns" type="checkbox" checked></div>')
     $('#togglebtns').bootstrapToggle({
-        on: 'Yes',
-        off: 'No',
+        on: 'Edit ON',
+        off: 'Edit OFF',
         onstyle: 'success',
         offstyle: 'danger'
       })
@@ -293,6 +272,28 @@ function exportHTML() {
       $('.areadivs').hide()
       var firstCat = $('#buttondiv :first-child').attr('id').replace('buttondiv', '')
       $('#' + firstCat).show()
+
+      window.onscroll = function() {
+        myFunction()
+      };
+
+      var navbar = document.getElementById("navbar");
+      var sticky = navbar.offsetTop;
+      var btndiv = document.getElementById("togglebtnsdiv");
+      var stickyb = btndiv.offsetTop;
+
+      function myFunction() {
+        if (window.pageYOffset >= sticky) {
+          navbar.classList.add("sticky")
+        } else {
+          navbar.classList.remove("sticky");
+        }
+        if (window.pageYOffset >= stickyb) {
+          btndiv.classList.add("sticky")
+        } else {
+          btndiv.classList.remove("sticky");
+        }
+      }
   `
   $('#changetotv').attr('href', 'autotoolscommand://openapp=:=' + $('#otapplistinput').val())
   $('#changetohome').attr('href', 'autotoolscommand://openapp=:=' + $('#ohapplistinput').val())
@@ -310,7 +311,7 @@ function exportHTML() {
   $('#scriptimport').html(minjs)
   $('#htmlexporttextarea').val($('html')[0].outerHTML)
   $('#scriptimport').html('')
-  $('#scriptimport').attr('src', '/assets/js/index.js')
+  $('#scriptimport').attr('src', 'assets/js/index.js')
   $('#settingsdiv').show()
   $('#settingsbtn').show()
   $('.delbtn').show()
@@ -329,7 +330,7 @@ $(document).ready(function() {
   if ('ohapplistinput' in localStorage) {
     $('#ohapplistinput').val(localStorage.getItem('ohapplistinput'))
   } else {
-    $('#ohapplistinput').val('com.survios.CreedDemo')
+    $('#ohapplistinput').val('com.forcefieldxr.annefrankhousevr')
   }
   $('#ohapplistinput').change(function() {
     localStorage.setItem('ohapplistinput', $('#ohapplistinput').val())
@@ -337,7 +338,7 @@ $(document).ready(function() {
   if ('otapplistinput' in localStorage) {
     $('#otapplistinput').val(localStorage.getItem('otapplistinput'))
   } else {
-    $('#otapplistinput').val('com.nousguide.android.rbtv')
+    $('#otapplistinput').val('com.espn.score_center')
   }
   $('#otapplistinput').change(function() {
     localStorage.setItem('otapplistinput', $('#otapplistinput').val())
@@ -347,39 +348,13 @@ $(document).ready(function() {
   if ('category' in localStorage) {
     $('#categorylist').val(category)
   }
-  $('<div/>', {
-    id: 'togglebtnsdiv'
-  }).prependTo('body')
-  $('<input/>', {
-    id: 'settingsbtn',
-    'class': 'btn btn-secondary',
-    'style': 'position:absolute;left:10px;top:10px',
-    value: 'Settings',
-    type: 'button'
-  }).prependTo('body')
-  $('<div/>', {
-    id: 'changemodebtndiv',
-    'class': 'btn-group stayright',
-  }).prependTo('body')
-  $('<a/>', {
-    id: 'changetotv',
-    'class': 'btn btn-secondary',
-    html: 'TV'
-  }).appendTo('#changemodebtndiv')
-  $('<a/>', {
-    id: 'changetohome',
-    'class': 'btn btn-secondary',
-    html: 'Home'
-  }).appendTo('#changemodebtndiv')
+  if (unsortedList.length > 0) {
+    generateUnsortedList()
+  }
   $('#settingsbtn').click(function() {
     $('.areadivs').hide()
     $('#settingsdiv').show()
   })
-  if (unsortedList.length == 0) {
-    $('#unsortedbtn').hide()
-  } else {
-    generateUnsortedList()
-  }
   $('#confirmcancelreset').hide()
   $('#startreset').click(function() {
     $(this).hide()
@@ -392,6 +367,21 @@ $(document).ready(function() {
   $('#cancelreset').click(function() {
     $('#confirmcancelreset').hide()
     $('#startreset').show()
+  })
+  $('#confirmcancelexport').hide()
+  $('#startexport').click(function() {
+    exportHTML()
+    copyHTMLtoClipboard()
+    $(this).hide()
+    $('#confirmcancelexport').show()
+  })
+  $('#confirmexport').click(function() {
+    copyHTMLtoClipboard()
+    window.close()
+  })
+  $('#cancelexport').click(function() {
+    $('#confirmcancelexport').hide()
+    $('#startexport').show()
   })
   $('#htmlexporttextarea').hide()
   $('#clipbtn').hide()
@@ -423,7 +413,7 @@ $(document).ready(function() {
         }
         break;
       default:
-        alert('Not allowed, needs to be MyInstalledPackages.txt not ' + ext);
+        alert('You can only load the file named MyInstalledPackages.txt, not ' + ext);
         this.value = '';
     }
   })
@@ -434,12 +424,34 @@ $(document).ready(function() {
       case 'jpeg':
       case 'png':
         $('#appicon').val(this.files && this.files.length ? this.files[0].name : '')
+        $('#appiconfilename').html(this.files && this.files.length ? this.files[0].name : '')
         break;
       default:
-        alert('Not allowed, needs to be .png, .jpg or .jpeg.');
+        alert('Only JPG/JPEG/PNG formats are supported');
         this.value = '';
     }
   })
+  window.onscroll = function() {
+    myFunction()
+  };
+
+  var navbar = document.getElementById("navbar");
+  var sticky = navbar.offsetTop;
+  var btndiv = document.getElementById("togglebtnsdiv");
+  var stickyb = btndiv.offsetTop;
+
+  function myFunction() {
+    if (window.pageYOffset >= sticky) {
+      navbar.classList.add("sticky")
+    } else {
+      navbar.classList.remove("sticky");
+    }
+    if (window.pageYOffset >= stickyb) {
+      btndiv.classList.add("sticky")
+    } else {
+      btndiv.classList.remove("sticky");
+    }
+  }
 })
 if (categories.length == 0) {
   createCategory('System Utilities')
@@ -448,12 +460,11 @@ if (categories.length == 0) {
   generatePackagesHTML()
 }
 if (categories.length == 1 && packageLists[0].length == 0) {
-  addPackage('de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Settings', '0', '0')
-  addPackage('com.android.calendar', 'com.android.calendar.png', 'Calendar', '0', '0')
-  addPackage('com.android.deskclock', 'com.android.deskclock.png', 'Clock', '0', '0')
-  addPackage('com.oculus.systemactivities', 'oculus.png', 'System Activities', '0', '0')
+  addPackage('com.android.deskclock', 'alarm.png', 'Alarm', '0', '0')
+  addPackage('de.eye_interactive.atvl.settings', 'android-settings.png', 'Device Settings', '0', '0')
+  addPackage('com.oculus.systemactivities', 'oculus-system.png', 'Oculus Settings', '0', '0')
   addPackage('net.dinglisch.android.taskerm', 'tasker.png', 'Tasker', '0', '0')
-  addPackage('com.joaomgcd.autoappshub', 'autoappshub.png', 'Auto Apps Hub', '0', '0')
+  addPackage('com.oculus.horizon', 'oculus-account.png', 'Oculus Account', '0', '0')
   addPackage('com.joaomgcd.autoapps', 'autoapps.png', 'Auto Apps', '0', '0')
   addPackage('com.joaomgcd.autotools', 'autotools.png', 'Auto Tools', '0', '0')
 }

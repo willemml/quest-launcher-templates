@@ -4,111 +4,130 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-  <title>App Launcher</title>
+  <title>ReconQuest Links Generator</title>
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/style.css" >
   <link rel="stylesheet" href="assets/css/all.min.css">
   <link rel="stylesheet" href="assets/css/bootstrap-toggle.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-  <div id="body" style="padding-top:5px">
+  <div id="changemodebtndiv" style="z-index:100" class="btn-group stayright"><a id="changetohome" class="btn btn-secondary">Home</a><a id="changetotv" class="btn btn-secondary">TV</a></div>
+  <input id="settingsbtn" class="btn btn-secondary" style="position:absolute;left:10px;top:10px;z-index:100" value="Settings" type="button">
+  <div id="togglebtnsdiv" style="z-index:100"></div>
+  <center><img src="assets/logo2.png" style="padding-bottom:10px;padding-left:125px;padding-top:5px"></center>
+  <div class="row justify-content-center" id="navbar">
+    <div class="btn-group sort btn-group justify-content-center" id="buttondiv" style="flex-wrap: wrap;">
+    </div>
   </div>
-  <div id="unsorteddiv" class="areadivs">
-    <ul id="unsortedlist">
-    </ul>
-  </div>
-  <div id="settingsdiv" class="areadivs">
-    <h6 class="text-center">Load packages from text file:</h6><br>
-    <label class="btn btn-success btn-block btn-file">
-      Select text file <input type="file" id="textListInput" style="display: none;" accept=".txt, text/plain">
-    </label>
-    <input type="button" class="btn btn-danger btn-block" value="Clear unsorted packages" onclick="clearUnsorted()">
-    <hr>
-    <h6 class="text-center">Add a new category:</h6>
-    <div class="custom-control">
-      <p>Enter category name:</p>
-      <input type="text" class="form-control" id="newcatname" placeholder="Example Category">
+  <div class="content">
+    <div id="body" style="padding-top:5px">
     </div>
-    <br>
-    <input type="button" class="btn btn-primary btn-block" value="Create Category" onclick="createCategory($('#newcatname').val())">
-    <hr>
-    <h6 class="text-center">Add an application to a list:</h6>
-    <div class="custom-control">
-      <label for="categorylist">Select app category:</label>
-      <select class="custom-select categorylist" id="categorylist" name="categorylist">
-      </select>
+    <div id="unsorteddiv" class="areadivs">
+      <ul id="unsortedlist">
+      </ul>
     </div>
-    <br>
-    <div class="custom-control">
-      <p id="pnameenterlabel">Enter package name:</p>
-      <select class="custom-select" id="pnamelist">
-      </select>
-    </div>
-    <br>
-    <div class="custom-control">
-      <p>Enter app name:</p>
-      <input type="text" class="form-control" id="appname" placeholder="Example App">
-    </div>
-    <br>
-    <div class="custom-control">
-      <p>Enter image filename: <br>(image must be placed in <code>assets/app-icon/image.png</code>)</p>
-      <input type="text" class="form-control" id="appicon" placeholder="exampleapp.png">
+    <div id="settingsdiv" class="areadivs">
       <br>
-      <label class="btn btn-light btn-block btn-file">
-        Get image name from file <input type="file" id="imageInput" style="display: none;" accept=".png,.jpg,.jpeg, image/jpeg,image/image/x-png">
+      <label class="btn btn-success btn-block btn-file">
+        Load MyInstalledPackages.txt from ReconQuest root folder<input type="file" id="textListInput" style="display: none;" accept=".txt, text/plain">
       </label>
-    </div>
-    <br>
-    <input type="button" class="btn btn-primary btn-block" value="Add Application" onclick="addPackage($('#pnamelist').val(), $('#appicon').val(), $('#appname').val(), $('#categorylist').val(), '1')">
-    <hr>
-    <h6 class="text-center">Export for copy to oculus quest:</h6>
-    <div class="custom-control">
-      <p>Show TV / Home switcher:</p>
-      <select class="custom-select" id="showswitcherinput">
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-    </div>
-    <br>
-    <div class="custom-control">
-      <p>Choose package to use from oculus home:</p>
-      <select class="custom-select" id="ohapplistinput">
-        <option value="com.beatgames.beatsaber.demo">com.beatgames.beatsaber.demo</option>
-        <option value="com.survios.CreedDemo">com.survios.CreedDemo</option>
-        <option value="gg.trs.grappa_demo">gg.trs.grappa_demo</option>
-        <option value="com.iillusions.spacepiratetrainerdemo">com.iillusions.spacepiratetrainerdemo</option>
-        <option value="com.Armature.SportsScrambleDemo">com.Armature.SportsScrambleDemo</option>
-      </select>
-    </div>
-    <br>
-    <div class="custom-control">
-      <p>Choose package to use from oculus TV:</p>
-      <select class="custom-select" id="otapplistinput">
-        <option value="com.showtime.showtimeanytime.vr.tv">com.showtime.showtimeanytime.vr.tv</option>
-        <option value="com.showtime.standalone.vr.tv">com.showtime.standalone.vr.tv</option>
-        <option value="com.neverthink">com.neverthink</option>
-        <option value="com.facebook.tv">com.facebook.tv</option>
-        <option value="com.espn.score_center">com.espn.score_center</option>
-        <option value="com.google.android.apps.youtube.vr.oculus">com.google.android.apps.youtube.vr.oculus</option>
-        <option value="com.fox.now">com.fox.now</option>
-        <option value="com.sling">com.sling</option>
-        <option value="com.netflix.ninja.vr">com.netflix.ninja.vr</option>
-        <option value="tv.pluto.android">tv.pluto.android</option>
-        <option value="com.nousguide.android.rbtv">com.nousguide.android.rbtv</option>
-      </select>
-    </div>
-    <br>
-    <input type="button" class="btn btn-primary btn-block" value="Export as static HTML page" onclick="exportHTML()">
-    <br>
-    <input id="clipbtn" type="button" class="btn btn-success btn-block" value="Copy to clipboard and return to script" onclick="copyHTMLtoClipboard()">
-    <textarea id="htmlexporttextarea"></textarea>
-    <hr>
-    <h5 class="text-center">RESET GENERATOR:</h5><br>
-    <input type="button" class="btn btn-danger btn-block" id="startreset" value="RESET">
-    <div class="btn-group flex-row" id="confirmcancelreset">
-      <input type="button" class="btn btn-danger" id="confirmreset" value="Confirm">
-      <input type="button" class="btn btn-success" id="cancelreset" value="Cancel">
+      <input type="button" class="btn btn-danger btn-block" value="Remove the Unsorted links list from Navigation Bar " onclick="clearUnsorted()">
+      <hr>
+      <h6 class="text-center">Add a new Item to the Navigation Bar:</h6><br>
+      <div class="custom-control">
+        <p>Enter a name for a new Navigation Bar Item:</p>
+        <input type="text" class="form-control" id="newcatname" placeholder="Enter a genre, a theme, a type, or anything else you wish">
+      </div>
+      <br>
+      <input type="button" class="btn btn-primary btn-block" value="Create new Navigation Bar Item" onclick="createCategory($('#newcatname').val())">
+      <hr>
+      <h6 class="text-center">Create a link to an app</h6><br>
+      <div class="custom-control">
+        <p id="pnameenterlabel">Select an app package from the list:</p>
+        <select class="custom-select" id="pnamelist" list="pnamedatalist">
+        </select>
+      </div>
+      <br>
+      <div class="custom-control">
+        <p>Enter a title for the app:</p>
+        <input type="text" class="form-control" id="appname" placeholder="App Title">
+      </div>
+      <br>
+      <div class="custom-control">
+        <p>Select an icon for the app: <br>Recommended Dimensions: 150 x 84 px / Supported file formats: JPG JPEG PNG<br>NOTE: The icons will only display correctly on the Quest if they are located in the folder <code>AppIcons</code> (found in your
+          ReconQuest root folder), therefore copy/move them in there BEFORE creating any links<br>For your convenience, the folder <code>AppIcons</code> is opened automatically everytime you launch this generator</p>
+        <input type="text" class="form-control" style="display:none;" id="appicon" placeholder="Type here the full name of your icon (e.g:exampleapp.png) or click the button below to choose one using the file picker">
+        <p id="appiconfilename" class="text-center">no image selected</p>
+        <div class="custom-control">
+          <label class="btn btn-light btn-block btn-file">
+            Click here to choose an image. <input type="file" id="imageInput" style="display: none;" accept=".png,.jpg,.jpeg, image/jpeg,image/image/x-png">
+          </label>
+        </div>
+      </div>
+      <br>
+      <div class="custom-control">
+        <label for="categorylist">Select a Navigation Bar Item for your app:</label>
+        <select class="custom-select categorylist" id="categorylist" name="categorylist">
+        </select>
+      </div>
+      <br>
+      <input type="button" class="btn btn-primary btn-block" value="Create a new app link" onclick="addPackage($('#pnamelist').val(), $('#appicon').val(), $('#appname').val(), $('#categorylist').val(), '1')">
+      <hr>
+      <h6 class="text-center">Select which combination of ReconQuest enviromnent you have installed</h6><br>
+      <div class="custom-control">
+        <p>Choose whether or not to have on display a toggle to switch between HOME and TV environments:<br>NOTE: Choose NO and ignore the other choices if you have not installed ReconQuest for Oculus TV environment
+        </p>
+        <select class="custom-select" id="showswitcherinput">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <br>
+      <div class="custom-control">
+        <p>Choose which Oculus HOME app package you used as base:</p>
+        <select class="custom-select" id="ohapplistinput">
+          <option value="com.forcefieldxr.annefrankhousevr">Anne Frank House VR</option>
+          <option value="com.beatgames.beatsaber.demo">Beat Saber Demo</option>
+          <option value="com.survios.CreedDemo">Creed Demo</option>
+          <option value="gg.trs.grappa_demo">Journey Of The Gods Demo</option>
+          <option value="com.AudioGaming.nob5">Notes On Blindness</option>
+          <option value="com.iillusions.spacepiratetrainerdemo">Space Pirate Trainer Demo</option>
+          <option value="com.Armature.SportsScrambleDemo">Sports Scramble Demo</option>
+          <option value="in.with.within.quest">Within</option>
+        </select>
+      </div>
+      <br>
+      <div class="custom-control">
+        <p>Choose which Oculus TV app package you used as base:</p>
+        <select class="custom-select" id="otapplistinput">
+          <option value="com.espn.score_center">ESPN</option>
+          <option value="com.facebook.tv">Facebook Watch</option>
+          <option value="com.fox.now">FOX NOW</option>
+          <option value="com.netflix.ninja.vr">Netflix</option>
+          <option value="com.neverthink">Neverthink</option>
+          <option value="tv.pluto.android">Pluto TV</option>
+          <option value="com.nousguide.android.rbtv">Red Bull TV</option>
+          <option value="com.showtime.standalone.vr.tv">SHOWTIME</option>
+          <option value="com.showtime.showtimeanytime.vr.tv">Showtime Anytime</option>
+          <option value="com.sling">Sling TV</option>
+        </select>
+      </div>
+      <br>
+      <input type="button" class="btn btn-primary btn-block" id="startexport" value="Export to Quest & Quit">
+      <textarea id="htmlexporttextarea"></textarea>
+      <div class="btn-group flex-row" id="confirmcancelexport">
+        <input type="button" class="btn btn-danger" id="confirmexport" value="Confirm">
+        <input type="button" class="btn btn-success" id="cancelexport" value="Cancel">
+      </div>
+
+      <hr>
+      <h5 class="text-center">RESET GENERATOR:</h5><br>
+      <input type="button" class="btn btn-danger btn-block" id="startreset" value="RESET (this will purge the generator cache)">
+      <div class="btn-group flex-row" id="confirmcancelreset">
+        <input type="button" class="btn btn-danger" id="confirmreset" value="Confirm">
+        <input type="button" class="btn btn-success" id="cancelreset" value="Cancel">
+      </div>
     </div>
   </div>
   <script src="assets/js/jquery.min.js"></script>
@@ -116,7 +135,7 @@
   <script src="assets/js/popper.min.js"></script>
   <script src="assets/js/bootstrap.min.js"></script>
   <script src="assets/js/bootstrap-toggle.min.js"></script>
-  <script id="scriptimport" src="assets/js/index.js"></script>
+  <script src="assets/js/index.js" id="scriptimport"></script>
 </body>
 
 </html>
