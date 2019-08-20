@@ -11,11 +11,11 @@ body {
   text-align: center;
 }
 
-#navbar {
+/*#navbar {
   overflow: hidden;
   z-index: 100;
   width: 100%;
-}
+}*/
 
 .content {
   padding: 16px;

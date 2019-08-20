@@ -12,16 +12,18 @@
 </head>
 
 <body>
-  <div id="changemodebtndiv" style="z-index:100" class="btn-group stayright"><a id="changetohome" class="btn btn-secondary">Home</a><a id="changetotv" class="btn btn-secondary">TV</a></div>
-  <input id="settingsbtn" class="btn btn-secondary" style="position:absolute;left:10px;top:10px;z-index:100" value="Settings" type="button">
-  <div id="togglebtnsdiv" style="z-index:100"></div>
-  <center><img src="assets/logo2.png" style="padding-bottom:10px;padding-left:125px;padding-top:5px"></center>
-  <div class="row justify-content-center" id="navbar">
-    <div class="btn-group sort btn-group justify-content-center" id="buttondiv" style="flex-wrap: wrap;">
+  <div id="navbaritems" class="fixed-top" style="z-index:100;background: black;padding-bottom:40px">
+    <div id="changemodebtndiv" style="z-index:100" class="btn-group stayright"><a id="changetohome" class="btn btn-secondary">Home</a><a id="changetotv" class="btn btn-secondary">TV</a></div>
+    <input id="settingsbtn" class="btn btn-secondary" style="position:absolute;left:10px;top:10px;z-index:100" value="Settings" type="button">
+    <div id="togglebtnsdiv" style="z-index:100"></div>
+    <center id="title"><img src="assets/logo2.png" style="padding-bottom:10px;padding-left:125px;padding-top:5px"></center>
+    <div class="row justify-content-center" id="navbar">
+      <div class="btn-group sort btn-group justify-content-center" id="buttondiv" style="flex-wrap: wrap;">
+      </div>
     </div>
   </div>
-  <div class="content">
-    <div id="body" style="padding-top:5px">
+  <div class="content" style="padding-top:140px">
+    <div id="body">
     </div>
     <div id="unsorteddiv" class="areadivs">
       <ul id="unsortedlist">
@@ -45,8 +47,9 @@
       <h6 class="text-center">Create a link to an app</h6><br>
       <div class="custom-control">
         <p id="pnameenterlabel">Select an app package from the list:</p>
-        <select class="custom-select" id="pnamelist" list="pnamedatalist">
-        </select>
+        <input type="select" class="custom-select" id="pnamelist" list="pnamedatalist">
+      </input>
+      <datalist id="pnamedatalist"></datalist>
       </div>
       <br>
       <div class="custom-control">

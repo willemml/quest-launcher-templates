@@ -188,24 +188,24 @@ function generatePackagesHTML() {
   }
 }
 
-function addPackage(packagename, imagefilename, appname, category, deletable) {
-  if (imagefilename != '' && appname != '' && packagename != '' && category != '') {
-    packageLists[category].push([packagename, imagefilename, appname, deletable])
-    if (unsortedList.indexOf(packagename) != parseInt('-1')) {
-      addedPackages.push(packagename)
-      localStorage.setItem('addedPackages', JSON.stringify(addedPackages))
-    }
-    if (unsortedList.length > 0) {
-      if (unsortedList.indexOf(packagename) != parseInt('-1')) {
-        unsortedList.splice(unsortedList.indexOf(packagename), 1)
-        localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
-      }
-    }
-    packageLists[category].sort((function(index) {
+function sortPackages() {
+  for (var i = 0; i < packageLists.length; i++) {
+    packageLists[i].sort((function() {
       return function(a, b) {
-        return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1))
+        return (a[2] === b[2] ? 0 : (a[2] < b[2] ? -1 : 1))
       }
-    })(2))
+    })())
+  }
+}
+
+function addPackage(packagename, imagefilename, appname, category, deletable) {
+  if (imagefilename != '' && appname != '' && packagename != '' && category != '' && unsortedList.indexOf(packagename) != parseInt('-1')) {
+    packageLists[category].push([packagename, imagefilename, appname, deletable])
+    sortPackages()
+    addedPackages.push(packagename)
+    localStorage.setItem('addedPackages', JSON.stringify(addedPackages))
+    unsortedList.splice(unsortedList.indexOf(packagename), 1)
+    localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
     var catarraynum = '#' + categories[category][0]
     localStorage.setItem('packageLists', JSON.stringify(packageLists))
     $('#pnamelist').val('')
@@ -226,7 +226,7 @@ function generateUnsortedList() {
   unsortedList.sort()
   for (var i = 0; i < unsortedList.length; i++) {
     $('#unsortedlist').append('<li id="' + unsortedList[i] + '"><a href="autotoolscommand://openapp=:=' + unsortedList[i] + '">' + unsortedList[i] + '</a></li>')
-    $('#pnamelist').append('<option value="' + unsortedList[i] + '">' + unsortedList[i] + '</option>')
+    $('#pnamedatalist').append('<option value="' + unsortedList[i] + '">' + unsortedList[i] + '</option>')
   }
   $('#buttondiv').append('<div id="unsortedbuttondiv" class="btn-group sortable" style="padding-bottom: 5px;"><input type="button" class="btn btn-secondary" value="Unsorted" id="unsortedbtn" onclick="$(\'.areadivs\').hide();$(\'#unsorteddiv\').show()"></div>')
 }
@@ -431,27 +431,6 @@ $(document).ready(function() {
         this.value = '';
     }
   })
-  window.onscroll = function() {
-    myFunction()
-  };
-
-  var navbar = document.getElementById("navbar");
-  var sticky = navbar.offsetTop;
-  var btndiv = document.getElementById("togglebtnsdiv");
-  var stickyb = btndiv.offsetTop;
-
-  function myFunction() {
-    if (window.pageYOffset >= sticky) {
-      navbar.classList.add("sticky")
-    } else {
-      navbar.classList.remove("sticky");
-    }
-    if (window.pageYOffset >= stickyb) {
-      btndiv.classList.add("sticky")
-    } else {
-      btndiv.classList.remove("sticky");
-    }
-  }
 })
 if (categories.length == 0) {
   createCategory('System Utilities')
@@ -460,11 +439,12 @@ if (categories.length == 0) {
   generatePackagesHTML()
 }
 if (categories.length == 1 && packageLists[0].length == 0) {
-  addPackage('com.android.deskclock', 'alarm.png', 'Alarm', '0', '0')
-  addPackage('de.eye_interactive.atvl.settings', 'android-settings.png', 'Device Settings', '0', '0')
-  addPackage('com.oculus.systemactivities', 'oculus-system.png', 'Oculus Settings', '0', '0')
+  unsortedList = ['com.android.deskclock', 'de.eye_interactive.atvl.settings', 'com.oculus.systemactivities', 'net.dinglisch.android.taskerm', 'com.oculus.horizon', 'com.joaomgcd.autoapps', 'com.joaomgcd.autotools']
+  addPackage('com.android.deskclock', 'com.android.deskclock.png', 'Alarm', '0', '0')
+  addPackage('de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Device Settings', '0', '0')
+  addPackage('com.oculus.systemactivities', 'oculus.png', 'Oculus Settings', '0', '0')
   addPackage('net.dinglisch.android.taskerm', 'tasker.png', 'Tasker', '0', '0')
-  addPackage('com.oculus.horizon', 'oculus-account.png', 'Oculus Account', '0', '0')
+  addPackage('com.oculus.horizon', 'oculus.png', 'Oculus Account', '0', '0')
   addPackage('com.joaomgcd.autoapps', 'autoapps.png', 'Auto Apps', '0', '0')
   addPackage('com.joaomgcd.autotools', 'autotools.png', 'Auto Tools', '0', '0')
 }
