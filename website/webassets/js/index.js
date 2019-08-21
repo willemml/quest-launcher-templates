@@ -173,8 +173,8 @@ function generatePackagesHTML() {
     for (var u = 0; u < packageLists[i].length; u++) {
       var catarraynum = '#' + categories[i][0]
       var applink = '" style="position:relative;"><a class="btn btn-link" href="autotoolscommand://openapp=:='
-      var imagelink = '"><img style="width:150px;height:84px" src="assets/app-icons/'
-      var noimagelink = '" onerror="javascript:this.src=\'assets/notfound.png\'" /><p>'
+      var imagelink = '"><img style="width:150px;height:84px" src="resources/png/'
+      var noimagelink = '" onerror="javascript:this.src=\'website/webassets/notfound.png\'" /><p>'
       var deletebutton = '<input class="btn btn-sm btn-link delbtn" onclick="$(\'#' + packageLists[i][u][0].replace(/\./g, '') + '\').remove();deletePackage(' + i + ', ' + u + ');packageLists[' + i + '].splice(' + u + ', 1);localStorage.setItem(\'packageLists\', JSON.stringify(packageLists));location.reload()" type="button" style="position:absolute;right:12px;bottom:38px;color:red;" value="&#10005;">'
       var bbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://backupappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;left:10px;top:-20px;color:green"><i class="fas fa-sign-in-alt"></i></a>'
       var rbtn = '<a class="btn btn-sm btn-link brsbtn" href="autotoolscommand://restoreappdata=:=' + packageLists[i][u][0] + '" style="position:absolute;left:79px;top:-20px;color:blue"><i class="fas fa-sign-out-alt"></i></a>'
@@ -215,7 +215,11 @@ function addPackage(packagename, imagefilename, appname, category, deletable) {
     localStorage.setItem('category', JSON.stringify(category))
     location.reload()
   } else {
-    alert('Looks like your new link is missing one of the required elements!! Make sure you have an app package, a title, an image and an appropriate Navigation Bar Item selected, then try again')
+    if (unsortedList.indexOf(packagename) == parseInt('-1')) {
+      alert("Please make sure that you have selected a correct package name.")
+    } else {
+      alert('Looks like your new link is missing one of the required elements!! Make sure you have an app package, a title, an image and an appropriate Navigation Bar Item selected, then try again')
+    }
   }
 }
 
@@ -311,7 +315,7 @@ function exportHTML() {
   $('#scriptimport').html(minjs)
   $('#htmlexporttextarea').val($('html')[0].outerHTML)
   $('#scriptimport').html('')
-  $('#scriptimport').attr('src', 'assets/js/index.js')
+  $('#scriptimport').attr('src', 'website/webassets/js/index.js')
   $('#settingsdiv').show()
   $('#settingsbtn').show()
   $('.delbtn').show()
@@ -440,11 +444,11 @@ if (categories.length == 0) {
 }
 if (categories.length == 1 && packageLists[0].length == 0) {
   unsortedList = ['com.android.deskclock', 'de.eye_interactive.atvl.settings', 'com.oculus.systemactivities', 'net.dinglisch.android.taskerm', 'com.oculus.horizon', 'com.joaomgcd.autoapps', 'com.joaomgcd.autotools']
-  addPackage('com.android.deskclock', 'com.android.deskclock.png', 'Alarm', '0', '0')
-  addPackage('de.eye_interactive.atvl.settings', 'com.android.settings.png', 'Device Settings', '0', '0')
-  addPackage('com.oculus.systemactivities', 'oculus.png', 'Oculus Settings', '0', '0')
+  addPackage('com.android.deskclock', 'alarm.png', 'Alarm', '0', '0')
+  addPackage('de.eye_interactive.atvl.settings', 'android-settings.png', 'Device Settings', '0', '0')
+  addPackage('com.oculus.systemactivities', 'oculus-system.png', 'Oculus Settings', '0', '0')
   addPackage('net.dinglisch.android.taskerm', 'tasker.png', 'Tasker', '0', '0')
-  addPackage('com.oculus.horizon', 'oculus.png', 'Oculus Account', '0', '0')
+  addPackage('com.oculus.horizon', 'oculus-account.png', 'Oculus Account', '0', '0')
   addPackage('com.joaomgcd.autoapps', 'autoapps.png', 'Auto Apps', '0', '0')
   addPackage('com.joaomgcd.autotools', 'autotools.png', 'Auto Tools', '0', '0')
 }
