@@ -3,9 +3,12 @@ var unsortedList = []
 var categories = []
 var addedPackages = []
 var showunsorted = true
+var category = 0
 
 if ('category' in localStorage) {
   category = JSON.parse(localStorage.getItem('category'))
+} else {
+  localStorage.setItem('category', JSON.stringify(category))
 }
 if ('packageLists' in localStorage) {
   packageLists = JSON.parse(localStorage.getItem('packageLists'))
@@ -167,6 +170,8 @@ function createCategory(catname) {
       localStorage.setItem('packageLists', JSON.stringify(packageLists))
       localStorage.setItem('categories', JSON.stringify(categories))
       localStorage.setItem('category', JSON.stringify(catname))
+      category = 0
+      localStorage.setItem('category', JSON.stringify(category))
       location.reload()
     } else {
       alert('Please use a name that has not already been used for another Navigation Bar Item.')
@@ -217,21 +222,22 @@ function sortPackages() {
   }
 }
 
-function addPackage(packagename, imagefilename, appname, category, deletable) {
-  if (imagefilename != '' && appname != '' && packagename != '' && category != '' && unsortedList.indexOf(packagename) != parseInt('-1')) {
-    packageLists[category].push([packagename, imagefilename, appname, deletable])
+function addPackage(packagename, imagefilename, appname, categoryn, deletable) {
+  if (imagefilename != '' && appname != '' && packagename != '' && categoryn != '' && unsortedList.indexOf(packagename) != parseInt('-1')) {
+    packageLists[categoryn].push([packagename, imagefilename, appname, deletable])
     sortPackages()
     addedPackages.push(packagename)
     localStorage.setItem('addedPackages', JSON.stringify(addedPackages))
     unsortedList.splice(unsortedList.indexOf(packagename), 1)
     localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
-    var catarraynum = '#' + categories[category][0]
+    var catarraynum = '#' + categories[categoryn][0]
     localStorage.setItem('packageLists', JSON.stringify(packageLists))
+    category = categoryn
     $('#pnamelist').val('')
     $('#appname').val('')
     $('#appicon').val('')
     $('#appiconfilename').html('no image selected')
-    localStorage.setItem('category', JSON.stringify(category))
+    localStorage.setItem('category', JSON.stringify(categoryn))
     location.reload()
   } else {
     if (unsortedList.indexOf(packagename) == parseInt('-1')) {
@@ -368,9 +374,7 @@ $(document).ready(function() {
   })
   $('.areadivs').hide()
   $('#settingsdiv').show()
-  if ('category' in localStorage) {
-    $('#categorylist').val(category)
-  }
+  $('#categorylist').val(category)
   if (unsortedList.length > 0 && showunsorted == true) {
     generateUnsortedList()
   }
