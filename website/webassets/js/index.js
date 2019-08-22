@@ -154,13 +154,24 @@ function createCategory(catname) {
   if (catname == '') {
     alert('If you want to create a new Navigation Bar Item you need to add a name for it!')
   } else {
-    catid = catname.replace(/\s/g, '').replace(/\W/g, '')
-    categories.push([catid, catname])
-    packageLists.push([])
-    localStorage.setItem('packageLists', JSON.stringify(packageLists))
-    localStorage.setItem('categories', JSON.stringify(categories))
-    localStorage.setItem('category', JSON.stringify(catname))
-    location.reload()
+    var arenoduplicates = true
+    for (var i = 0; i < categories.length; i++) {
+      if (JSON.stringify(categories[i]).includes(catname) == true) {
+        arenoduplicates = false
+      }
+    }
+    if (arenoduplicates == true) {
+      catid = catname.replace(/\s/g, '').replace(/\W/g, '')
+      categories.push([catid, catname])
+      packageLists.push([])
+      localStorage.setItem('packageLists', JSON.stringify(packageLists))
+      localStorage.setItem('categories', JSON.stringify(categories))
+      localStorage.setItem('category', JSON.stringify(catname))
+      location.reload()
+    } else {
+      alert('Please use a name that has not already been used for another Navigation Bar Item.')
+      $('#newcatname').val('')
+    }
   }
 }
 
