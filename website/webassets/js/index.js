@@ -33,7 +33,7 @@ if ('showunsorted' in localStorage) {
   localStorage.setItem('showunsorted', JSON.stringify(showunsorted))
 }
 
-var systemPackages = ['com.android.deskclock', 'de.eye_interactive.atvl.settings', 'com.oculus.systemactivities', 'net.dinglisch.android.taskerm', 'com.oculus.horizon', 'com.joaomgcd.autoapps', 'com.joaomgcd.autotools', 'com.joaomgcd.autoappshub', 'mark.via.gp']
+var systemPackages = ['com.android.deskclock', 'de.eye_interactive.atvl.settings', 'com.oculus.systemactivities', 'net.dinglisch.android.taskerm', 'com.oculus.horizon', 'com.joaomgcd.autoapps', 'com.joaomgcd.autotools']
 
 function checkDuplicateAndMissing() {
   for (var i = 0; i < packageLists.length; i++) {
@@ -461,6 +461,4 @@ if (categories.length == 1 && packageLists[0].length == 0) {
   addPackage('com.oculus.horizon', 'oculus-account.png', 'Oculus Account', '0', '0')
   addPackage('com.joaomgcd.autoapps', 'autoapps.png', 'Auto Apps', '0', '0')
   addPackage('com.joaomgcd.autotools', 'autotools.png', 'Auto Tools', '0', '0')
-  addPackage('com.joaomgcd.autoappshub', 'autoappshub.png', 'AutoTools AppHub', '0', '0')
-  addPackage('mark.via.gp', 'via.png', 'Via Browser', '0', '0')
 }
