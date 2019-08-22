@@ -476,4 +476,5 @@ if (categories.length == 1 && packageLists[0].length == 0) {
   addPackage('com.oculus.horizon', 'oculus-account.png', 'Oculus Account', '0', '0')
   addPackage('com.joaomgcd.autoapps', 'autoapps.png', 'Auto Apps', '0', '0')
   addPackage('com.joaomgcd.autotools', 'autotools.png', 'Auto Tools', '0', '0')
+  $('#categorylist').val('System Utilities')
 }
