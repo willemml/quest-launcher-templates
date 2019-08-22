@@ -418,6 +418,8 @@ $(document).ready(function() {
             }
             generateUnsortedList()
             checkDuplicateAndMissing()
+            showunsorted = true
+            localStorage.setItem('showunsorted', JSON.stringify(showunsorted))
             localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
             location.reload()
           })
