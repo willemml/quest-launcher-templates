@@ -37,9 +37,10 @@ h2 {
 hr {
   display: block;
   position: relative;
-  margin: 30px;
+  margin: 30px 30px 30px 25px;
   height: 0;
-  width: 100%;
+  width: calc(100% - 25px);
+  left:0;
   max-height: 0;
   font-size: 1px;
   line-height: 0;
