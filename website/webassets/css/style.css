@@ -11,6 +11,21 @@ body {
   text-align: center;
 }
 
+.logo {
+    padding-bottom: 10px;
+    padding-left: 125px;
+    padding-top: 5px;
+}
+
+.logo-no-switcher {
+  padding-bottom: 10px;
+  padding-top: 5px;
+}
+
+.logo-row {
+  text-align: center;
+}
+
 .content {
   padding: 16px;
 }

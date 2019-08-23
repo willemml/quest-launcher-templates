@@ -301,37 +301,17 @@ function exportHTML() {
       $('.areadivs').hide()
       var firstCat = $('#buttondiv :first-child').attr('id').replace('buttondiv', '')
       $('#' + firstCat).show()
-
-      window.onscroll = function() {
-        myFunction()
-      };
-
-      var navbar = document.getElementById("navbar");
-      var sticky = navbar.offsetTop;
-      var btndiv = document.getElementById("togglebtnsdiv");
-      var stickyb = btndiv.offsetTop;
-
-      function myFunction() {
-        if (window.pageYOffset >= sticky) {
-          navbar.classList.add("sticky")
-        } else {
-          navbar.classList.remove("sticky");
-        }
-        if (window.pageYOffset >= stickyb) {
-          btndiv.classList.add("sticky")
-        } else {
-          btndiv.classList.remove("sticky");
-        }
-      }
   `
   $('#changetotv').attr('href', 'autotoolscommand://openapp=:=' + $('#otapplistinput').val())
   $('#changetohome').attr('href', 'autotoolscommand://openapp=:=' + $('#ohapplistinput').val())
   if ($('#showswitcherinput').val() == 'No') {
     $('#changemodebtndiv').hide()
-    $('#title').attr('style', '')
+    $('#title').removeClass('logo')
+    $('#title').addClass('logo-no-switcher')
   } else {
     $('#changemodebtndiv').show()
-    $('#title').attr('style', 'margin-left:125px')
+    $('#title').removeClass('logo-no-switcher')
+    $('#title').addClass('logo')
   }
   $('.delbtn').hide()
   $('#settingsdiv').hide()
