@@ -104,32 +104,36 @@ function generateCategoriesHTML() {
       id: categories[i][0],
       'class': 'full-height text-center row flex-row areadivs'
     }).appendTo('#categoriesdiv')
+    var currentnav = categories[i][0]
     var currentdiv = '#' + categories[i][0]
     var currentbtn = '#' + categories[i][0] + 'btn'
     var currentdelbtn = '#' + categories[i][0] + 'delbtn'
     $(currentdelbtn).click(function() {
-      var thisdiv = $(this).attr('id').replace('delbtn', '')
-      var thisbtndiv = $(this).attr('id').replace('delbtn', 'buttondiv')
+      var delysno = confirm('Are you sure you want to delete the nav bar item ' + currentnav + '?')
+      if (delysno == true) {
+        var thisdiv = $(this).attr('id').replace('delbtn', '')
+        var thisbtndiv = $(this).attr('id').replace('delbtn', 'buttondiv')
 
-      function getThisCat() {
-        for (var i = 0; i < categories.length; i++) {
-          if (categories[i][0] === thisdiv) {
-            return i;
+        function getThisCat() {
+          for (var i = 0; i < categories.length; i++) {
+            if (categories[i][0] === thisdiv) {
+              return i;
+            }
           }
         }
+        var thiscatnum = getThisCat()
+        $('#' + thisdiv).remove()
+        $('#' + thisbtndiv).remove()
+        for (var i = 0; i < packageLists[thiscatnum].length; i++) {
+          unsortedList.push(packageLists[thiscatnum][i][0])
+        }
+        categories.splice(thiscatnum, 1)
+        packageLists.splice(thiscatnum, 1)
+        localStorage.setItem('packageLists', JSON.stringify(packageLists))
+        localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
+        localStorage.setItem('categories', JSON.stringify(categories))
+        location.reload()
       }
-      var thiscatnum = getThisCat()
-      $('#' + thisdiv).remove()
-      $('#' + thisbtndiv).remove()
-      for (var i = 0; i < packageLists[thiscatnum].length; i++) {
-        unsortedList.push(packageLists[thiscatnum][i][0])
-      }
-      categories.splice(thiscatnum, 1)
-      packageLists.splice(thiscatnum, 1)
-      localStorage.setItem('packageLists', JSON.stringify(packageLists))
-      localStorage.setItem('unsortedList', JSON.stringify(unsortedList))
-      localStorage.setItem('categories', JSON.stringify(categories))
-      location.reload()
     })
   }
   $(function() {
