@@ -41,7 +41,6 @@ var systemPackages = [
   "de.eye_interactive.atvl.settings",
   "com.oculus.systemactivities",
   "net.dinglisch.android.taskerm",
-  "com.oculus.horizon",
   "com.joaomgcd.autoapps",
   "com.joaomgcd.autotools"
 ];
