@@ -77,47 +77,8 @@
         <input type="button" class="btn btn-primary btn-block" value="Create a new app link" onclick="addPackage($('#pnamelist').val(), $('#appicon').val(), $('#appname').val(), $('#categorylist').val(), '1')">
       </div>
       <hr>
-      <h6 class="text-center">Select which combination of ReconQuest enviromnent you have installed</h6><br>
-      <div class="custom-control">
-        <p>Choose whether or not to have on display a toggle to switch between HOME and TV environments:<br>NOTE: Choose NO and ignore the other choices if you have not installed ReconQuest for Oculus TV environment
-        </p>
-        <select class="custom-select" id="showswitcherinput">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
       <br>
-      <div class="custom-control">
-        <p>Choose which Oculus HOME app package you used as base:</p>
-        <select class="custom-select" id="ohapplistinput">
-          <option value="com.forcefieldxr.annefrankhousevr">Anne Frank House VR</option>
-          <option value="com.beatgames.beatsaber.demo">Beat Saber Demo</option>
-          <option value="com.survios.CreedDemo">Creed Demo</option>
-          <option value="gg.trs.grappa_demo">Journey Of The Gods Demo</option>
-          <option value="com.AudioGaming.nob5">Notes On Blindness</option>
-          <option value="com.iillusions.spacepiratetrainerdemo">Space Pirate Trainer Demo</option>
-          <option value="com.Armature.SportsScrambleDemo">Sports Scramble Demo</option>
-          <option value="in.with.within.quest">Within</option>
-        </select>
-      </div>
-      <br>
-      <div class="custom-control">
-        <p>Choose which Oculus TV app package you used as base:</p>
-        <select class="custom-select" id="otapplistinput">
-          <option value="com.espn.score_center">ESPN</option>
-          <option value="com.facebook.tv">Facebook Watch</option>
-          <option value="com.fox.now">FOX NOW</option>
-          <option value="com.netflix.ninja.vr">Netflix</option>
-          <option value="com.neverthink">Neverthink</option>
-          <option value="tv.pluto.android">Pluto TV</option>
-          <option value="com.nousguide.android.rbtv">Red Bull TV</option>
-          <option value="com.showtime.standalone.vr.tv">SHOWTIME</option>
-          <option value="com.showtime.showtimeanytime.vr.tv">Showtime Anytime</option>
-          <option value="com.sling">Sling TV</option>
-        </select>
-        <br><br>
-        <input type="button" class="btn btn-primary btn-block" id="startexport" value="Export to Quest & Quit">
-      </div>
+      <input type="button" class="btn btn-primary btn-block" id="startexport" value="Export to Quest & Quit">
       <textarea id="htmlexporttextarea"></textarea>
       <div class="btn-group flex-row" id="confirmcancelexport">
         <input type="button" class="btn btn-danger" id="confirmexport" value="Confirm">
