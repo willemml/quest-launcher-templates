@@ -382,31 +382,53 @@ function copyHTMLtoClipboard() {
 
 function exportHTML() {
   var minjs = `
-    function checkToggle() {
-      if ($('#togglebtns').prop('checked') == true) {
-        $('.brsbtn').show()
-      } else {
-        $('.brsbtn').hide()
-      }
+  function checkToggle() {
+    if ($('#togglebtns').prop('checked') == true) {
+      $('.brsbtn').show()
+    } else {
+      $('.brsbtn').hide()
     }
-    $('#togglebtnsdiv').append('<div style="position:absolute;left:10px;top:10px"><input id="togglebtns" type="checkbox" checked></div>')
-    $('#togglebtns').bootstrapToggle({
-        on: 'Edit ON',
-        off: 'Edit OFF',
-        onstyle: 'success',
-        offstyle: 'danger'
-      })
-      if ('togglebtn' in localStorage) {
-        $('#togglebtns').prop('checked', JSON.parse(localStorage.getItem('togglebtn'))).change()
-      }
+  }
+  function checkFTPToggle() {
+    if ($('#togglebtns').prop('checked') == true) {
+      window.location.href="tasker://StartFTPServer"
+    } else {
+      window.location.href="tasker://StopFTPServer"
+    }
+  }
+  $('#togglebtnsdiv').append('<div style="position:absolute;left:10px;top:10px"><input id="togglebtns" type="checkbox" checked></div>')
+  $('#togglebtns').bootstrapToggle({
+      on: 'Edit ON',
+      off: 'Edit OFF',
+      onstyle: 'success',
+      offstyle: 'danger'
+    })
+    if ('togglebtn' in localStorage) {
+      $('#togglebtns').prop('checked', JSON.parse(localStorage.getItem('togglebtn'))).change()
+    }
+    checkToggle()
+    $('#togglebtns').change(function() {
+      localStorage.setItem('togglebtn', JSON.stringify($('#togglebtns').prop('checked')))
       checkToggle()
-      $('#togglebtns').change(function() {
-        localStorage.setItem('togglebtn', JSON.stringify($('#togglebtns').prop('checked')))
-        checkToggle()
-      })
-      $('.areadivs').hide()
-      var firstCat = $('#buttondiv :first-child').attr('id').replace('buttondiv', '')
-      $('#' + firstCat).show()
+  })
+  $('#toggleftpdiv').append('<div style="position:absolute;left:118px;top:10px"><input id="toggleftp" type="checkbox" checked></div>')
+  $('#toggleftp').bootstrapToggle({
+      on: 'FTP ON',
+      off: 'FTP OFF',
+      onstyle: 'success',
+      offstyle: 'danger'
+    })
+    if ('toggleftp' in localStorage) {
+      $('#toggleftp').prop('checked', JSON.parse(localStorage.getItem('toggleftp'))).change()
+    }
+    checkToggle()
+    $('#toggleftp').change(function() {
+      localStorage.setItem('toggleftp', JSON.stringify($('#toggleftp').prop('checked')))
+      checkFTPToggle()
+  })
+  $('.areadivs').hide()
+  var firstCat = $('#buttondiv :first-child').attr('id').replace('buttondiv', '')
+  $('#' + firstCat).show()
   `;
   $("#changetotv").attr(
     "href",
