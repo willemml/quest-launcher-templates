@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+  <title>ReconQuest</title>
+  <link rel="stylesheet" href="webassets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="webassets/css/style.css">
+  <link rel="stylesheet" href="webassets/css/all.min.css">
+  <link rel="stylesheet" href="webassets/css/bootstrap-toggle.min.css">
+</head>
+
+<body>
+  <div id="navbaritems" class="fixed-top" style="z-index:100;background: black;padding-bottom:10px">
+    <div id="changemodebtndiv" style="z-index:100" class="btn-group stayright"><a id="changetohome"
+        class="btn btn-secondary">Home</a><a id="changetotv" class="btn btn-secondary">TV</a></div>
+    <input id="settingsbtn" class="btn btn-secondary" style="position:absolute;left:10px;top:10px;z-index:100"
+      value="Settings" type="button">
+    <div id="togglebtnsdiv" style="z-index:100"></div>
+    <div id="toggleftpdiv" style="z-index:100"></div>
+    <div class="logo-row">
+      <img id="title" src="webassets/logo.png" class="logo"></div>
+    <div class="row justify-content-center" id="navbar">
+      <div class="btn-group sort btn-group justify-content-center" id="buttondiv" style="flex-wrap: wrap;">
+      </div>
+    </div>
+  </div>
+  <div class="content" style="padding-top:140px">
+    <div id="body">
+    </div>
+    <div id="unsorteddiv" class="areadivs">
+      <ul id="unsortedlist">
+      </ul>
+    </div>
+    <div id="settingsdiv" class="areadivs">
+      <br>
+      <div class="custom-control">
+        <label class="btn btn-success btn-block btn-file">
+          Load MyInstalledPackages.txt from ReconQuest root folder<input type="file" id="textListInput"
+            style="display: none;" accept=".txt, text/plain">
+        </label>
+        <input type="button" class="btn btn-danger btn-block" value="Remove the Item Unsorted from Navigation Bar "
+          onclick="clearUnsorted()">
+      </div>
+      <hr>
+      <h5 class="text-center">Add a new Item to the Navigation Bar:</h5><br>
+      <div class="custom-control">
+        <p>Enter a name for a new Navigation Bar Item:</p>
+        <input type="text" class="form-control" id="newcatname"
+          placeholder="Enter a genre, a theme, a type, or anything else you wish">
+        <br>
+        <input type="button" class="btn btn-primary btn-block" value="Create new Navigation Bar Item"
+          onclick="createCategory($('#newcatname').val())">
+      </div>
+      <hr>
+      <h5 class="text-center">Create a link to an app:</h5><br>
+      <div class="custom-control">
+        <p id="pnameenterlabel">Select an app package from the list:</p>
+        <input type="select" class="custom-select" id="pnamelist" list="pnamedatalist">
+        </input>
+        <datalist id="pnamedatalist"></datalist>
+      </div>
+      <br>
+      <div class="custom-control">
+        <p>Enter a title for the app:</p>
+        <input type="text" class="form-control" id="appname" placeholder="App Title">
+      </div>
+      <br>
+      <div class="custom-control">
+        <p>Select an icon for the app: <br>Recommended Dimensions: 150 x 84 px / Supported file formats: JPG JPEG
+          PNG<br>NOTE: The icons will only display correctly on the Quest if they are located in the folder
+          <code>AppIcons</code> (found in your ReconQuest root folder), therefore copy/move them to this location BEFORE
+          attempting to create any link<br>For your convenience, the folder <code>AppIcons</code> is opened
+          automatically everytime you launch this generator<br>Click "Choose File" to browse to the folder and select an
+          icon (or drag and drop the file next to the "Choose File" button to zoom through the process!)</p>
+        <input type="text" class="form-control" id="appicon" style="display:none;">
+        <div class="file-upload-wrapper">
+          <input type="file" id="imageInput" class="file-upload"
+            accept=".png,.jpg,.jpeg, image/jpeg,image/image/x-png" />
+        </div>
+      </div>
+      <br>
+      <div class="custom-control">
+        <label for="categorylist">Select a Navigation Bar Item for your app:</label>
+        <select class="custom-select categorylist" id="categorylist" name="categorylist">
+        </select>
+        <br><br>
+        <input type="button" class="btn btn-primary btn-block" value="Create a new app link"
+          onclick="addPackage($('#pnamelist').val(), $('#appicon').val(), $('#appname').val(), $('#categorylist').val(), '1')">
+      </div>
+      <hr>
+      <h5 class="text-center">Export the links to the Quest:</h5><br>
+      <div class="custom-control">
+        <p>Once you are done creating links or you are satisfied with what you have, click the button below to close
+          this window and give control back to the toolkit in order to upload your new Index page to your Quest<br>NOTE:
+          As long as this Index Generator is launched exclusively using the option in the Extra menu of the toolkit, all
+          your work will be saved. You can return to it anytime to add or remove more links
+        </p>
+      </div>
+      <br>
+      <div class="custom-control">
+        <input type="button" class="btn btn-primary btn-block" id="startexport" value="Export to Quest & Quit">
+        <textarea id="htmlexporttextarea"></textarea>
+        <div class="btn-group flex-row" id="confirmcancelexport">
+          <input type="button" class="btn btn-danger" id="confirmexport" value="Confirm">
+          <input type="button" class="btn btn-success" id="cancelexport" value="Cancel">
+        </div>
+      </div>
+      <hr>
+      <div class="custom-control">
+        <h5 class="text-center">Reset Generator (Use ONLY if you want to restart from scratch!):</h5><br>
+        <input type="button" class="btn btn-danger btn-block" id="startreset"
+          value="RESET (this will purge the generator cache)">
+        <div class="btn-group flex-row" id="confirmcancelreset">
+          <input type="button" class="btn btn-danger" id="confirmreset" value="Confirm">
+          <input type="button" class="btn btn-success" id="cancelreset" value="Cancel">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="webassets/js/jquery.min.js"></script>
+  <script src="webassets/js/jquery-ui.min.js"></script>
+  <script src="webassets/js/popper.min.js"></script>
+  <script src="webassets/js/bootstrap.min.js"></script>
+  <script src="webassets/js/bootstrap-toggle.min.js"></script>
+  <script src="webassets/js/index.js" id="scriptimport"></script>
+</body>
+
+</html>

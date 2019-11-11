@@ -2,28 +2,6 @@ body {
   font-family: Arial;
   color: white;
   background-color: black;
-  margin: 0;
-}
-
-.header {
-  background-color: #f1f1f1;
-  padding: 30px;
-  text-align: center;
-}
-
-.logo {
-    padding-bottom: 10px;
-    padding-left: 125px;
-    padding-top: 5px;
-}
-
-.logo-no-switcher {
-  padding-bottom: 10px;
-  padding-top: 5px;
-}
-
-.logo-row {
-  text-align: center;
 }
 
 .content {
@@ -52,6 +30,7 @@ h2 {
 hr {
   display: block;
   position: relative;
+  margin: 30px;
   margin: 30px 30px 30px 25px;
   height: 0;
   width: calc(100% - 25px);
@@ -74,6 +53,20 @@ hr {
   height: 200px;
 }
 
+.logo {
+	padding-bottom: 10px;
+	padding-left: 125px;
+	padding-top: 5px;
+}
+
+.logo-no-switcher {
+  padding-bottom: 10px;
+  padding-top: 5px;
+}
+
+.logo-row {
+  text-align: center;
+}
 .stayright {
   float: right;
   margin-right: 10px;

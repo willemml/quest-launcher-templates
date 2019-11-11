@@ -118,7 +118,7 @@ function generateCategoriesHTML() {
     var currentdiv = "#" + categories[i][0];
     var currentbtn = "#" + categories[i][0] + "btn";
     var currentdelbtn = "#" + categories[i][0] + "delbtn";
-    $(currentdelbtn).click(function() {
+    $(currentdelbtn).click(function () {
       var delysno = confirm(
         "Are you sure you want to delete the nav bar item " + currentnav + "?"
       );
@@ -152,11 +152,11 @@ function generateCategoriesHTML() {
       }
     });
   }
-  $(function() {
+  $(function () {
     var $sortable = $(".sort");
     var positions = JSON.parse(localStorage.getItem("positions"));
     if (positions) {
-      $.each(positions, function(i, position) {
+      $.each(positions, function (i, position) {
         var $target = $sortable.find("#" + position);
         $target.appendTo($sortable); // or prependTo for reverse
       });
@@ -232,7 +232,7 @@ function generatePackagesHTML() {
       var imagelink =
         '"><img style="width:150px;height:84px" src="resources/png/';
       var noimagelink =
-        '" onerror="javascript:this.src=\'website/webassets/notfound.png\'" /><p>';
+        '" onerror="javascript:this.src=\'webassets/notfound.png\'" /><p>';
       var deletebutton =
         '<input class="btn btn-sm btn-link delbtn" onclick="$(\'#' +
         packageLists[i][u][0].replace(/\./g, "") +
@@ -260,31 +260,31 @@ function generatePackagesHTML() {
       if (packageLists[i][u][3] != "1") {
         $(catarraynum).append(
           '<div style="width:190px;position:relative" id="' +
-            packageLists[i][u][0].replace(/\./g, "") +
-            applink +
-            packageLists[i][u][0] +
-            imagelink +
-            packageLists[i][u][1] +
-            noimagelink +
-            packageLists[i][u][2] +
-            "</p></a></div>\n"
+          packageLists[i][u][0].replace(/\./g, "") +
+          applink +
+          packageLists[i][u][0] +
+          imagelink +
+          packageLists[i][u][1] +
+          noimagelink +
+          packageLists[i][u][2] +
+          "</p></a></div>\n"
         );
       } else {
         $(catarraynum).append(
           '<div style="width:190px;position:relative" id="' +
-            packageLists[i][u][0].replace(/\./g, "") +
-            applink +
-            packageLists[i][u][0] +
-            imagelink +
-            packageLists[i][u][1] +
-            noimagelink +
-            packageLists[i][u][2] +
-            "</p></a>" +
-            deletebutton +
-            bbtn +
-            rbtn +
-            sbtn +
-            "</div>\n"
+          packageLists[i][u][0].replace(/\./g, "") +
+          applink +
+          packageLists[i][u][0] +
+          imagelink +
+          packageLists[i][u][1] +
+          noimagelink +
+          packageLists[i][u][2] +
+          "</p></a>" +
+          deletebutton +
+          bbtn +
+          rbtn +
+          sbtn +
+          "</div>\n"
         );
       }
     }
@@ -294,8 +294,8 @@ function generatePackagesHTML() {
 function sortPackages() {
   for (var i = 0; i < packageLists.length; i++) {
     packageLists[i].sort(
-      (function() {
-        return function(a, b) {
+      (function () {
+        return function (a, b) {
           return a[2] === b[2] ? 0 : a[2] < b[2] ? -1 : 1;
         };
       })()
@@ -350,12 +350,12 @@ function generateUnsortedList() {
   for (var i = 0; i < unsortedList.length; i++) {
     $("#unsortedlist").append(
       '<li id="' +
-        unsortedList[i] +
-        '"><a href="autotoolscommand://openapp=:=' +
-        unsortedList[i] +
-        '">' +
-        unsortedList[i] +
-        "</a></li>"
+      unsortedList[i] +
+      '"><a href="autotoolscommand://openapp=:=' +
+      unsortedList[i] +
+      '">' +
+      unsortedList[i] +
+      "</a></li>"
     );
     $("#pnamedatalist").append(
       '<option value="' + unsortedList[i] + '">' + unsortedList[i] + "</option>"
@@ -446,62 +446,62 @@ function exportHTML() {
   $("#scriptimport").html(minjs);
   $("#htmlexporttextarea").val($("html")[0].outerHTML);
   $("#scriptimport").html("");
-  $("#scriptimport").attr("src", "website/webassets/js/index.js");
+  $("#scriptimport").attr("src", "webassets/js/index.js");
   $("#settingsdiv").show();
   $("#settingsbtn").show();
   $(".delbtn").show();
   $("#clipbtn").show();
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   $(".areadivs").hide();
   $("#settingsdiv").show();
   $("#categorylist").val(category);
   if (unsortedList.length > 0 && showunsorted == true) {
     generateUnsortedList();
   }
-  $("#settingsbtn").click(function() {
+  $("#settingsbtn").click(function () {
     $(".areadivs").hide();
     $("#settingsdiv").show();
   });
   $("#confirmcancelreset").hide();
-  $("#startreset").click(function() {
+  $("#startreset").click(function () {
     $(this).hide();
     $("#confirmcancelreset").show();
   });
-  $("#confirmreset").click(function() {
+  $("#confirmreset").click(function () {
     localStorage.clear("all");
     location.reload();
   });
-  $("#cancelreset").click(function() {
+  $("#cancelreset").click(function () {
     $("#confirmcancelreset").hide();
     $("#startreset").show();
   });
   $("#confirmcancelexport").hide();
-  $("#startexport").click(function() {
+  $("#startexport").click(function () {
     exportHTML();
     copyHTMLtoClipboard();
     $(this).hide();
     $("#confirmcancelexport").show();
   });
-  $("#confirmexport").click(function() {
+  $("#confirmexport").click(function () {
     copyHTMLtoClipboard();
     window.close();
   });
-  $("#cancelexport").click(function() {
+  $("#cancelexport").click(function () {
     $("#confirmcancelexport").hide();
     $("#startexport").show();
   });
   $("#htmlexporttextarea").hide();
   $("#clipbtn").hide();
-  $("#textListInput").change(function() {
+  $("#textListInput").change(function () {
     var ext = this.value.split("\\")[this.value.split("\\").length - 1];
     switch (ext) {
       case "MyInstalledPackages.txt":
         if (this.files && this.files[0]) {
           var myFile = this.files[0];
           var reader = new FileReader();
-          reader.addEventListener("load", function(e) {
+          reader.addEventListener("load", function (e) {
             var lineEnding = "\n";
             if (e.target.result.indexOf("\r\n") != parseInt("-1")) {
               lineEnding = "\r\n";
@@ -533,7 +533,7 @@ $(document).ready(function() {
         this.value = "";
     }
   });
-  $("#imageInput").change(function() {
+  $("#imageInput").change(function () {
     var ext = this.value.match(/.([^.]+)$/)[1];
     switch (ext) {
       case "jpg":
@@ -559,23 +559,14 @@ if (categories.length == 0) {
   generatePackagesHTML();
 }
 if (categories.length == 1 && packageLists[0].length == 0) {
-  unsortedList = systemPackages;
-  addPackage("com.android.deskclock", "alarm.png", "Alarm", "0", "0");
-  addPackage(
-    "de.eye_interactive.atvl.settings",
-    "android-settings.png",
-    "Device Settings",
-    "0",
-    "0"
-  );
-  addPackage(
-    "com.oculus.systemactivities",
-    "oculus-system.png",
-    "Oculus Settings",
-    "0",
-    "0"
-  );
-  addPackage("net.dinglisch.android.taskerm", "tasker.png", "Tasker", "0", "0");
-  addPackage("com.joaomgcd.autoapps", "autoapps.png", "Auto Apps", "0", "0");
-  addPackage("com.joaomgcd.autotools", "autotools.png", "Auto Tools", "0", "0");
+  unsortedList = systemPackages
+  addPackage('com.android.deskclock', 'alarm.png', 'Alarm', '0', '0')
+  addPackage('de.eye_interactive.atvl.settings', 'android-settings.png', 'Device Settings', '0', '0')
+  addPackage('com.irishin.buttonsremapper', 'button-remapper.png', 'Button Remapper', '0', '0')
+  addPackage('com.oculus.systemactivities', 'oculus-system.png', 'Oculus Settings', '0', '0')
+  addPackage('net.dinglisch.android.taskerm', 'tasker.png', 'Tasker', '0', '0')
+  addPackage('com.joaomgcd.autoapps', 'autolaunch.png', 'AutoLaunch', '0', '0')
+  addPackage('com.joaomgcd.autotools', 'autotools.png', 'AutoTools', '0', '0')
+  addPackage('be.ppareit.swiftp_free', 'ftpserver.png', 'FTP Server', '0', '0')
+  addPackage('com.google.android.sambadocumentsprovider', 'sambaclient.png', 'Samba Client', '0', '0')
 }
