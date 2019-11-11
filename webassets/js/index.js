@@ -37,12 +37,15 @@ if ("showunsorted" in localStorage) {
 }
 
 var systemPackages = [
-  "com.android.deskclock",
-  "de.eye_interactive.atvl.settings",
-  "com.oculus.systemactivities",
-  "net.dinglisch.android.taskerm",
-  "com.joaomgcd.autoapps",
-  "com.joaomgcd.autotools"
+  'com.android.deskclock',
+  'de.eye_interactive.atvl.settings',
+  'com.irishin.buttonsremapper',
+  'com.oculus.systemactivities',
+  'net.dinglisch.android.taskerm',
+  'com.joaomgcd.autoapps',
+  'com.joaomgcd.autotools',
+  'be.ppareit.swiftp_free',
+  'com.google.android.sambadocumentsprovider'
 ];
 
 function checkDuplicateAndMissing() {
@@ -390,7 +393,7 @@ function exportHTML() {
     }
   }
   function checkFTPToggle() {
-    if ($('#togglebtns').prop('checked') == true) {
+    if ($('#toggleftp').prop('checked') == true) {
       window.location.href="tasker://StartFTPServer"
     } else {
       window.location.href="tasker://StopFTPServer"
@@ -411,7 +414,7 @@ function exportHTML() {
       localStorage.setItem('togglebtn', JSON.stringify($('#togglebtns').prop('checked')))
       checkToggle()
   })
-  $('#toggleftpdiv').append('<div style="position:absolute;left:118px;top:10px"><input id="toggleftp" type="checkbox" checked></div>')
+  $('#toggleftpdiv').append('<div style="position:absolute;left:118px;top:10px"><input id="toggleftp" type="checkbox"></div>')
   $('#toggleftp').bootstrapToggle({
       on: 'FTP ON',
       off: 'FTP OFF',
