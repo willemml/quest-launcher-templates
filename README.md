@@ -1,0 +1,1 @@
+quest-launcher-templates
